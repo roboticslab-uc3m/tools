@@ -1,0 +1,13 @@
+# Copyright: Universidad Carlos III de Madrid (C) 2017
+# Authors: Juan G Victores
+# CopyPolicy: Released under the terms of the LGPLv2.1 or later
+
+@PACKAGE_INIT@
+
+set_and_check(ROBOTICSLAB_TOOLS_INCLUDE_DIRS "@PACKAGE_ROBOTICSLAB_TOOLS_INCLUDE_DIRS@")
+set(ROBOTICSLAB_TOOLS_LIBRARIES "@ROBOTICSLAB_TOOLS_LIBRARIES@")
+
+if(NOT TARGET ROBOTICSLAB_TOOLS::ExampleLibrary)
+  include(${CMAKE_CURRENT_LIST_DIR}/ROBOTICSLAB_TOOLSTargets.cmake)
+endif()
+
