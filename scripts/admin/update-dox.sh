@@ -5,10 +5,10 @@
 # crontab -e
 # 30 2 * * * /your/command
 
-echo "Update roboticslab-tools..."
-cd $HOME/roboticslab-tools
+echo "Update tools..."
+cd $HOME/tools
 git pull
-echo "Doxy roboticslab-tools..."
+echo "Doxy tools..."
 cd doc
 rm -r html
 /usr/bin/doxygen
