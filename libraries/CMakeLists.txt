@@ -6,3 +6,8 @@ if(ENABLE_ExampleLibrary)
   add_subdirectory(ExampleLibrary)
 endif()
 
+add_subdirectory(Playback)
+
+add_subdirectory(ToolsYarpPlugins)
+
+

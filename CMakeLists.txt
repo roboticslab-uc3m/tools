@@ -7,12 +7,28 @@ cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
 # Start a project.
 project(ROBOTICSLAB_TOOLS)
 
+set(BUILD_SHARED_LIBS TRUE CACHE INTERNAL "hide this!")
+
+# options: cpp libraries
+option(ENABLE_Playback "Enable/disable compilation of Playback" TRUE)
+
+# options: cpp libraries (plugins)
+option(ENABLE_PlaybackThread "Enable/disable compilation of PlaybackThread" TRUE)
+
+##### test and coverage options
+option(ENABLE_tests "Choose if you want to compile tests" TRUE)
+option(ENABLE_coverage "Choose if you want to enable coverage collection" FALSE)
+
 # Set module path.
 set(ROBOTICSLAB_TOOLS_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 list(APPEND CMAKE_MODULE_PATH ${ROBOTICSLAB_TOOLS_MODULE_PATH})
 
 # Bootstrap YCM.
 include(YCMBootstrap)
+
+# Superbuild phase - include color-debug
+include(FindOrBuildPackage)
+find_or_build_package(COLOR_DEBUG)
 
 # Retrieve current ROBOTICSLAB_TOOLS version.
 include(ROBOTICSLAB_TOOLSVersion)
@@ -32,6 +48,9 @@ set_property(GLOBAL PROPERTY ROBOTICSLAB_TOOLS_TARGETS)
 add_subdirectory(share)
 add_subdirectory(libraries)
 add_subdirectory(programs)
+if (ENABLE_tests)
+    add_subdirectory(tests)
+endif (ENABLE_tests)
 
 # Output configuration files.
 include(ROBOTICSLAB_TOOLSDescribe)

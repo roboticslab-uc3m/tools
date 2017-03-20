@@ -9,5 +9,5 @@ yarp_configure_external_installation(roboticslab-tools)
 
 ### Go through single applications
 
-#add_subdirectory(prog)
+add_subdirectory(Playback)
 
