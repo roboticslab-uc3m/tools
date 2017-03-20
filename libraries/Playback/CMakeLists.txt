@@ -22,7 +22,7 @@ foreach(header_file ${folder_header})
   include_directories(${p})
 endforeach(header_file ${folder_header})
 
-include_directories(${YARP_INCLUDE_DIRS} ${ROBOTICSLAB_YARP_DEVICES_INCLUDE_DIRS} ${COLOR_DEBUG_INCLUDE_DIRS})
+include_directories(${YARP_INCLUDE_DIRS} ${ROBOTICSLAB_TOOLS_INCLUDE_DIRS} ${COLOR_DEBUG_INCLUDE_DIRS})
 
 link_directories(${ROBOTICSLAB_YARP_DEVICES_LINK_DIRS})
 
@@ -36,8 +36,8 @@ else (folder_source)
 endif (folder_source)
 
   # Exporting dependencies for ROBOTICSLAB_YARP_DEVICESConfig.cmake quite manually for now...
-  set(ROBOTICSLAB_YARP_DEVICES_INCLUDE_DIRS ${ROBOTICSLAB_YARP_DEVICES_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} CACHE INTERNAL "appended libraries")
-  set(ROBOTICSLAB_YARP_DEVICES_LIBRARIES ${ROBOTICSLAB_YARP_DEVICES_LIBRARIES} Playback CACHE INTERNAL "appended libraries")
+  set(ROBOTICSLAB_TOOLS_INCLUDE_DIRS ${ROBOTICSLAB_TOOLS_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} CACHE INTERNAL "appended headers")
+  set(ROBOTICSLAB_TOOLS_LIBRARIES ${ROBOTICSLAB_TOOLS_LIBRARIES} Playback CACHE INTERNAL "appended libraries")
 
 ENDIF (ENABLE_Playback)
 

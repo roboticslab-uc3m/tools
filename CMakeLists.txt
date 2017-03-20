@@ -7,6 +7,8 @@ cmake_minimum_required(VERSION 2.8.9 FATAL_ERROR)
 # Start a project.
 project(ROBOTICSLAB_TOOLS)
 
+set(BUILD_SHARED_LIBS TRUE CACHE INTERNAL "hide this!")
+
 # options: cpp libraries
 option(ENABLE_Playback "Enable/disable compilation of Playback" TRUE)
 

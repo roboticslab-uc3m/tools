@@ -12,16 +12,16 @@ IF (NOT SKIP_PlaybackThread)
   find_package(COLOR_DEBUG REQUIRED)
 
   # Include any directories needed for YARP
-  include_directories(${YARP_INCLUDE_DIRS} ${ROBOTICSLAB_YARP_DEVICES_INCLUDE_DIRS} ${COLOR_DEBUG_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR})
+  include_directories(${YARP_INCLUDE_DIRS} ${ROBOTICSLAB_TOOLS_INCLUDE_DIRS} ${COLOR_DEBUG_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR})
 
   yarp_add_plugin(PlaybackThread DeviceDriverImpl.cpp IPlaybackThreadImpl.cpp ThreadImpl.cpp )
 
   TARGET_LINK_LIBRARIES(PlaybackThread ${YARP_LIBRARIES} Playback)
   install(TARGETS PlaybackThread DESTINATION lib)
 
-  # Exporting dependencies for ROBOTICSLAB_YARP_DEVICESConfig.cmake quite manually for now... 
-  set(ROBOTICSLAB_YARP_DEVICES_INCLUDE_DIRS ${ROBOTICSLAB_YARP_DEVICES_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} CACHE INTERNAL "appended libraries")
-  #set(ROBOTICSLAB_YARP_DEVICES_LIBRARIES ${ROBOTICSLAB_YARP_DEVICES_LIBRARIES} LacqueyFetch CACHE INTERNAL "appended libraries")
+  # Exporting dependencies for ROBOTICSLAB_TOOLSConfig.cmake quite manually for now... 
+  set(ROBOTICSLAB_TOOLS_INCLUDE_DIRS ${ROBOTICSLAB_TOOLS_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} CACHE INTERNAL "appended headers")
+  #set(ROBOTICSLAB_TOOLS_LIBRARIES ${ROBOTICSLAB_TOOLS_LIBRARIES} LacqueyFetch CACHE INTERNAL "appended libraries")
 
   #install(TARGETS PlaybackThread DESTINATION lib)
   yarp_install(TARGETS PlaybackThread

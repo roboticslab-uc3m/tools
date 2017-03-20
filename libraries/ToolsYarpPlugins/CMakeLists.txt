@@ -15,7 +15,7 @@ cmake_minimum_required(VERSION 2.6)
 
   # Exporting dependencies for ROBOTICSLAB_TOOLSConfig.cmake quite manually for now... 
   # Note: Need ICanBusSharer.h, which will also need CanBusHico/*.hpp for now
-  set(ROBOTICSLAB_TOOLS_INCLUDE_DIRS ${ROBOTICSLAB_TOOLS_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} CACHE INTERNAL "appended libraries") 
+  set(ROBOTICSLAB_TOOLS_INCLUDE_DIRS ${ROBOTICSLAB_TOOLS_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR} CACHE INTERNAL "appended headers")
   # Note: ToolsYarpPlugins bodybot works, but bodybot ToolsYarpPlugins fails.
   #set(ROBOTICSLAB_TOOLS_LIBRARIES ${ROBOTICSLAB_TOOLS_LIBRARIES} ToolsYarpPlugins CACHE INTERNAL "appended libraries") 
   
