@@ -21,7 +21,7 @@ namespace teo
 {
 
 /**
- * @ingroup BodyYarp
+ * @ingroup roboticslab-tools_libraries
  * \defgroup Playback
  * @brief Contains teo::Playback.
  */
