@@ -10,6 +10,9 @@ project(ROBOTICSLAB_TOOLS)
 # options: cpp libraries
 option(ENABLE_Playback "Enable/disable compilation of Playback" TRUE)
 
+# options: cpp libraries (plugins)
+option(ENABLE_PlaybackThread "Enable/disable compilation of PlaybackThread" TRUE)
+
 ##### test and coverage options
 option(ENABLE_tests "Choose if you want to compile tests" TRUE)
 option(ENABLE_coverage "Choose if you want to enable coverage collection" FALSE)
