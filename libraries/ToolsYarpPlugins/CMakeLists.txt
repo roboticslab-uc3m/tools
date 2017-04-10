@@ -18,3 +18,9 @@ include_directories(${YARP_INCLUDE_DIRS} ${ROBOTICSLAB_TOOLS_INCLUDE_DIRS})
 if(ENABLE_PlaybackThread)
     add_subdirectory(PlaybackThread)
 endif()
+
+# Create installation rule.
+install(FILES IPlaybackThread.h IRunnable.h
+        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+        COMPONENT tools_yarp_plugins)
+
