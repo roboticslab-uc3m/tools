@@ -2,12 +2,10 @@
 # Authors: Juan G Victores
 # CopyPolicy: Released under the terms of the LGPLv2.1 or later
 
-if(ENABLE_ExampleLibrary)
-  add_subdirectory(ExampleLibrary)
+if(ENABLE_Playback)
+    add_subdirectory(Playback)
 endif()
 
-add_subdirectory(Playback)
-
-add_subdirectory(ToolsYarpPlugins)
-
-
+if(ENABLE_ToolsYarpPlugins)
+    add_subdirectory(ToolsYarpPlugins)
+endif()
