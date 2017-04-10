@@ -15,7 +15,7 @@ include_directories(${YARP_INCLUDE_DIRS} ${ROBOTICSLAB_TOOLS_INCLUDE_DIRS} ${COL
 add_library(${KEYWORD} Playback.cpp Playback.hpp)
 
 # Link external libraries.
-target_link_libraries(${KEYWORD} LINK_PRIVATE ${YARP_LIBRARIES})
+target_link_libraries(${KEYWORD} LINK_PUBLIC ${YARP_LIBRARIES})
 
 # Create installation rule.
 install(TARGETS ${KEYWORD}
