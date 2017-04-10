@@ -9,16 +9,6 @@ project(ROBOTICSLAB_TOOLS)
 
 set(BUILD_SHARED_LIBS TRUE CACHE INTERNAL "hide this!")
 
-# options: cpp libraries
-option(ENABLE_Playback "Enable/disable compilation of Playback" TRUE)
-
-# options: cpp libraries (plugins)
-option(ENABLE_PlaybackThread "Enable/disable compilation of PlaybackThread" TRUE)
-
-##### test and coverage options
-option(ENABLE_tests "Choose if you want to compile tests" TRUE)
-option(ENABLE_coverage "Choose if you want to enable coverage collection" FALSE)
-
 # Set module path.
 set(ROBOTICSLAB_TOOLS_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 list(APPEND CMAKE_MODULE_PATH ${ROBOTICSLAB_TOOLS_MODULE_PATH})
@@ -48,9 +38,10 @@ set_property(GLOBAL PROPERTY ROBOTICSLAB_TOOLS_TARGETS)
 add_subdirectory(share)
 add_subdirectory(libraries)
 add_subdirectory(programs)
-if (ENABLE_tests)
+
+if(ENABLE_tests)
     add_subdirectory(tests)
-endif (ENABLE_tests)
+endif()
 
 # Output configuration files.
 include(ROBOTICSLAB_TOOLSDescribe)
