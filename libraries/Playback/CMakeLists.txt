@@ -14,6 +14,9 @@ include_directories(${YARP_INCLUDE_DIRS} ${ROBOTICSLAB_TOOLS_INCLUDE_DIRS} ${COL
 # Configure library build target.
 add_library(${KEYWORD} Playback.cpp Playback.hpp)
 
+# Set target properties.
+set_target_properties(${KEYWORD} PROPERTIES PUBLIC_HEADER Playback.hpp)
+
 # Link external libraries.
 target_link_libraries(${KEYWORD} LINK_PUBLIC ${YARP_LIBRARIES})
 
@@ -22,9 +25,9 @@ install(TARGETS ${KEYWORD}
         EXPORT ROBOTICSLAB_TOOLS
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT playback_library
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT playback_library
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT playback_library)
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT playback_library
+        PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT playback_library)
 
 # Export library name and current target. Store include paths in target.
 set_property(GLOBAL APPEND PROPERTY ROBOTICSLAB_TOOLS_LIBRARIES ${KEYWORD})
 set_property(GLOBAL APPEND PROPERTY ROBOTICSLAB_TOOLS_TARGETS ${KEYWORD})
-set_property(TARGET ${KEYWORD} PROPERTY INCLUDE_DIRS ${ROBOTICSLAB_TOOLS_INCLUDE_DIRS})
