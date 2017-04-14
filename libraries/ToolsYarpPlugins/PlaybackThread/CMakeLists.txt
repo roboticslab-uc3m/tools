@@ -6,7 +6,7 @@ yarp_prepare_plugin(PlaybackThread CATEGORY device TYPE teo::PlaybackThread INCL
 
 if(NOT SKIP_PlaybackThread)
 
-  find_package(COLOR_DEBUG REQUIRED)
+  find_package(COLOR_DEBUG)
 
   include_directories(${COLOR_DEBUG_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR})
 
