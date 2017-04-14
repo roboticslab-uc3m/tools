@@ -37,9 +37,8 @@ script:
   - make
   - sudo make install
   - sudo ldconfig
-  - bin/testKdlSolver
-  - bin/testKdlSolverFromFile
-  - bin/testBasicCartesianControl
+  - bin/testPlayback
+  - bin/testPlaybackThread
 
 after_success:
   #  - cd ${TRAVIS_BUILD_DIR}
