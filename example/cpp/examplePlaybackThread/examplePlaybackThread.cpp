@@ -19,6 +19,11 @@ public:
 int main(int argc, char *argv[])
 {
     yarp::os::Network yarp;
+    if ( ! yarp::os::Network::checkNetwork() )
+    {
+        printf("Please start a yarp name server first\n");
+        return 1;
+    }
 
     yarp::dev::PolyDriver playbackThreadDevice;
     teo::IPlaybackThread *iPlaybackThread;
