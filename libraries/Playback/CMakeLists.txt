@@ -2,7 +2,7 @@ set(KEYWORD "Playback")
 
 # Find YARP and color-debug.
 find_package(YARP REQUIRED)
-find_package(COLOR_DEBUG REQUIRED)
+find_package(COLOR_DEBUG)
 
 # Add current directory to global include paths, retrieve current values.
 set_property(GLOBAL APPEND PROPERTY ROBOTICSLAB_TOOLS_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}")
