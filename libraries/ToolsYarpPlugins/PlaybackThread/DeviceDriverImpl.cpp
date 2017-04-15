@@ -20,7 +20,8 @@ bool PlaybackThread::open(yarp::os::Searchable& config)
 
     _iRunnable = NULL;
 
-    this->fromFile(fileName);
+    if( ! fromFile(fileName) )
+        return false;
 
     setState( NOT_PLAYING );
     this->start();
