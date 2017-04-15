@@ -10,7 +10,7 @@ if(NOT SKIP_PlaybackThread)
 
   include_directories(${COLOR_DEBUG_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR})
 
-  yarp_add_plugin(PlaybackThread DeviceDriverImpl.cpp IPlaybackThreadImpl.cpp ThreadImpl.cpp PlaybackThread.hpp)
+  yarp_add_plugin(PlaybackThread PlaybackThread.hpp PlaybackThread.cpp DeviceDriverImpl.cpp IPlaybackThreadImpl.cpp ThreadImpl.cpp)
 
   target_link_libraries(PlaybackThread ${YARP_LIBRARIES} Playback)
 

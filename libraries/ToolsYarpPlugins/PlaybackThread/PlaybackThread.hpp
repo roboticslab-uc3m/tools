@@ -74,21 +74,8 @@ class PlaybackThread : public yarp::dev::DeviceDriver, public IPlaybackThread, p
 
         int _state;
         yarp::os::Semaphore _stateSemaphore;
-        int getState()
-        {
-            _stateSemaphore.wait();
-            int tmp = _state;
-            _stateSemaphore.post();
-            return tmp;
-        }
-        void setState( const int& state)
-        {
-            //CD_DEBUG("%d\n",state);
-            _stateSemaphore.wait();
-            _state = state;
-            _stateSemaphore.post();
-            return;
-        }
+        int getState();
+        void setState( const int& state);
 
         static const int NOT_PLAYING;
         static const int PLAYING;

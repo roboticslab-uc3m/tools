@@ -2,9 +2,6 @@
 
 #include "PlaybackThread.hpp"
 
-const int teo::PlaybackThread::NOT_PLAYING = 0;
-const int teo::PlaybackThread::PLAYING = 1;
-
 namespace teo {
 
 // -----------------------------------------------------------------------------
