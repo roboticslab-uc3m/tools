@@ -21,9 +21,6 @@
 
 #include "IPlaybackThread.h"
 
-#define NOT_PLAYING 0
-#define PLAYING 1
-
 #define DEFAULT_FILE_NAME "test.txt"
 #define DEFAULT_TIME_IDX 0
 #define DEFAULT_TIME_SCALE 1.0
@@ -92,6 +89,9 @@ class PlaybackThread : public yarp::dev::DeviceDriver, public IPlaybackThread, p
             _stateSemaphore.post();
             return;
         }
+
+        static const int NOT_PLAYING = 0;
+        static const int PLAYING = 1;
 };
 
 }  // namespace teo
