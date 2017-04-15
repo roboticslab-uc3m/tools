@@ -23,9 +23,5 @@ For CMake `find_package(ROBOTICSLAB_TOOLS REQUIRED)`, you may also be interested
 export ROBOTICSLAB_TOOLS_DIR=$HOME/repos/tools/build  # Points to where TEOConfig.cmake is generated upon running CMake
 ```
 
-For additional options use ccmake instead of cmake.
+For additional options use `ccmake` instead of `cmake`.
 
-### Even more!
-
-Done! You are now probably interested in one of the following links:
-- [Simulation and Basic Control: Now what can I do?]( teo-post-install.md )
