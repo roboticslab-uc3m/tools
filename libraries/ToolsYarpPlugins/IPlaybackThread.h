@@ -28,7 +28,7 @@ public:
     virtual bool stopPlay() = 0;
     virtual bool isPlaying() = 0;
     virtual bool setTimeScale(double timeScale) = 0;
-    virtual bool setIRunnable(IRunnable* iRunnable) = 0;
+    virtual void setIRunnable(IRunnable* iRunnable) = 0;
 };
 
 }  // namespace teo

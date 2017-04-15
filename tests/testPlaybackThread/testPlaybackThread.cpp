@@ -11,11 +11,11 @@
 namespace teo
 {
 
-class MockupRunnable : public IRunnable
+class MockRunnable : public IRunnable
 {
     virtual bool run(std::vector<double> &v)
     {
-        std::cout << "MockupRunnable: ";
+        std::cout << "MockRunnable: ";
         for(int i=0;i<v.size();i++)
         {
             std::cout << v[i] << " ";
@@ -120,11 +120,12 @@ TEST_F( PlaybackThreadTest, PlaybackThreadTestTimeScale )
 
 TEST_F( PlaybackThreadTest, PlaybackThreadTestRunnable )
 {
-    IRunnable* iRunnable = new MockupRunnable;
+    IRunnable* iRunnable = new MockRunnable;
     iPlaybackThread->setIRunnable( iRunnable );
     iPlaybackThread->play();
     while( iPlaybackThread->isPlaying() );
     delete iRunnable;
+    iRunnable = NULL;
 }
 
 }
