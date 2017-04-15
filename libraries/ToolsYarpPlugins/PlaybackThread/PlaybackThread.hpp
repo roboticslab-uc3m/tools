@@ -59,7 +59,7 @@ class PlaybackThread : public yarp::dev::DeviceDriver, public IPlaybackThread, p
         virtual bool stopPlay();
         virtual bool isPlaying();
         virtual bool setTimeScale(double timeScale);
-        virtual bool setIRunnable(IRunnable* iRunnable);
+        virtual void setIRunnable(IRunnable* iRunnable);
 
         // --------- RateThread Declarations. Implementation in RateThreadImpl.cpp ---------
         virtual void run();
