@@ -21,9 +21,6 @@
 
 #include "IPlaybackThread.h"
 
-#define NOT_PLAYING 0
-#define PLAYING 1
-
 #define DEFAULT_FILE_NAME "test.txt"
 #define DEFAULT_TIME_IDX 0
 #define DEFAULT_TIME_SCALE 1.0
@@ -77,21 +74,12 @@ class PlaybackThread : public yarp::dev::DeviceDriver, public IPlaybackThread, p
 
         int _state;
         yarp::os::Semaphore _stateSemaphore;
-        int getState()
-        {
-            _stateSemaphore.wait();
-            int tmp = _state;
-            _stateSemaphore.post();
-            return tmp;
-        }
-        void setState( const int& state)
-        {
-            //CD_DEBUG("%d\n",state);
-            _stateSemaphore.wait();
-            _state = state;
-            _stateSemaphore.post();
-            return;
-        }
+        int getState();
+        void setState( const int& state);
+
+        static const int NOT_PLAYING;
+        static const int PLAYING;
+
 };
 
 }  // namespace teo
