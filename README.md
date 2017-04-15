@@ -6,7 +6,7 @@ Link to Doxygen generated documentation: http://robots.uc3m.es/dox-tools
 
 ## Installation
 
-Installation instructions for installing from source can be found [here]( doc/tools_install.md ).
+Installation instructions for installing from source can be found [here]( doc/tools-install.md ).
 
 ## Contributing
 
