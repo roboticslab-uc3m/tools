@@ -28,7 +28,7 @@ Installation instructions for installing from source can be found [here]( doc/to
 
 ## Status
 
-[![Build Status (Linux/OSX)](https://img.shields.io/travis/roboticslab-uc3m/tools/master.svg?label=Build Status (Linux/OSX))](https://travis-ci.org/roboticslab-uc3m/tools)
+[![Build Status (Linux/OSX)](https://travis-ci.org/roboticslab-uc3m/tools.svg?branch=master)](https://travis-ci.org/roboticslab-uc3m/tools)
 
 [![Coverage Status](https://coveralls.io/repos/roboticslab-uc3m/tools/badge.svg)](https://coveralls.io/r/roboticslab-uc3m/tools)
 

@@ -3,7 +3,7 @@
 enable_testing()
 
 find_package(YARP REQUIRED)
-find_package(COLOR_DEBUG REQUIRED)
+find_package(COLOR_DEBUG)
 
 # Retrieve global include paths and libraries.
 get_property(ROBOTICSLAB_TOOLS_INCLUDE_DIRS GLOBAL PROPERTY ROBOTICSLAB_TOOLS_INCLUDE_DIRS)

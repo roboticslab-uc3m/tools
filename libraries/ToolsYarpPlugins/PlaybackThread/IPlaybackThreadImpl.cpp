@@ -6,9 +6,10 @@ namespace teo {
 
 // -----------------------------------------------------------------------------
 
-bool PlaybackThread::setIRunnable(IRunnable* iRunnable)
+void PlaybackThread::setIRunnable(IRunnable* iRunnable)
 {
     _iRunnable = iRunnable;
+    return;
 }
 
 // -----------------------------------------------------------------------------
