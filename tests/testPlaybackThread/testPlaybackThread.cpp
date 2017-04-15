@@ -125,6 +125,7 @@ TEST_F( PlaybackThreadTest, PlaybackThreadTestRunnable )
     iPlaybackThread->play();
     while( iPlaybackThread->isPlaying() );
     delete iRunnable;
+    iRunnable = NULL;
 }
 
 }
