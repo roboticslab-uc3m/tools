@@ -2,7 +2,7 @@
 
 #include "PlaybackThread.hpp"
 
-namespace teo {
+namespace roboticslab {
 
 // -----------------------------------------------------------------------------
 
@@ -53,4 +53,4 @@ bool PlaybackThread::setTimeScale(double timeScale)
     return true;
 }
 
-}  // namespace teo
+}  // namespace roboticslab

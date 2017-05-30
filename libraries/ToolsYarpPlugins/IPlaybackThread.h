@@ -7,7 +7,7 @@
 
 #include "IRunnable.h"
 
-namespace teo
+namespace roboticslab
 {
 
 /**
@@ -31,6 +31,6 @@ public:
     virtual void setIRunnable(IRunnable* iRunnable) = 0;
 };
 
-}  // namespace teo
+}  // namespace roboticslab
 
 #endif  //  __I_PLAYBACK_THREAD__

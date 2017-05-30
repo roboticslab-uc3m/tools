@@ -2,10 +2,10 @@
 
 #include "PlaybackThread.hpp"
 
-const int teo::PlaybackThread::NOT_PLAYING = 0;
-const int teo::PlaybackThread::PLAYING = 1;
+const int roboticslab::PlaybackThread::NOT_PLAYING = 0;
+const int roboticslab::PlaybackThread::PLAYING = 1;
 
-namespace teo {
+namespace roboticslab {
 
 // -----------------------------------------------------------------------------
 
@@ -30,4 +30,4 @@ void PlaybackThread::setState( const int& state)
 
 // -----------------------------------------------------------------------------
 
-}  // namespace teo
+}  // namespace roboticslab

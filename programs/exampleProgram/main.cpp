@@ -5,7 +5,7 @@
  * @ingroup roboticslab-tools_programs
  * \defgroup exampleProgram
  *
- * @brief Creates an instance of teo::ExampleProgram
+ * @brief Creates an instance of roboticslab::ExampleProgram
  *
  * @section exampleProgram_legal Legal
  *
@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
     rf.setDefaultConfigFile("exampleProgram.ini");
     rf.configure(argc, argv);
 
-    teo::ExampleProgram mod;
+    roboticslab::ExampleProgram mod;
     if(rf.check("help")) {
         return mod.runModule(rf);
     }

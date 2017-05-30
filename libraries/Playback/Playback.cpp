@@ -2,7 +2,7 @@
 
 #include "Playback.hpp"
 
-namespace teo
+namespace roboticslab
 {
 
 // -----------------------------------------------------------------------------
@@ -90,4 +90,4 @@ bool Playback::parseFileLine(std::vector<double>& doublesOnFileLine)
 
 // -----------------------------------------------------------------------------
 
-}  // namespace teo
+}  // namespace roboticslab

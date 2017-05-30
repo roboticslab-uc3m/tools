@@ -5,7 +5,7 @@
 
 #include <yarp/os/all.h>
 
-namespace teo
+namespace roboticslab
 {
 
 /**
@@ -26,6 +26,6 @@ class ExampleProgram : public yarp::os::RFModule {
 
 };
 
-}  // namespace teo
+}  // namespace roboticslab
 
 #endif  // __EXAMPLE_PROGRAM_HPP__

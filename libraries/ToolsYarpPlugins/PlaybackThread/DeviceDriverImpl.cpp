@@ -2,7 +2,7 @@
 
 #include "PlaybackThread.hpp"
 
-namespace teo {
+namespace roboticslab {
 
 // -----------------------------------------------------------------------------
 
@@ -39,4 +39,4 @@ bool PlaybackThread::close()
 
 // -----------------------------------------------------------------------------
 
-}  // namespace teo
+}  // namespace roboticslab

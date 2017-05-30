@@ -8,7 +8,7 @@
 
 #include "IPlaybackThread.h"
 
-namespace teo
+namespace roboticslab
 {
 
 class MockRunnable : public IRunnable
@@ -70,7 +70,7 @@ protected:
 
     /** Playback device. */
     yarp::dev::PolyDriver playbackDevice;
-    teo::IPlaybackThread* iPlaybackThread;
+    roboticslab::IPlaybackThread* iPlaybackThread;
 };
 
 TEST_F( PlaybackThreadTest, PlaybackThreadTestPlayQuick )

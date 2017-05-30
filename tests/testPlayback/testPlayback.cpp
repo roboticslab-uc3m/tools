@@ -8,7 +8,7 @@
 
 #include "Playback.hpp"
 
-namespace teo
+namespace roboticslab
 {
 
 /**

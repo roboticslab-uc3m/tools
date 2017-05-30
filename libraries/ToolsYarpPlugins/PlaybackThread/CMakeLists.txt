@@ -2,7 +2,7 @@
 # Author: Juan G. Victores
 # CopyPolicy: Released under the terms of the LGPLv2.1 or later, see LGPL.TXT
 
-yarp_prepare_plugin(PlaybackThread CATEGORY device TYPE teo::PlaybackThread INCLUDE PlaybackThread.hpp)
+yarp_prepare_plugin(PlaybackThread CATEGORY device TYPE roboticslab::PlaybackThread INCLUDE PlaybackThread.hpp)
 
 if(NOT SKIP_PlaybackThread)
 

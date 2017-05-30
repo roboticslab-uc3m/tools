@@ -3,7 +3,7 @@
 #ifndef __I_RUNNABLE__
 #define __I_RUNNABLE__
 
-namespace teo
+namespace roboticslab
 {
 
 /**
@@ -22,6 +22,6 @@ public:
     virtual bool run(std::vector<double>& v) = 0;
 };
 
-}  // namespace teo
+}  // namespace roboticslab
 
 #endif  //  __I_RUNNABLE__

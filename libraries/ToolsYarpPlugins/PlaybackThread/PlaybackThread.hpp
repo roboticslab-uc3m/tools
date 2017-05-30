@@ -25,13 +25,13 @@
 #define DEFAULT_TIME_IDX 0
 #define DEFAULT_TIME_SCALE 1.0
 
-namespace teo
+namespace roboticslab
 {
 
 /**
  * @ingroup BodyYarp
  * \defgroup PlaybackThread
- * @brief Contains teo::PlaybackThread.
+ * @brief Contains roboticslab::PlaybackThread.
  */
 
  /**
@@ -82,7 +82,7 @@ class PlaybackThread : public yarp::dev::DeviceDriver, public IPlaybackThread, p
 
 };
 
-}  // namespace teo
+}  // namespace roboticslab
 
 #endif  // __PLAYBACK_THREAD__
 

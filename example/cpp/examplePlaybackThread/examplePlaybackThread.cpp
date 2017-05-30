@@ -5,7 +5,7 @@
 
 #include "IPlaybackThread.h"
 
-class PositionMoveRunnable : public teo::IRunnable
+class PositionMoveRunnable : public roboticslab::IRunnable
 {
 public:
     virtual bool run(std::vector<double> &v)
@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
     }
 
     yarp::dev::PolyDriver playbackThreadDevice;
-    teo::IPlaybackThread *iPlaybackThread;
+    roboticslab::IPlaybackThread *iPlaybackThread;
 
     yarp::dev::PolyDriver robotDevice;
     PositionMoveRunnable positionMoveRunnable;
@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
         return 1;
     }
     robotDevice.view( positionMoveRunnable.iPositionControl );
-    teo::IRunnable* iRunnable = dynamic_cast< teo::IRunnable* >( &positionMoveRunnable );
+    roboticslab::IRunnable* iRunnable = dynamic_cast< roboticslab::IRunnable* >( &positionMoveRunnable );
     iPlaybackThread->setIRunnable( iRunnable );
 
     iPlaybackThread->play();

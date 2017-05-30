@@ -2,7 +2,7 @@
 
 #include "ExampleProgram.hpp"
 
-namespace teo
+namespace roboticslab
 {
 
 /************************************************************************/
@@ -40,5 +40,5 @@ bool ExampleProgram::interruptModule() {
 
 /************************************************************************/
 
-}  // namespace teo
+}  // namespace roboticslab
 
