@@ -18,7 +18,7 @@ import numpy as np
 from stl import mesh
 
 
-filename='convexdecomposition.pp'
+filename='/home/raul/repos/teo-openrave-models/openrave/teo/pp/convexdecomposition.pp'
 modelversion,params = pickle.load(open(filename, 'r'))
 
 #pprint.pprint(modelversion)
@@ -27,7 +27,7 @@ modelversion,params = pickle.load(open(filename, 'r'))
 #links
 linkcd, convexparams=params
 
-#print(len(linkcd))
+print('processing '+str(len(linkcd))+' links')
 
 iteration = 0
 for linkcd_for in linkcd:
@@ -51,4 +51,4 @@ for linkcd_for in linkcd:
             # Write the mesh to file "cube.stl"
             mesh_object.save('link-'+str(iteration)+'.stl')
             iteration=iteration+1
-            print iteration
+            print ('link '+str(iteration))
