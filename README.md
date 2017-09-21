@@ -26,6 +26,16 @@ Installation instructions for installing from source can be found [here]( doc/to
 #### Manuals
 1. Read [development manual](https://github.com/roboticslab-uc3m/tools/blob/develop/doc/tools-development-manual.md) if you want to build a new language model
 
+#### Manuals
+
+List of programs presented in this repo:
+
+- [openrave-to-stl](https://github.com/roboticslab-uc3m/tools/tree/develop/programs/openraveppToSTL) 
+- [meanVar](https://github.com/roboticslab-uc3m/tools/tree/develop/programs/meanVar)
+- [boxPlot](https://github.com/roboticslab-uc3m/tools/tree/xgnitive-tools/programs/boxPlot)
+- [plotTrajectories](https://github.com/roboticslab-uc3m/tools/tree/xgnitive-tools/programs/plotTrajectories)
+- [plotTrajectories3D](https://github.com/roboticslab-uc3m/tools/tree/xgnitive-tools/programs/plotTrajectories3D)
+
 ## Status
 
 [![Build Status (Linux/OSX)](https://travis-ci.org/roboticslab-uc3m/tools.svg?branch=develop)](https://travis-ci.org/roboticslab-uc3m/tools)
@@ -38,4 +48,3 @@ Installation instructions for installing from source can be found [here]( doc/to
 
 * [kinematics-dynamics](https://github.com/roboticslab-uc3m/kinematics-dynamics)
 * [yarp-devices](https://github.com/roboticslab-uc3m/yarp-devices)
-
