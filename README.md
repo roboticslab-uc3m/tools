@@ -24,9 +24,6 @@ Installation instructions for installing from source can be found [here]( doc/to
 5. Create a new Pull Request
 
 #### Manuals
-1. Read [development manual](https://github.com/roboticslab-uc3m/tools/blob/develop/doc/tools-development-manual.md) if you want to build a new language model
-
-#### Manuals
 
 List of programs presented in this repo:
 
