@@ -27,7 +27,7 @@ Installation instructions for installing from source can be found [here]( doc/to
 
 List of programs presented in this repo:
 
-- [openrave-to-stl](https://github.com/roboticslab-uc3m/tools/tree/develop/programs/openraveppToSTL) 
+- [openraveToStl](https://github.com/roboticslab-uc3m/tools/tree/develop/programs/openraveppToSTL) 
 - [meanVar](https://github.com/roboticslab-uc3m/tools/tree/develop/programs/meanVar)
 - [boxPlot](https://github.com/roboticslab-uc3m/tools/tree/develop/programs/boxPlot)
 - [plotTrajectories](https://github.com/roboticslab-uc3m/tools/tree/develop/programs/plotTrajectories)
