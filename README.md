@@ -29,9 +29,9 @@ List of programs presented in this repo:
 
 - [openrave-to-stl](https://github.com/roboticslab-uc3m/tools/tree/develop/programs/openraveppToSTL) 
 - [meanVar](https://github.com/roboticslab-uc3m/tools/tree/develop/programs/meanVar)
-- [boxPlot](https://github.com/roboticslab-uc3m/tools/tree/xgnitive-tools/programs/boxPlot)
-- [plotTrajectories](https://github.com/roboticslab-uc3m/tools/tree/xgnitive-tools/programs/plotTrajectories)
-- [plotTrajectories3D](https://github.com/roboticslab-uc3m/tools/tree/xgnitive-tools/programs/plotTrajectories3D)
+- [boxPlot](https://github.com/roboticslab-uc3m/tools/tree/develop/programs/boxPlot)
+- [plotTrajectories](https://github.com/roboticslab-uc3m/tools/tree/develop/programs/plotTrajectories)
+- [plotTrajectories3D](https://github.com/roboticslab-uc3m/tools/tree/develop/programs/plotTrajectories3D)
 
 ## Status
 
