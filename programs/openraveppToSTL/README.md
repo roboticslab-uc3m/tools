@@ -1,4 +1,4 @@
-# openrave-to-stl script
+# openraveppToStl script
 
 This script is designed to do the conversion between the .pp files obtained with the openrave convex decomposition model used/created [here](https://github.com/roboticslab-uc3m/openrave-yarp-plugins/blob/develop/examples/openrave-YarpRobot-collision-sim.py), 
 to a more standard file format (stl), in order to be used with other frameworks like ArmarX, and so on.
