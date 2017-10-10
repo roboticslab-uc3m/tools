@@ -24,14 +24,14 @@ Installation instructions for installing from source can be found [here]( doc/to
 5. Create a new Pull Request
 
 #### Manuals
-1. Read [development manual](https://github.com/roboticslab-uc3m/tools/blob/develop/doc/tools-development-manual.md) if you want to build a new language model
-
-#### Manuals
 
 List of programs presented in this repo:
 
-- [openrave-to-stl](https://github.com/roboticslab-uc3m/tools/tree/develop/programs/openraveppToSTL) 
-- [mean-var calculator](https://github.com/roboticslab-uc3m/tools/tree/develop/programs/mean-variance)
+- [openraveToStl](https://github.com/roboticslab-uc3m/tools/tree/develop/programs/openraveppToSTL) 
+- [meanVar](https://github.com/roboticslab-uc3m/tools/tree/develop/programs/meanVar)
+- [boxPlot](https://github.com/roboticslab-uc3m/tools/tree/develop/programs/boxPlot)
+- [plotTrajectories](https://github.com/roboticslab-uc3m/tools/tree/develop/programs/plotTrajectories)
+- [plotTrajectories3D](https://github.com/roboticslab-uc3m/tools/tree/develop/programs/plotTrajectories3D)
 
 ## Status
 
