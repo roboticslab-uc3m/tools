@@ -2,6 +2,8 @@
 
 #include "PlaybackThread.hpp"
 
+#include <iostream>
+
 namespace roboticslab {
 
 // -----------------------------------------------------------------------------
