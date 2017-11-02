@@ -39,7 +39,7 @@ set_property(GLOBAL PROPERTY ROBOTICSLAB_TOOLS_TARGETS)
 # Define and enter subdirectories.
 add_subdirectory(share)
 add_subdirectory(libraries)
-#add_subdirectory(programs)
+add_subdirectory(programs)
 
 if(ENABLE_tests)
     add_subdirectory(tests)

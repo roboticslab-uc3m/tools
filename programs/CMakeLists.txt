@@ -5,4 +5,7 @@
 if(ENABLE_exampleProgram)
   add_subdirectory(exampleProgram)
 endif()
+if(ENABLE_controlboardStateToIPosition)
+  add_subdirectory(controlboardStateToIPosition)
+endif()
 
