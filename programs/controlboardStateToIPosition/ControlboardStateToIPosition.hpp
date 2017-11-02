@@ -4,10 +4,23 @@
 #include <yarp/os/all.h>
 #include <yarp/dev/all.h>
 
+#define DEFAULT_INPUT "/robot/state:o"
 #define DEFAULT_REMOTE "/ravebot"
 
 namespace roboticslab
 {
+
+class DataPort : public yarp::os::BufferedPort<yarp::sig::Vector>
+{
+private:
+    virtual void onRead(yarp::sig::Vector& v)
+    {
+        iPositionControl->positionMove( v.data() );
+        return;
+    }
+public:
+    yarp::dev::IPositionControl *iPositionControl;
+};
 
 class ControlboardStateToIPosition : public yarp::os::RFModule
 {
@@ -35,10 +48,8 @@ public:
     virtual bool updateModule();
 
 private:
-    yarp::os::Port port;
-
-    yarp::dev::IPositionControl *iPositionControl;
-    yarp::dev::PolyDriver robotDevice;
+    DataPort inStreamPort;
+    yarp::dev::PolyDriver outRobotDevice;
 };
 
 }
