@@ -4,7 +4,7 @@
 #include <yarp/os/all.h>
 #include <yarp/dev/all.h>
 
-#define DEFAULT_INPUT "/robot/state:i"
+#define DEFAULT_INPUT "/ControlboardStateToIPosition/state:i"
 #define DEFAULT_REMOTE "/ravebot"
 
 namespace roboticslab

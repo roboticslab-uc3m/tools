@@ -13,7 +13,7 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
     yarp::os::Property options;
     options.put("device","remote_controlboard");
     options.put("remote",remoteStr);
-    options.put("local","/local");
+    options.put("local","/ControlboardStateToIPosition");
 
     outRobotDevice.open(options);
     if( ! outRobotDevice.isValid() )
