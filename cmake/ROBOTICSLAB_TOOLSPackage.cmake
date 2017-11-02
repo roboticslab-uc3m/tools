@@ -31,6 +31,12 @@ cpack_add_component(example_program
                     DEPENDS example_library
                     INSTALL_TYPES full)
 
+cpack_add_component(controlboard_state_to_i_position
+                    DISPLAY_NAME "Example program"
+                    DESCRIPTION "Executable of example program."
+                    GROUP applications
+                    INSTALL_TYPES full)
+
 cpack_add_component_group(libraries
                           DISPLAY_NAME "Libraries"
                           DESCRIPTION "Libraries and other linkable stuff."
