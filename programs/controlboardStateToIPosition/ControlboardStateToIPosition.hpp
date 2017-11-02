@@ -37,6 +37,18 @@ public:
     virtual bool configure(yarp::os::ResourceFinder &rf);
 
     /**
+     * Close function.
+     *
+     * This is called automatically when the module closes, after the last call
+     * to updateModule. Override this to cleanup memory allocated in the
+     * configure() function or perform other activities that ensure graceful
+     * shutdown.
+     *
+     * @return true/false on success failure.
+     */
+    virtual bool close();
+
+    /**
      * Override this to do whatever your module needs to do.
      *
      * When your module wants to stop, return false.  The module's actual

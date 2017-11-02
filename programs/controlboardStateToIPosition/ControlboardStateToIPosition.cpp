@@ -36,6 +36,17 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
     return true;
 }
 
+bool ControlboardStateToIPosition::close()
+{
+    inStreamPort.disableCallback();
+    inStreamPort.interrupt();
+    inStreamPort.close();
+
+    outRobotDevice.close();
+
+    return true;
+}
+
 
 bool ControlboardStateToIPosition::updateModule()
 {
