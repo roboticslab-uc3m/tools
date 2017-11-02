@@ -15,7 +15,7 @@ get_property(ROBOTICSLAB_TOOLS_LIBRARIES GLOBAL PROPERTY ROBOTICSLAB_TOOLS_LIBRA
 include_directories(${YARP_INCLUDE_DIRS} ${ROBOTICSLAB_TOOLS_INCLUDE_DIRS})
 
 # Configure executable build target.
-add_executable(${KEYWORD} main.cpp)
+add_executable(${KEYWORD} main.cpp ControlboardStateToIPosition.cpp ControlboardStateToIPosition.hpp)
 
 # Link external libraries.
 target_link_libraries(${KEYWORD} ${YARP_LIBRARIES} ${ROBOTICSLAB_TOOLS_LIBRARIES})

@@ -1,6 +1,8 @@
 
 #include <yarp/os/all.h>
 
+#include "ControlboardStateToIPosition.hpp"
+
 int main(int argc, char *argv[])
 {
     yarp::os::Network yarp;
