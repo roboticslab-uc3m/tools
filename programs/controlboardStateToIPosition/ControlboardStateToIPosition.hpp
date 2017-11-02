@@ -4,6 +4,8 @@
 #include <yarp/os/all.h>
 #include <yarp/dev/all.h>
 
+#define DEFAULT_REMOTE "/ravebot"
+
 namespace roboticslab
 {
 
@@ -34,7 +36,9 @@ public:
 
 private:
     yarp::os::Port port;
-    yarp::dev::PolyDriver dd;
+
+    yarp::dev::IPositionControl *iPositionControl;
+    yarp::dev::PolyDriver robotDevice;
 };
 
 }
