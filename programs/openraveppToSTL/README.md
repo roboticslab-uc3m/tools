@@ -9,5 +9,5 @@ Just change this [line](https://github.com/roboticslab-uc3m/tools/blob/b565045f1
 
 then run the python script in this folder
 ```
-python openravepp-to-stl.py 
+python openraveppToSTL.py 
 ```
