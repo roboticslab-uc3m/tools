@@ -8,7 +8,7 @@
 class PositionMoveRunnable : public roboticslab::IRunnable
 {
 public:
-    virtual bool run(std::vector<double> &v)
+    virtual bool run(const std::vector<double> &v)
     {
         iPositionControl->positionMove( v.data() );
         return true;
