@@ -19,7 +19,7 @@ public:
      */
     virtual ~IRunnable() {}
 
-    virtual bool run(std::vector<double>& v) = 0;
+    virtual bool run(const std::vector<double>& v) = 0;
 };
 
 }  // namespace roboticslab
