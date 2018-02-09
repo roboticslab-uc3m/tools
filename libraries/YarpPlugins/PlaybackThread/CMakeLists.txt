@@ -6,11 +6,11 @@ yarp_prepare_plugin(PlaybackThread CATEGORY device TYPE roboticslab::PlaybackThr
 
 if(NOT SKIP_PlaybackThread)
 
-  find_package(COLOR_DEBUG)
-
-  include_directories(${COLOR_DEBUG_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR})
+  include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
   yarp_add_plugin(PlaybackThread PlaybackThread.hpp PlaybackThread.cpp DeviceDriverImpl.cpp IPlaybackThreadImpl.cpp ThreadImpl.cpp)
+
+  add_dependencies(PlaybackThread COLOR_DEBUG)
 
   target_link_libraries(PlaybackThread ${YARP_LIBRARIES} Playback)
 
@@ -25,4 +25,3 @@ if(NOT SKIP_PlaybackThread)
                DESTINATION ${YARP_PLUGIN_MANIFESTS_INSTALL_DIR})
 
 endif()
-
