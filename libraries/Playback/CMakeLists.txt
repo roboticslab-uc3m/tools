@@ -2,7 +2,7 @@ set(KEYWORD "Playback")
 
 # Find YARP and color-debug.
 find_package(YARP REQUIRED)
-find_package(COLOR_DEBUG)
+find_package(COLOR_DEBUG REQUIRED)
 
 # Add current directory to global include paths, retrieve current values.
 set_property(GLOBAL APPEND PROPERTY ROBOTICSLAB_TOOLS_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}")
@@ -13,6 +13,9 @@ include_directories(${YARP_INCLUDE_DIRS} ${ROBOTICSLAB_TOOLS_INCLUDE_DIRS} ${COL
 
 # Configure library build target.
 add_library(${KEYWORD} Playback.cpp Playback.hpp)
+
+# Set dependencies.
+add_dependencies(${KEYWORD} COLOR_DEBUG)
 
 # Set target properties.
 set_target_properties(${KEYWORD} PROPERTIES PUBLIC_HEADER Playback.hpp)

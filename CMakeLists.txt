@@ -48,6 +48,14 @@ set_property(GLOBAL PROPERTY ROBOTICSLAB_TOOLS_INCLUDE_DIRS)
 set_property(GLOBAL PROPERTY ROBOTICSLAB_TOOLS_LIBRARIES)
 set_property(GLOBAL PROPERTY ROBOTICSLAB_TOOLS_TARGETS)
 
+# find_or_build_package() doesn't bring into scope COLOR_DEBUG_INCLUDE_DIRS
+# nor other config variables. If a system copy is found, we have to call the
+# find_package() command and proceed as usual.
+if(USE_SYSTEM_COLOR_DEBUG)
+    find_package(COLOR_DEBUG REQUIRED)
+    include_directories(${COLOR_DEBUG_INCLUDE_DIRS})
+endif()
+
 # Define and enter subdirectories.
 add_subdirectory(share)
 add_subdirectory(libraries)
