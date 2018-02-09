@@ -30,10 +30,6 @@ list(APPEND CMAKE_MODULE_PATH ${ROBOTICSLAB_TOOLS_MODULE_PATH})
 set(YCM_TAG v0.2.2)
 include(YCMBootstrap)
 
-# Superbuild phase - include color-debug
-include(FindOrBuildPackage)
-find_or_build_package(COLOR_DEBUG)
-
 # Retrieve current ROBOTICSLAB_TOOLS version.
 include(ROBOTICSLAB_TOOLSVersion)
 
@@ -47,6 +43,10 @@ include(ROBOTICSLAB_TOOLSOptions)
 set_property(GLOBAL PROPERTY ROBOTICSLAB_TOOLS_INCLUDE_DIRS)
 set_property(GLOBAL PROPERTY ROBOTICSLAB_TOOLS_LIBRARIES)
 set_property(GLOBAL PROPERTY ROBOTICSLAB_TOOLS_TARGETS)
+
+# Superbuild phase - include color-debug
+include(FindOrBuildPackage)
+find_or_build_package(COLOR_DEBUG)
 
 # find_or_build_package() doesn't bring into scope COLOR_DEBUG_INCLUDE_DIRS
 # nor other config variables. If a system copy is found, we have to call the
