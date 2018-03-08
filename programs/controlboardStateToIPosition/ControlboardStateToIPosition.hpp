@@ -60,7 +60,8 @@ public:
     virtual bool updateModule();
 
 private:
-    DataPort inStreamPort;
+
+    yarp::dev::PolyDriver inRobotDevice;
     yarp::dev::PolyDriver outRobotDevice;
 };
 

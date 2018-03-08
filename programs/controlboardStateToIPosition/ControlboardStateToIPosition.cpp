@@ -13,7 +13,7 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
     yarp::os::Property options;
     options.put("device","remote_controlboard");
     options.put("remote",remoteStr);
-    options.put("local","/out/ControlboardStateToIPosition");
+    options.put("local","/out");
 
     outRobotDevice.open(options);
     if( ! outRobotDevice.isValid() )
@@ -29,19 +29,13 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
         return false;
     }
 
-    //-- inStreamPort
-    inStreamPort.open(inputStr);
-    inStreamPort.useCallback();
 
     return true;
 }
 
 bool ControlboardStateToIPosition::close()
 {
-    inStreamPort.disableCallback();
-    inStreamPort.interrupt();
-    inStreamPort.close();
-
+    inRobotDevice.close();
     outRobotDevice.close();
 
     return true;
