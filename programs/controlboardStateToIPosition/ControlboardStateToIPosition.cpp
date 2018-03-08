@@ -13,10 +13,13 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
     std::string outStr = rf.check("out",yarp::os::Value(DEFAULT_OUT),"out").asString();
 
     //-- inRobotDevice
+    std::string localInStr("/ControlboardStateToIPosition");
+    localInStr += inStr;
+
     yarp::os::Property inOptions;
     inOptions.put("device","remote_controlboard");
     inOptions.put("remote",inStr);
-    inOptions.put("local","/in");
+    inOptions.put("local",localInStr);
 
     if( ! inRobotDevice.open(inOptions) )
     {
@@ -34,10 +37,13 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
     }
 
     //-- outRobotDevice
+    std::string localOutStr("/ControlboardStateToIPosition");
+    localOutStr += outStr;
+
     yarp::os::Property options;
     options.put("device","remote_controlboard");
     options.put("remote",outStr);
-    options.put("local","/out");
+    options.put("local",localOutStr);
 
     if( ! outRobotDevice.open(options) )
     {
