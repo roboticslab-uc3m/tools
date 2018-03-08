@@ -1,8 +1,10 @@
 #ifndef __CONTROL_STATE_TO_I_POSITION_HPP__
 #define __CONTROL_STATE_TO_I_POSITION_HPP__
 
-#include <yarp/os/all.h>
-#include <yarp/dev/all.h>
+#include <yarp/os/RFModule.h>
+#include <yarp/dev/PolyDriver.h>
+#include <yarp/dev/IEncoders.h>
+#include <yarp/dev/IPositionDirect.h>
 
 #define DEFAULT_IN "/teo"
 #define DEFAULT_OUT "/teoSim"
