@@ -1,3 +1,6 @@
+#include <vector>
+//#include <yarp/dev/IControlMode.h>  // Defines VOCAB_CM_POSITION_DIRECT. \ToDo: see why can't be #include'd here
+
 #include "ControlboardStateToIPosition.hpp"
 #include "ColorDebug.hpp"
 
@@ -17,7 +20,8 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
 
     if( ! inRobotDevice.open(inOptions) )
     {
-        CD_ERROR("Could not open() input robot device: %s\n", inStr.c_str());
+        CD_ERROR("Could not open() inRobotDevice: %s\n", inStr.c_str());
+        CD_ERROR("Please review or set --in\n");
         inRobotDevice.close();
         yarp::os::Network::fini();
         return false;
@@ -37,12 +41,19 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
 
     if( ! outRobotDevice.open(options) )
     {
-        CD_ERROR("Could not open() output robot device: %s\n", inStr.c_str());
+        CD_ERROR("Could not open() outRobotDevice: %s\n", outStr.c_str());
+        CD_ERROR("Please review or set --out\n");
+        inRobotDevice.close();
         outRobotDevice.close();
         yarp::os::Network::fini();
         return false;
     }
 
+    if( ! outRobotDevice.view(iControlMode2Out) )
+    {
+        CD_ERROR("Could not view iControlMode2Out in: %s.\n", outStr.c_str());
+        return false;
+    }
     if( ! outRobotDevice.view(iPositionDirectOut) )
     {
         CD_ERROR("Could not view iPositionDirectOut in: %s.\n", outStr.c_str());
@@ -54,11 +65,20 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
 
     if( ! iEncodersIn->getAxes(&axes) )
     {
-        CD_ERROR("Failed to getAxes.\n");
+        CD_ERROR("Failed to iEncodersIn->getAxes.\n");
     }
     CD_SUCCESS("iEncodersIn->getAxes got %d axes.\n",axes);
 
     encPoss.resize(axes);
+
+    //-- Set PositionDirect
+    std::vector<int> modes(axes,VOCAB_CM_POSITION_DIRECT);
+    if( ! iControlMode2Out->setControlModes( modes.data() ) )
+    {
+        CD_ERROR("Failed to iControlMode2Out->setControlModes.\n");
+    }
+    CD_SUCCESS("iEncodersIn->getAxes got %d axes.\n",axes);
+
 
     //-- Start RateThread
     if( ! this->start() )
@@ -86,9 +106,23 @@ bool ControlboardStateToIPosition::updateModule()
 
 void ControlboardStateToIPosition::run()
 {
-    iEncodersIn->getEncoders( encPoss.data() );
+    if( ! iEncodersIn->getEncoders( encPoss.data() ) )
+    {
+        CD_WARNING("Failed iEncodersIn->getEncoders\n");
+        return;
+    }
 
-    CD_DEBUG("\n");
+    CD_DEBUG("Got in:");
+    for(size_t i=0;i<encPoss.size();i++)
+        CD_DEBUG_NO_HEADER(" %f", encPoss[i]);
+    CD_DEBUG_NO_HEADER("\n");
+
+    if( ! iPositionDirectOut->setPositions( encPoss.data() ) )
+    {
+        CD_WARNING("Failed iPositionDirectOut->setPositions\n");
+        return;
+    }
+
     return;
 }
 

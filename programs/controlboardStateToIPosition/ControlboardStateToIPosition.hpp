@@ -4,13 +4,14 @@
 #include <yarp/os/RFModule.h>
 #include <yarp/os/RateThread.h>
 #include <yarp/dev/PolyDriver.h>
+#include <yarp/dev/IControlMode2.h>
 #include <yarp/dev/IEncoders.h>
 #include <yarp/dev/IPositionDirect.h>
 
 #include <vector>
 
-#define DEFAULT_IN "/teo"
-#define DEFAULT_OUT "/teoSim"
+#define DEFAULT_IN "/teo/rightArm"
+#define DEFAULT_OUT "/teoSim/rightArm"
 #define DEFAULT_RATE_MS 20.0
 
 namespace roboticslab
@@ -81,6 +82,7 @@ private:
     yarp::dev::IEncoders *iEncodersIn;
 
     // Out interfaces
+    yarp::dev::IControlMode2 *iControlMode2Out;
     yarp::dev::IPositionDirect *iPositionDirectOut;
 
 };
