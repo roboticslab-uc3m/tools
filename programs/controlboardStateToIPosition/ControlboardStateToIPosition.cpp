@@ -17,15 +17,15 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
 
     if( ! inRobotDevice.open(inOptions) )
     {
-        CD_ERROR("Could not open() input robot device.\n");
+        CD_ERROR("Could not open() input robot device: %s\n", inStr.c_str());
         inRobotDevice.close();
         yarp::os::Network::fini();
         return false;
     }
 
-    if( ! inRobotDevice.view(iIEncodersIn) )
+    if( ! inRobotDevice.view(iEncodersIn) )
     {
-        CD_ERROR("Could not view iIEncodersIn in: %s.\n", inStr.c_str());
+        CD_ERROR("Could not view iEncodersIn in: %s.\n", inStr.c_str());
         return false;
     }
 
@@ -37,7 +37,7 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
 
     if( ! outRobotDevice.open(options) )
     {
-        CD_ERROR("Could not open() output robot device.\n");
+        CD_ERROR("Could not open() output robot device: %s\n", inStr.c_str());
         outRobotDevice.close();
         yarp::os::Network::fini();
         return false;
@@ -48,6 +48,24 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
         CD_ERROR("Could not view iPositionDirectOut in: %s.\n", outStr.c_str());
         return false;
     }
+
+    //-- Resize encPoss
+    int axes;
+
+    if( ! iEncodersIn->getAxes(&axes) )
+    {
+        CD_ERROR("Failed to getAxes.\n");
+    }
+    CD_SUCCESS("iEncodersIn->getAxes got %d axes.\n",axes);
+
+    encPoss.resize(axes);
+
+    //-- Start RateThread
+    if( ! this->start() )
+    {
+        CD_ERROR("Could not start thread.\n");
+    }
+    CD_SUCCESS("Started thread.\n");
 
     return true;
 }
@@ -60,11 +78,18 @@ bool ControlboardStateToIPosition::close()
     return true;
 }
 
-
 bool ControlboardStateToIPosition::updateModule()
 {
     CD_INFO("Alive...\n");
     return true;
 }
 
+void ControlboardStateToIPosition::run()
+{
+    iEncodersIn->getEncoders( encPoss.data() );
+
+    CD_DEBUG("\n");
+    return;
 }
+
+}  // namespace

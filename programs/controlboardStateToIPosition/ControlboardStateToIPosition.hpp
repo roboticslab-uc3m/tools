@@ -2,19 +2,26 @@
 #define __CONTROL_STATE_TO_I_POSITION_HPP__
 
 #include <yarp/os/RFModule.h>
+#include <yarp/os/RateThread.h>
 #include <yarp/dev/PolyDriver.h>
 #include <yarp/dev/IEncoders.h>
 #include <yarp/dev/IPositionDirect.h>
 
+#include <vector>
+
 #define DEFAULT_IN "/teo"
 #define DEFAULT_OUT "/teoSim"
+#define DEFAULT_RATE_MS 20.0
 
 namespace roboticslab
 {
 
-class ControlboardStateToIPosition : public yarp::os::RFModule
+class ControlboardStateToIPosition : public yarp::os::RFModule, yarp::os::RateThread
 {
 public:
+
+    ControlboardStateToIPosition() : yarp::os::RateThread(DEFAULT_RATE_MS) {}
+
     /**
      * Configure the module, pass a ResourceFinder object to the module.
      *
@@ -49,14 +56,29 @@ public:
     */
     virtual bool updateModule();
 
+    /**
+     * Loop function. This is the thread itself.
+     * The thread calls the run() function every <period> ms.
+     * At the end of each run, the thread will sleep the amounth of time
+     * required, taking into account the time spent inside the loop function.
+     * Example:  requested period is 10ms, the run() function take 3ms to
+     * be executed, the thread will sleep for 7ms.
+     *
+     * Note: after each run is completed, the thread will call a yield()
+     * in order to facilitate other threads to run.
+     */
+    virtual void run();
+
 private:
+
+    std::vector< double > encPoss;
 
     // In and out devices
     yarp::dev::PolyDriver inRobotDevice;
     yarp::dev::PolyDriver outRobotDevice;
 
     // In interfaces
-    yarp::dev::IEncoders *iIEncodersIn;
+    yarp::dev::IEncoders *iEncodersIn;
 
     // Out interfaces
     yarp::dev::IPositionDirect *iPositionDirectOut;
