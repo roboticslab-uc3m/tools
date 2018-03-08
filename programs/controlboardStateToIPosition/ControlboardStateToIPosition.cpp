@@ -23,7 +23,7 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
         yarp::os::Network::fini();
         return false;
     }
-    if( ! outRobotDevice.view(inStreamPort.iPositionControl) )
+    if( ! outRobotDevice.view(inStreamPort.iPositionDirect) )
     {
         CD_ERROR("Could not view iPositionControl in: %s.\n", remoteStr.c_str());
         return false;

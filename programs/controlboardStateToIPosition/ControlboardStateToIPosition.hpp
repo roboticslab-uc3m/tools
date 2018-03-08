@@ -15,11 +15,11 @@ class DataPort : public yarp::os::BufferedPort<yarp::sig::Vector>
 private:
     virtual void onRead(yarp::sig::Vector& v)
     {
-        iPositionControl->positionMove( v.data() );
+        iPositionDirect->setPositions( v.data() );
         return;
     }
 public:
-    yarp::dev::IPositionControl *iPositionControl;
+    yarp::dev::IPositionDirect *iPositionDirect;
 };
 
 class ControlboardStateToIPosition : public yarp::os::RFModule
