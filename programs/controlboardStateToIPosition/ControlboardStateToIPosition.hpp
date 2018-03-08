@@ -4,8 +4,8 @@
 #include <yarp/os/all.h>
 #include <yarp/dev/all.h>
 
-#define DEFAULT_INPUT "/ControlboardStateToIPosition/state:i"
-#define DEFAULT_REMOTE "/ravebot"
+#define DEFAULT_IN "/teo"
+#define DEFAULT_OUT "/teoSim"
 
 namespace roboticslab
 {

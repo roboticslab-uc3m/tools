@@ -6,28 +6,41 @@ namespace roboticslab
 
 bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
 {
-    std::string inputStr = rf.check("input",yarp::os::Value(DEFAULT_INPUT),"input port").asString();
-    std::string remoteStr = rf.check("remote",yarp::os::Value(DEFAULT_REMOTE),"remote out").asString();
+    std::string inStr = rf.check("in",yarp::os::Value(DEFAULT_IN),"in").asString();
+    std::string outStr = rf.check("out",yarp::os::Value(DEFAULT_OUT),"out").asString();
+
+    //-- inRobotDevice
+    yarp::os::Property inOptions;
+    inOptions.put("device","remote_controlboard");
+    inOptions.put("remote",inStr);
+    inOptions.put("local","/in");
+
+    if( ! inRobotDevice.open(inOptions) )
+    {
+        CD_ERROR("Could not open() input robot device.\n");
+        inRobotDevice.close();
+        yarp::os::Network::fini();
+        return false;
+    }
 
     //-- outRobotDevice
     yarp::os::Property options;
     options.put("device","remote_controlboard");
-    options.put("remote",remoteStr);
+    options.put("remote",outStr);
     options.put("local","/out");
 
-    outRobotDevice.open(options);
-    if( ! outRobotDevice.isValid() )
+    if( ! outRobotDevice.open(options) )
     {
-        CD_ERROR("Device not valid.\n");
+        CD_ERROR("Could not open() output robot device.\n");
         outRobotDevice.close();
         yarp::os::Network::fini();
         return false;
     }
-    if( ! outRobotDevice.view(inStreamPort.iPositionDirect) )
+    /*if( ! outRobotDevice.view(inStreamPort.iPositionDirect) )
     {
         CD_ERROR("Could not view iPositionControl in: %s.\n", remoteStr.c_str());
         return false;
-    }
+    }*/
 
 
     return true;
