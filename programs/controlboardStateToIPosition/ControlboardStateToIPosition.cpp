@@ -23,6 +23,12 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
         return false;
     }
 
+    if( ! inRobotDevice.view(iIEncodersIn) )
+    {
+        CD_ERROR("Could not view iIEncodersIn in: %s.\n", inStr.c_str());
+        return false;
+    }
+
     //-- outRobotDevice
     yarp::os::Property options;
     options.put("device","remote_controlboard");
@@ -39,7 +45,7 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
 
     if( ! outRobotDevice.view(iPositionDirectOut) )
     {
-        CD_ERROR("Could not view iPositionDirect in: %s.\n", outStr.c_str());
+        CD_ERROR("Could not view iPositionDirectOut in: %s.\n", outStr.c_str());
         return false;
     }
 

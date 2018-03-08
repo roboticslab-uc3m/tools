@@ -49,9 +49,14 @@ public:
 
 private:
 
+    // In and out devices
     yarp::dev::PolyDriver inRobotDevice;
     yarp::dev::PolyDriver outRobotDevice;
 
+    // In interfaces
+    yarp::dev::IEncoders *iIEncodersIn;
+
+    // Out interfaces
     yarp::dev::IPositionDirect *iPositionDirectOut;
 
 };
