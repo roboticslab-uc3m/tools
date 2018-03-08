@@ -10,18 +10,6 @@
 namespace roboticslab
 {
 
-class DataPort : public yarp::os::BufferedPort<yarp::sig::Vector>
-{
-private:
-    virtual void onRead(yarp::sig::Vector& v)
-    {
-        iPositionDirect->setPositions( v.data() );
-        return;
-    }
-public:
-    yarp::dev::IPositionDirect *iPositionDirect;
-};
-
 class ControlboardStateToIPosition : public yarp::os::RFModule
 {
 public:
@@ -63,6 +51,9 @@ private:
 
     yarp::dev::PolyDriver inRobotDevice;
     yarp::dev::PolyDriver outRobotDevice;
+
+    yarp::dev::IPositionDirect *iPositionDirectOut;
+
 };
 
 }
