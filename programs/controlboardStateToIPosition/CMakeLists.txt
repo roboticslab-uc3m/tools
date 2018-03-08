@@ -21,7 +21,7 @@ add_executable(${KEYWORD} main.cpp ControlboardStateToIPosition.cpp Controlboard
 target_link_libraries(${KEYWORD} ${YARP_LIBRARIES} ${ROBOTICSLAB_TOOLS_LIBRARIES})
 
 # Create installation rule.
-install(TARGETS ${_example_target}
+install(TARGETS ${KEYWORD}
         DESTINATION ${CMAKE_INSTALL_BINDIR}
         COMPONENT controlboard_state_to_i_position)
 
