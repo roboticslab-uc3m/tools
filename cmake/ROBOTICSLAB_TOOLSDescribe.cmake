@@ -1,9 +1,6 @@
 # Store the package in the user registry.
 export(PACKAGE ROBOTICSLAB_TOOLS)
 
-# Retrieve global properties.
-get_property(ROBOTICSLAB_TOOLS_TARGETS GLOBAL PROPERTY ROBOTICSLAB_TOOLS_TARGETS)
-
 # Create and install config and version files (YCM).
 include(InstallBasicPackageFiles)
 
