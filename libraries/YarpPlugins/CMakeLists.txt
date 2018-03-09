@@ -4,23 +4,32 @@
 
 # Find YARP.
 find_package(YARP REQUIRED)
-list(APPEND CMAKE_MODULE_PATH ${YARP_MODULE_PATH})  
-include(YarpPlugin)
 
-# Add current directory to global include paths, retrieve current values.
-set_property(GLOBAL APPEND PROPERTY ROBOTICSLAB_TOOLS_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}")
-get_property(ROBOTICSLAB_TOOLS_INCLUDE_DIRS GLOBAL PROPERTY ROBOTICSLAB_TOOLS_INCLUDE_DIRS)
-get_property(ROBOTICSLAB_TOOLS_LIBRARIES GLOBAL PROPERTY ROBOTICSLAB_TOOLS_LIBRARIES)
-
-# Define include paths.
-include_directories(${YARP_INCLUDE_DIRS} ${ROBOTICSLAB_TOOLS_INCLUDE_DIRS})
-
-if(ENABLE_PlaybackThread)
-    add_subdirectory(PlaybackThread)
+if(YARP_VERSION_SHORT VERSION_LESS 2.3.70)
+    list(APPEND CMAKE_MODULE_PATH ${YARP_MODULE_PATH})
+    include(YarpPlugin)
+    include_directories(${YARP_INCLUDE_DIRS})
 endif()
 
-# Create installation rule.
-install(FILES IPlaybackThread.h IRunnable.h
+# Create device interface target.
+add_library(ToolsInterfaces INTERFACE)
+
+# Configure usage requirements.
+target_include_directories(ToolsInterfaces INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+                                                     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+
+# Install interface headers.
+install(FILES IPlaybackThread.h
+              IRunnable.h
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
         COMPONENT tools_yarp_plugins)
 
+# Register export set.
+install(TARGETS ToolsInterfaces
+        EXPORT ROBOTICSLAB_TOOLS)
+
+# Export variables to the global scope.
+set_property(GLOBAL APPEND PROPERTY ROBOTICSLAB_TOOLS_TARGETS ToolsInterfaces)
+
+# YARP devices.
+add_subdirectory(PlaybackThread)
