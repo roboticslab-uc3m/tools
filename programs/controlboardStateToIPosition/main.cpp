@@ -1,6 +1,8 @@
-#include <yarp/os/all.h>
+#include <yarp/os/Network.h>
+#include <yarp/os/ResourceFinder.h>
 
-#include "ColorDebug.hpp"
+#include <ColorDebug.hpp>
+
 #include "ControlboardStateToIPosition.hpp"
 
 int main(int argc, char *argv[])
@@ -19,7 +21,7 @@ int main(int argc, char *argv[])
     CD_INFO("Run \"controlboardStateToIPosition --help\" for options.\n");
     CD_INFO("Checking for yarp network...\n");
     yarp::os::Network yarp;
-    if (!yarp.checkNetwork()) {
+    if (!yarp::os::Network::checkNetwork()) {
         CD_ERROR("Found no yarp network (try running \"yarpserver &\"), bye!\n");
         return 1;
     }
@@ -27,4 +29,3 @@ int main(int argc, char *argv[])
 
     return mod.runModule(rf);
 }
-

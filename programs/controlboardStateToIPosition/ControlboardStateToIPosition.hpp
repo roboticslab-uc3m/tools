@@ -1,14 +1,15 @@
 #ifndef __CONTROL_STATE_TO_I_POSITION_HPP__
 #define __CONTROL_STATE_TO_I_POSITION_HPP__
 
+#include <vector>
+
 #include <yarp/os/RFModule.h>
 #include <yarp/os/RateThread.h>
+
 #include <yarp/dev/PolyDriver.h>
 #include <yarp/dev/IControlMode2.h>
 #include <yarp/dev/IEncoders.h>
 #include <yarp/dev/IPositionDirect.h>
-
-#include <vector>
 
 #define DEFAULT_IN "/teo/rightArm"
 #define DEFAULT_OUT "/teoSim/rightArm"

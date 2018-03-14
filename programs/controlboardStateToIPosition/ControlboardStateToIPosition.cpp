@@ -1,8 +1,13 @@
-#include <vector>
-//#include <yarp/dev/IControlMode.h>  // Defines VOCAB_CM_POSITION_DIRECT. \ToDo: see why can't be #include'd here
-
 #include "ControlboardStateToIPosition.hpp"
-#include "ColorDebug.hpp"
+
+#include <string>
+#include <vector>
+
+#include <yarp/os/Property.h>
+#include <yarp/os/Value.h>
+#include <yarp/dev/IControlMode.h> // Defines VOCAB_CM_POSITION_DIRECT.
+
+#include <ColorDebug.hpp>
 
 namespace roboticslab
 {
@@ -132,4 +137,4 @@ void ControlboardStateToIPosition::run()
     return;
 }
 
-}  // namespace
+}  // namespace roboticslab
