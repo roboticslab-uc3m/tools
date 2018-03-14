@@ -31,7 +31,6 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
         CD_ERROR("Could not open() inRobotDevice: %s\n", inStr.c_str());
         CD_ERROR("Please review or set --in\n");
         inRobotDevice.close();
-        yarp::os::Network::fini();
         return false;
     }
 
@@ -56,7 +55,6 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
         CD_ERROR("Please review or set --out\n");
         inRobotDevice.close();
         outRobotDevice.close();
-        yarp::os::Network::fini();
         return false;
     }
 
