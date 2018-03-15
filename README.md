@@ -1,4 +1,4 @@
-[![Vision Homepage](https://img.shields.io/badge/tools-orange.svg)](http://robots.uc3m.es/dox-tools) [![Latest Release](https://img.shields.io/github/tag/roboticslab-uc3m/tools.svg?label=Latest Release)](https://github.com/roboticslab-uc3m/tools/tags)
+[![Tools Homepage](https://img.shields.io/badge/roboticslab-tools-orange.svg)](http://robots.uc3m.es/dox-tools) [![Latest Release](https://img.shields.io/github/tag/roboticslab-uc3m/tools.svg?label=Latest%20Release)](https://github.com/roboticslab-uc3m/tools/tags)
 
 Additional software tools.
 
@@ -24,11 +24,18 @@ Installation instructions for installing from source can be found [here]( doc/to
 5. Create a new Pull Request
 
 #### Manuals
-1. Read [development manual](https://github.com/roboticslab-uc3m/tools/blob/develop/doc/tools-development-manual.md) if you want to build a new language model
+
+List of programs presented in this repo:
+
+- [openraveToStl](programs/openraveppToSTL) 
+- [meanVar](programs/meanVar)
+- [boxPlot](programs/boxPlot)
+- [plotTrajectories](programs/plotTrajectories)
+- [plotTrajectories3D](programs/plotTrajectories3D)
 
 ## Status
 
-[![Build Status (Linux/OSX)](https://travis-ci.org/roboticslab-uc3m/tools.svg?branch=master)](https://travis-ci.org/roboticslab-uc3m/tools)
+[![Build Status (Linux/OSX)](https://travis-ci.org/roboticslab-uc3m/tools.svg?branch=develop)](https://travis-ci.org/roboticslab-uc3m/tools)
 
 [![Coverage Status](https://coveralls.io/repos/roboticslab-uc3m/tools/badge.svg)](https://coveralls.io/r/roboticslab-uc3m/tools)
 
@@ -38,4 +45,3 @@ Installation instructions for installing from source can be found [here]( doc/to
 
 * [kinematics-dynamics](https://github.com/roboticslab-uc3m/kinematics-dynamics)
 * [yarp-devices](https://github.com/roboticslab-uc3m/yarp-devices)
-

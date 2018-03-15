@@ -1,14 +1,10 @@
-#include "gtest/gtest.h" // -- We load the librarie of GoogleTest
-
-// -- We load the rest of libraries that we will use to call the functions of our code
-#include <yarp/os/all.h>
-#include <yarp/dev/all.h>
+#include "gtest/gtest.h"
 
 #include "ColorDebug.hpp"
 
 #include "Playback.hpp"
 
-namespace teo
+namespace roboticslab
 {
 
 /**

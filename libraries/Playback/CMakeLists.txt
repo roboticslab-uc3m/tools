@@ -1,27 +1,19 @@
-set(KEYWORD "Playback")
-
-# Find YARP and color-debug.
-find_package(YARP REQUIRED)
-find_package(COLOR_DEBUG)
-
-# Add current directory to global include paths, retrieve current values.
-set_property(GLOBAL APPEND PROPERTY ROBOTICSLAB_TOOLS_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}")
-get_property(ROBOTICSLAB_TOOLS_INCLUDE_DIRS GLOBAL PROPERTY ROBOTICSLAB_TOOLS_INCLUDE_DIRS)
-
-# Define include paths.
-include_directories(${YARP_INCLUDE_DIRS} ${ROBOTICSLAB_TOOLS_INCLUDE_DIRS} ${COLOR_DEBUG_INCLUDE_DIRS})
-
 # Configure library build target.
-add_library(${KEYWORD} Playback.cpp Playback.hpp)
+add_library(Playback Playback.cpp
+                     Playback.hpp)
+
+# Set dependencies.
+add_dependencies(Playback COLOR_DEBUG)
 
 # Set target properties.
-set_target_properties(${KEYWORD} PROPERTIES PUBLIC_HEADER Playback.hpp)
+set_target_properties(Playback PROPERTIES PUBLIC_HEADER Playback.hpp)
 
-# Link external libraries.
-target_link_libraries(${KEYWORD} LINK_PUBLIC ${YARP_LIBRARIES})
+# Specify include directories.
+target_include_directories(Playback PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+                                           $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 # Create installation rule.
-install(TARGETS ${KEYWORD}
+install(TARGETS Playback
         EXPORT ROBOTICSLAB_TOOLS
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT playback_library
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT playback_library
@@ -29,5 +21,4 @@ install(TARGETS ${KEYWORD}
         PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT playback_library)
 
 # Export library name and current target. Store include paths in target.
-set_property(GLOBAL APPEND PROPERTY ROBOTICSLAB_TOOLS_LIBRARIES ${KEYWORD})
-set_property(GLOBAL APPEND PROPERTY ROBOTICSLAB_TOOLS_TARGETS ${KEYWORD})
+set_property(GLOBAL APPEND PROPERTY ROBOTICSLAB_TOOLS_TARGETS Playback)

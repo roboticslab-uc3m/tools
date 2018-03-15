@@ -2,7 +2,6 @@
 # Authors: Juan G Victores
 # CopyPolicy: Released under the terms of the LGPLv2.1 or later
 
-if(ENABLE_exampleProgram)
-  add_subdirectory(exampleProgram)
+if(ENABLE_controlboardStateToIPosition)
+  add_subdirectory(controlboardStateToIPosition)
 endif()
-

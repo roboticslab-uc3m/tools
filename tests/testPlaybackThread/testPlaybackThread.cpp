@@ -8,12 +8,12 @@
 
 #include "IPlaybackThread.h"
 
-namespace teo
+namespace roboticslab
 {
 
 class MockRunnable : public IRunnable
 {
-    virtual bool run(std::vector<double> &v)
+    virtual bool run(const std::vector<double> &v)
     {
         std::cout << "MockRunnable: ";
         for(int i=0;i<v.size();i++)
@@ -70,7 +70,7 @@ protected:
 
     /** Playback device. */
     yarp::dev::PolyDriver playbackDevice;
-    teo::IPlaybackThread* iPlaybackThread;
+    roboticslab::IPlaybackThread* iPlaybackThread;
 };
 
 TEST_F( PlaybackThreadTest, PlaybackThreadTestPlayQuick )

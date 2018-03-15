@@ -1,7 +1,21 @@
 # Testing things #########################################################################################
 
-add_subdirectory(gtest-1.7.0)
+find_package(GTestSources 1.6.0 QUIET)
 
-add_subdirectory(testPlayback)
-add_subdirectory(testPlaybackThread)
+if(NOT GTestSources_FOUND AND (NOT DEFINED ENABLE_tests OR ENABLE_tests))
+    message(WARNING "GTestSources package not found, disabling tests")
+endif()
 
+cmake_dependent_option(ENABLE_tests "Enable/disable unit tests" ON
+                       GTestSources_FOUND OFF)
+
+if(ENABLE_tests)
+    add_subdirectory(${GTestSources_SOURCE_DIR} ${CMAKE_BINARY_DIR}/gtest)
+
+    include_directories(${GTestSources_INCLUDE_DIR})
+
+    add_subdirectory(testPlayback)
+    add_subdirectory(testPlaybackThread)
+else()
+    set(ENABLE_tests OFF CACHE BOOL "Enable/disable unit tests" FORCE)
+endif()
