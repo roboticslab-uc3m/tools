@@ -22,7 +22,7 @@ cd tools; mkdir build; cd build; cmake ..  # Configure the tools software
 make -j$(nproc) # Compile
 sudo make install # Install :-)
 cp ../scripts/gnome/tools.desktop $HOME/Desktop
-sudo pip install -r requirements.txt #Install python requirements
+sudo pip install -r requirements.txt  # Install python requirements
 ```
 
 For CMake `find_package(ROBOTICSLAB_TOOLS REQUIRED)`, you may also be interested in adding the following to your `~/.bashrc` or `~/.profile`:
