@@ -5,6 +5,16 @@
 
 #include "ControlboardStateToIPosition.hpp"
 
+/**
+ *
+ * @ingroup roboticslab-tools
+ *
+ * \defgroup controlboardStateToIPosition controlboardStateToIPosition
+ *
+ * @brief Creates an instance of roboticslab::ControlboardStateToIPosition.
+ *
+ */
+
 int main(int argc, char *argv[])
 {
     yarp::os::ResourceFinder rf;
