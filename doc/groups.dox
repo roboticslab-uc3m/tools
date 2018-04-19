@@ -12,15 +12,17 @@ namespace roboticslab {}
  */
 
 /**
- * \defgroup roboticslab-tools-programs roboticslab-tools Programs
+ * @ingroup tools-libraries
+ * \defgroup YarpPlugins
  *
- * @brief roboticslab-tools programs.
+ * @brief Contains tools libraries that implement YARP device interfaces
+ * and therefore can be invoked as YARP plugins.
  */
 
 /**
- * \defgroup roboticslab-tools-applications roboticslab-tools Applications (Collections of Programs)
+ * \defgroup roboticslab-tools-programs roboticslab-tools Programs
  *
- * @brief roboticslab-tools applications (collections of programs).
+ * @brief roboticslab-tools programs.
  */
 
 /**
@@ -28,6 +30,3 @@ namespace roboticslab {}
  *
  * @brief roboticslab-tools examples.
  */
-
-
-
