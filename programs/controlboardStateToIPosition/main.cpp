@@ -7,7 +7,7 @@
 
 /**
  *
- * @ingroup roboticslab-tools
+ * @ingroup roboticslab-tools-programs
  *
  * \defgroup controlboardStateToIPosition controlboardStateToIPosition
  *
