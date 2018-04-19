@@ -5,6 +5,13 @@
 namespace roboticslab {}
 
 /**
+ * \defgroup roboticslab-tools-applications roboticslab-tools Applications
+ *
+ * @brief roboticslab-tools applications.
+ *
+ */
+
+/**
  * \defgroup roboticslab-tools-libraries roboticslab-tools Libraries
  *
  * @brief roboticslab-tools libraries.
@@ -12,7 +19,7 @@ namespace roboticslab {}
  */
 
 /**
- * @ingroup tools-libraries
+ * @ingroup roboticslab-tools-libraries
  * \defgroup YarpPlugins
  *
  * @brief Contains tools libraries that implement YARP device interfaces
