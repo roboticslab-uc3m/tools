@@ -29,7 +29,7 @@ namespace roboticslab
 {
 
 /**
- * @ingroup BodyYarp
+ * @ingroup YarpPlugins
  * \defgroup PlaybackThread
  * @brief Contains roboticslab::PlaybackThread.
  */

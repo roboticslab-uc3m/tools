@@ -13,7 +13,7 @@ namespace roboticslab
 {
 
 /**
- * @ingroup roboticslab-tools_libraries
+ * @ingroup roboticslab-tools-libraries
  * \defgroup Playback
  * @brief Contains roboticslab::Playback.
  */
