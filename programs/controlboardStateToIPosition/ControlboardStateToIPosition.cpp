@@ -30,7 +30,6 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
     {
         CD_ERROR("Could not open() inRobotDevice: %s\n", inStr.c_str());
         CD_ERROR("Please review or set --in\n");
-        inRobotDevice.close();
         return false;
     }
 
@@ -53,8 +52,6 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
     {
         CD_ERROR("Could not open() outRobotDevice: %s\n", outStr.c_str());
         CD_ERROR("Please review or set --out\n");
-        inRobotDevice.close();
-        outRobotDevice.close();
         return false;
     }
 
@@ -101,9 +98,7 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
 
 bool ControlboardStateToIPosition::close()
 {
-    inRobotDevice.close();
-    outRobotDevice.close();
-
+    this->stop();
     return true;
 }
 
@@ -131,8 +126,6 @@ void ControlboardStateToIPosition::run()
         CD_WARNING("Failed iPositionDirectOut->setPositions\n");
         return;
     }
-
-    return;
 }
 
 }  // namespace roboticslab
