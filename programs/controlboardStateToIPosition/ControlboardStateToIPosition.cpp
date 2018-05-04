@@ -99,6 +99,8 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
 bool ControlboardStateToIPosition::close()
 {
     this->stop();
+    inRobotDevice.close();
+    outRobotDevice.close();
     return true;
 }
 
