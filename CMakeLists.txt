@@ -7,8 +7,6 @@ cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
 # Start a project.
 project(ROBOTICSLAB_TOOLS)
 
-set(BUILD_SHARED_LIBS TRUE CACHE INTERNAL "hide this!")
-
 # Set module path.
 set(ROBOTICSLAB_TOOLS_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
@@ -22,6 +20,9 @@ if(NOT YARP_FOUND)
     find_package(YARP 2.3.70 REQUIRED)
 endif()
 find_package(COLOR_DEBUG REQUIRED)
+
+# Always build YARP devices as MODULE libraries.
+set(YARP_FORCE_DYNAMIC_PLUGINS TRUE CACHE INTERNAL "Force dynamic plugins")
 
 # Configure installation paths for YARP resources.
 yarp_configure_external_installation(roboticslab-tools WITH_PLUGINS)

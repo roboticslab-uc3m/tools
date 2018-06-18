@@ -1,6 +1,6 @@
 # Configure library build target.
-add_library(Playback Playback.cpp
-                     Playback.hpp)
+add_library(Playback SHARED Playback.cpp
+                            Playback.hpp)
 
 # Set target properties.
 set_target_properties(Playback PROPERTIES PUBLIC_HEADER Playback.hpp)
