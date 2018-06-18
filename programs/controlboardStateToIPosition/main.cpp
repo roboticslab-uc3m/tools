@@ -1,9 +1,19 @@
 #include <yarp/os/Network.h>
 #include <yarp/os/ResourceFinder.h>
 
-#include <ColorDebug.hpp>
+#include <ColorDebug.h>
 
 #include "ControlboardStateToIPosition.hpp"
+
+/**
+ *
+ * @ingroup roboticslab-tools-programs
+ *
+ * \defgroup controlboardStateToIPosition controlboardStateToIPosition
+ *
+ * @brief Creates an instance of roboticslab::ControlboardStateToIPosition.
+ *
+ */
 
 int main(int argc, char *argv[])
 {

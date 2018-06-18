@@ -1,6 +1,5 @@
 add_executable(testPlayback testPlayback.cpp)
 
-add_dependencies(testPlayback COLOR_DEBUG)
-
-target_link_libraries(testPlayback Playback
+target_link_libraries(testPlayback ROBOTICSLAB::ColorDebug
+                                   Playback
                                    gtest_main)

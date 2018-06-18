@@ -6,10 +6,10 @@ Welcome to the roboticslab-tools Repository documentation for the manipulation a
  \li <a class=el href="https://github.com/roboticslab-uc3m/tools/blob/develop/doc/tools-install.md">Tools install</a>
 
 Other internal links of interest:
- \li \ref roboticslab-tools_programs
- \li \ref roboticslab-tools_libraries
- \li \ref roboticslab-tools_applications
- \li \ref roboticslab-tools_examples
+ \li \ref roboticslab-tools-programs
+ \li \ref roboticslab-tools-libraries
+ \li \ref roboticslab-tools-applications
+ \li \ref roboticslab-tools-examples
 
 Even more internal links of interest:
  \li <a class=el href="http://robots.uc3m.es/dox-kinematics-dynamics/index.html">kinematics-dynamics</a>

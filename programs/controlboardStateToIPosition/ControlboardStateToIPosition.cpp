@@ -7,7 +7,7 @@
 #include <yarp/os/Value.h>
 #include <yarp/dev/IControlMode.h> // Defines VOCAB_CM_POSITION_DIRECT.
 
-#include <ColorDebug.hpp>
+#include <ColorDebug.h>
 
 namespace roboticslab
 {
@@ -30,7 +30,6 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
     {
         CD_ERROR("Could not open() inRobotDevice: %s\n", inStr.c_str());
         CD_ERROR("Please review or set --in\n");
-        inRobotDevice.close();
         return false;
     }
 
@@ -53,8 +52,6 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
     {
         CD_ERROR("Could not open() outRobotDevice: %s\n", outStr.c_str());
         CD_ERROR("Please review or set --out\n");
-        inRobotDevice.close();
-        outRobotDevice.close();
         return false;
     }
 
@@ -101,9 +98,9 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
 
 bool ControlboardStateToIPosition::close()
 {
+    this->stop();
     inRobotDevice.close();
     outRobotDevice.close();
-
     return true;
 }
 
@@ -131,8 +128,6 @@ void ControlboardStateToIPosition::run()
         CD_WARNING("Failed iPositionDirectOut->setPositions\n");
         return;
     }
-
-    return;
 }
 
 }  // namespace roboticslab

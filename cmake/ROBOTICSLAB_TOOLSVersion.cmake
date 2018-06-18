@@ -47,4 +47,3 @@ endif()
 
 # Print version.
 message(STATUS "ROBOTICSLAB_TOOLS version: ${ROBOTICSLAB_TOOLS_VERSION_SHORT} (${ROBOTICSLAB_TOOLS_VERSION})")
-

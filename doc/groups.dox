@@ -1,33 +1,39 @@
 
 /**
-@brief The main, catch-all namespace for TEO.
+@brief The main, catch-all namespace for Robotics Lab UC3M.
  */
-namespace teo {}
+namespace roboticslab {}
 
 /**
- * \defgroup roboticslab-tools_libraries roboticslab-tools Libraries
+ * \defgroup roboticslab-tools-applications roboticslab-tools Applications
+ *
+ * @brief roboticslab-tools applications.
+ *
+ */
+
+/**
+ * \defgroup roboticslab-tools-libraries roboticslab-tools Libraries
  *
  * @brief roboticslab-tools libraries.
  *
  */
 
 /**
- * \defgroup roboticslab-tools_programs roboticslab-tools Programs
+ * @ingroup roboticslab-tools-libraries
+ * \defgroup YarpPlugins
+ *
+ * @brief Contains tools libraries that implement YARP device interfaces
+ * and therefore can be invoked as YARP plugins.
+ */
+
+/**
+ * \defgroup roboticslab-tools-programs roboticslab-tools Programs
  *
  * @brief roboticslab-tools programs.
  */
 
 /**
- * \defgroup roboticslab-tools_applications roboticslab-tools Applications (Collections of Programs)
- *
- * @brief roboticslab-tools applications (collections of programs).
- */
-
-/**
- * \defgroup roboticslab-tools_examples roboticslab-tools Examples
+ * \defgroup roboticslab-tools-examples roboticslab-tools Examples
  *
  * @brief roboticslab-tools examples.
  */
-
-
-

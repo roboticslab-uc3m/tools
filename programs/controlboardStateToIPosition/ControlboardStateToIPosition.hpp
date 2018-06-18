@@ -18,6 +18,9 @@
 namespace roboticslab
 {
 
+/**
+ * @brief Reads joint positions from an input controlboard, sends to an output controlboard.
+ */
 class ControlboardStateToIPosition : public yarp::os::RFModule, yarp::os::RateThread
 {
 public:
