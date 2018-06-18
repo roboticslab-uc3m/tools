@@ -22,4 +22,3 @@ if(DOXYGEN_FOUND)
   # Register features.
   add_feature_info(ROBOTICSLAB_TOOLS_docs ROBOTICSLAB_TOOLS_DOXYGEN_HTML "ROBOTICSLAB_TOOLS documentation generator.")
 endif()
-

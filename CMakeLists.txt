@@ -2,16 +2,14 @@
 # Authors: Juan G Victores
 # CopyPolicy: Released under the terms of the LGPLv2.1 or later
 
-cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
 # Start a project.
-project(ROBOTICSLAB_TOOLS)
+project(ROBOTICSLAB_TOOLS LANGUAGES CXX)
 
-# Set module path.
-set(ROBOTICSLAB_TOOLS_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake
-                                  ${CMAKE_SOURCE_DIR}/cmake/find-modules)
-
-list(APPEND CMAKE_MODULE_PATH ${ROBOTICSLAB_TOOLS_MODULE_PATH})
+# Load CMake modules.
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake
+                              ${CMAKE_SOURCE_DIR}/cmake/find-modules)
 
 # Find project's hard dependencies
 find_package(YCM 0.6 REQUIRED)
@@ -22,12 +20,6 @@ if(NOT YARP_FOUND)
 endif()
 find_package(COLOR_DEBUG REQUIRED)
 
-# Always build YARP devices as MODULE libraries.
-set(YARP_FORCE_DYNAMIC_PLUGINS TRUE CACHE INTERNAL "Force dynamic plugins")
-
-# Configure installation paths for YARP resources.
-yarp_configure_external_installation(roboticslab-tools WITH_PLUGINS)
-
 # Retrieve current ROBOTICSLAB_TOOLS version.
 include(ROBOTICSLAB_TOOLSVersion)
 
@@ -36,9 +28,6 @@ include(ROBOTICSLAB_TOOLSSystem)
 
 # Setup build options.
 include(ROBOTICSLAB_TOOLSOptions)
-
-# Define global properties to store relevant configuration.
-set_property(GLOBAL PROPERTY ROBOTICSLAB_TOOLS_TARGETS)
 
 # Define and enter subdirectories.
 add_subdirectory(share)
