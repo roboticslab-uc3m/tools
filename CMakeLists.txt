@@ -16,7 +16,11 @@ list(APPEND CMAKE_MODULE_PATH ${ROBOTICSLAB_TOOLS_MODULE_PATH})
 
 # Find project's hard dependencies
 find_package(YCM 0.6 REQUIRED)
+find_package(YARP REQUIRED)
 find_package(COLOR_DEBUG REQUIRED)
+
+# Configure installation paths for YARP resources.
+yarp_configure_external_installation(roboticslab-tools WITH_PLUGINS)
 
 # Retrieve current ROBOTICSLAB_TOOLS version.
 include(ROBOTICSLAB_TOOLSVersion)
