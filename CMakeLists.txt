@@ -12,7 +12,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake
                               ${CMAKE_SOURCE_DIR}/cmake/find-modules)
 
 # Find project's hard dependencies
-find_package(YCM 0.6 REQUIRED)
+find_package(YCM 0.8 REQUIRED)
 # https://github.com/roboticslab-uc3m/questions-and-answers/issues/65
 find_package(YARP 3.0 QUIET)
 if(NOT YARP_FOUND)
