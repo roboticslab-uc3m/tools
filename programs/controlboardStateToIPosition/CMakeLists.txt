@@ -2,9 +2,6 @@
 # Authors: Juan G Victores
 # CopyPolicy: Released under the terms of the LGPLv2.1 or later
 
-# Define include paths.
-include_directories(${YARP_INCLUDE_DIRS}) # remove if YARP > v2.3.70
-
 # Configure executable build target.
 add_executable(controlboardStateToIPosition main.cpp
                                             ControlboardStateToIPosition.cpp
