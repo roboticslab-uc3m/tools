@@ -15,6 +15,12 @@ before_install:
   - '[[ "$TRAVIS_EVENT_TYPE" = cron ]] && export YARP_CHECKOUT=devel || export YARP_CHECKOUT=master'
 
 install:
+  # Install color-debug
+  - git clone https://github.com/roboticslab-uc3m/color-debug
+  - cd color-debug && mkdir build && cd build
+  - cmake ..
+  - sudo make install
+  - cd ../..
   #-- Install googletest
   - sudo apt-get install libgtest-dev
   #-- Install yarp
