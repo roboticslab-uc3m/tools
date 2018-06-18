@@ -8,7 +8,8 @@ cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
 project(ROBOTICSLAB_TOOLS)
 
 # Set module path.
-set(ROBOTICSLAB_TOOLS_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+set(ROBOTICSLAB_TOOLS_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake
+                                  ${CMAKE_SOURCE_DIR}/cmake/find-modules)
 
 list(APPEND CMAKE_MODULE_PATH ${ROBOTICSLAB_TOOLS_MODULE_PATH})
 
