@@ -12,15 +12,10 @@ set(BUILD_SHARED_LIBS TRUE CACHE INTERNAL "hide this!")
 # Set module path.
 set(ROBOTICSLAB_TOOLS_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
-list(APPEND CMAKE_MODULE_PATH ${ROBOTICSLAB_TOOLS_MODULE_PATH}
-                              ${CMAKE_SOURCE_DIR}/cmake/ycm-modules)
-
-# Bootstrap YCM.
-# https://github.com/robotology/ycm/issues/118
-set(YCM_TAG v0.6.0)
-include(YCMBootstrap)
+list(APPEND CMAKE_MODULE_PATH ${ROBOTICSLAB_TOOLS_MODULE_PATH})
 
 # Find project's hard dependencies
+find_package(YCM 0.6 REQUIRED)
 find_package(COLOR_DEBUG REQUIRED)
 
 # Retrieve current ROBOTICSLAB_TOOLS version.
