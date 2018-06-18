@@ -7,8 +7,6 @@
 #include <fstream>
 #include <vector>
 
-#include "ColorDebug.hpp"
-
 namespace roboticslab
 {
 

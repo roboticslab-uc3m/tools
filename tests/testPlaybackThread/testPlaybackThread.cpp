@@ -4,7 +4,7 @@
 #include <yarp/os/all.h>
 #include <yarp/dev/all.h>
 
-#include "ColorDebug.hpp"
+#include <ColorDebug.h>
 
 #include "IPlaybackThread.h"
 

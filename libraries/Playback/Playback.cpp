@@ -2,6 +2,8 @@
 
 #include "Playback.hpp"
 
+#include <ColorDebug.h>
+
 namespace roboticslab
 {
 

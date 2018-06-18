@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "ColorDebug.hpp"
+#include <ColorDebug.h>
 
 #include "Playback.hpp"
 

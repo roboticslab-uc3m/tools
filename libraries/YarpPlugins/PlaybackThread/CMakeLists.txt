@@ -17,10 +17,9 @@ if(NOT SKIP_PlaybackThread)
                                  IPlaybackThreadImpl.cpp
                                  ThreadImpl.cpp)
 
-  add_dependencies(PlaybackThread COLOR_DEBUG)
-
   target_link_libraries(PlaybackThread YARP::YARP_OS
                                        YARP::YARP_dev
+                                       ROBOTICSLAB::ColorDebug
                                        Playback
                                        ToolsInterfaces)
 

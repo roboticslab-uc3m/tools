@@ -7,7 +7,7 @@
 #include <yarp/os/Value.h>
 #include <yarp/dev/IControlMode.h> // Defines VOCAB_CM_POSITION_DIRECT.
 
-#include <ColorDebug.hpp>
+#include <ColorDebug.h>
 
 namespace roboticslab
 {
