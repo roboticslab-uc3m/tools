@@ -5,3 +5,5 @@ target_link_libraries(testPlaybackThread YARP::YARP_OS
                                          ROBOTICSLAB::ColorDebug
                                          ToolsInterfaces
                                          gtest_main)
+
+gtest_add_tests(testPlaybackThread "" AUTO)
