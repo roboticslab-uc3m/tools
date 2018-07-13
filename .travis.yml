@@ -81,4 +81,4 @@ after_success:
   #-- Code coverage
   - if [ "$CXX" = "g++" ]; then source "$TRAVIS_BUILD_DIR/scripts/travis/coverage.sh"; fi
 
-  - sudo make uninstall
+  - make uninstall
