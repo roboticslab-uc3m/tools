@@ -33,13 +33,10 @@ include(ROBOTICSLAB_TOOLSSystem)
 include(ROBOTICSLAB_TOOLSOptions)
 
 # Define and enter subdirectories.
-add_subdirectory(share)
 add_subdirectory(libraries)
 add_subdirectory(programs)
-
-if(ENABLE_tests)
-    add_subdirectory(tests)
-endif()
+add_subdirectory(share)
+add_subdirectory(tests)
 
 # Output configuration files.
 include(ROBOTICSLAB_TOOLSDescribe)

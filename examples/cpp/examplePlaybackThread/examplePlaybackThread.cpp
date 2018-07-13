@@ -1,5 +1,7 @@
 // -*- mode:C++; tab-width:4; c-basic-offset:4; indent-tabs-mode:nil -*-
 
+#include <string>
+
 #include <yarp/os/all.h>
 #include <yarp/dev/all.h>
 
@@ -38,9 +40,13 @@ int main(int argc, char *argv[])
     }
 
     //-- playbackThreadDevice and interface
+    yarp::os::ResourceFinder rf;
+    rf.setVerbose(true);
+    rf.setDefaultContext("Playback");
+    std::string path = rf.findFileByName("txt/yarpdatadumper-teo-right-arm.txt");
     yarp::os::Property playbackThreadOptions;
     playbackThreadOptions.put("device","PlaybackThread");
-    playbackThreadOptions.put("file","/usr/local/share/roboticslab-tools/contexts/Playback/txt/yarpdatadumper-teo-right-arm.txt");
+    playbackThreadOptions.put("file",path);
     playbackThreadOptions.put("timeIdx",1);
     playbackThreadOptions.put("timeScale",0.000001);
     playbackThreadOptions.fromString("(mask 0 0 1 1 1 1 1 1 1)",false);
