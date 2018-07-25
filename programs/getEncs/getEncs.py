@@ -1,5 +1,7 @@
 #! /usr/bin/env python
 
+import sys
+
 remoteNames = ['/teoSim/leftArm', '/teoSim/rightArm']
 
 import yarp  # imports YARP
@@ -19,10 +21,14 @@ for remoteName in remoteNames:
 
     axes = enc.getAxes()  # retrieve number of joints
 
-    v = yarp.DVector(axes)  # create a YARP vector of doubles the size of the number of elements read by enc, call it 'v'
-    enc.getEncoders(v)  # read the encoder values and put them into 'v'
-    print 'v[1] is: ' + str(v[1])  # print element 1 of 'v', note that motors and encoders start at 0
+    encoderValues = yarp.DVector(axes)  # create a YARP vector of doubles the size of the number of elements read by enc, call it 'v'
+    enc.getEncoders(encoderValues)  # read the encoder values and put them into 'v'
+
+    for encoderValue in encoderValues:
+        sys.stdout.write(encoderValue + ' ')
 
     dd.close()
+
+sys.stdout.flush()
 
 yarp.Network.fini()  # disconnect from the YARP network
