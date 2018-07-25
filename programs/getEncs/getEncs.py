@@ -25,7 +25,7 @@ for remoteName in remoteNames:
     enc.getEncoders(encoderValues)  # read the encoder values and put them into 'v'
 
     for encoderValue in encoderValues:
-        sys.stdout.write(encoderValue + ' ')
+        sys.stdout.write(str(encoderValue) + ' ')
 
     dd.close()
 
