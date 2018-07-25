@@ -10,6 +10,8 @@ if yarp.Network.checkNetwork() != True:  # let's see if there was actually a rea
     print '[error] Please try running yarp server'  # tell the user to start one with 'yarp server' if there isn't any
     quit()
 
+allEncoderValues = []
+
 for remoteName in remoteNames:
     options = yarp.Property()  # create an instance of Property, a nice YARP class for storing name-value (key-value) pairs
     options.put('device','remote_controlboard')  # we add a name-value pair that indicates the YARP device
@@ -25,10 +27,12 @@ for remoteName in remoteNames:
     enc.getEncoders(encoderValues)  # read the encoder values and put them into 'v'
 
     for encoderValue in encoderValues:
-        sys.stdout.write(str(encoderValue) + ' ')
+        allEncoderValues.append(encoderValue)
 
     dd.close()
 
+for encoderValue in allEncoderValues:
+    sys.stdout.write(str(encoderValue)+' ')
 sys.stdout.flush()
 
 yarp.Network.fini()  # disconnect from the YARP network
