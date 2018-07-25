@@ -4,6 +4,13 @@ import sys, time
 
 remoteNames = ['/teoSim/leftArm', '/teoSim/rightArm']
 
+if len(sys.argv) != 2:
+    print("[error] Usage: getEncs.py outputFileName")
+    quit()
+
+outputFileName = sys.argv[1]
+f = open(outputFileName, 'w')
+
 import yarp  # imports YARP
 yarp.Network.init()  # connect to YARP network
 if yarp.Network.checkNetwork() != True:  # let's see if there was actually a reachable YARP network
@@ -34,6 +41,11 @@ for remoteName in remoteNames:
 
 for encoderValue in allEncoderValues:
     sys.stdout.write(str(encoderValue)+' ')
+    f.write(str(encoderValue)+' ')
 sys.stdout.flush()
+
+f.close()
+
+print "\nWrote output to: " , outputFileName
 
 yarp.Network.fini()  # disconnect from the YARP network
