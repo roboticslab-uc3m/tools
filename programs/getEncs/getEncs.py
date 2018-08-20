@@ -29,10 +29,13 @@ for remoteName in remoteNames:
     enc = dd.viewIEncoders()  # make an encoder controller object we call 'enc'
 
     axes = enc.getAxes()  # retrieve number of joints
-
-    time.sleep(0.1)
     encoderValues = yarp.DVector(axes)  # create a YARP vector of doubles the size of the number of elements read by enc, call it 'v'
-    enc.getEncoders(encoderValues)  # read the encoder values and put them into 'v'
+
+    print 'waiting for encoders...'
+    done = False
+    while not done:
+        done = enc.getEncoders(encoderValues)  # read the encoder values and put them into 'v'
+        if not done: time.sleep(0.1)
 
     for encoderValue in encoderValues:
         allEncoderValues.append(encoderValue)
