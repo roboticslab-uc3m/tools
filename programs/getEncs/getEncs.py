@@ -2,7 +2,7 @@
 
 import sys, time
 
-remoteNames = ['/teoSim/leftArm', '/teoSim/rightArm']
+remoteNames = ['/teoSim/rightArm', '/teoSim/leftArm', '/teoSim/rightThumb', '/teoSim/rightIndex', '/teoSim/rightMiddle', '/teoSim/rightRing', '/teoSim/rightPinky', '/teoSim/leftThumb', '/teoSim/leftIndex', '/teoSim/leftMiddle', '/teoSim/leftRing', '/teoSim/leftPinky']
 
 if len(sys.argv) != 2:
     print("[error] Usage: getEncs.py outputFileName")
