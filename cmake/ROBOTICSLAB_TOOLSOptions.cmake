@@ -13,10 +13,11 @@ option(ENABLE_controlboardStateToIPosition "Enable/disable compilation of contro
 cmake_dependent_option(ENABLE_PlaybackThread "Enable/disable compilation of PlaybackThread" ON
                        ENABLE_YarpPlugins OFF)
 
-# options: cpp libraries (plugins)
+# options: unit testing
+cmake_dependent_option(ENABLE_tests "Enable/disable unit tests" ON
+                       GTestSources_FOUND OFF)
 
-##### test and coverage options
-option(ENABLE_tests "Choose if you want to compile tests" ON)
+# options: code coverage
 option(ENABLE_coverage "Choose if you want to enable coverage collection" OFF)
 
 # Register features.

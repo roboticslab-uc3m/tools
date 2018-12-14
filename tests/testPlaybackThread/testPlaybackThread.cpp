@@ -1,5 +1,7 @@
 #include "gtest/gtest.h" // -- We load the librarie of GoogleTest
 
+#include <string>
+
 // -- We load the rest of libraries that we will use to call the functions of our code
 #include <yarp/os/all.h>
 #include <yarp/dev/all.h>
@@ -36,12 +38,16 @@ public:
 
     virtual void SetUp()
     {
-
         // -- code here will execute just before the test ensues
+
+        yarp::os::ResourceFinder rf;
+        rf.setVerbose(true);
+        rf.setDefaultContext("Playback");
+        std::string path = rf.findFileByName("txt/testPlayback.txt");
 
         yarp::os::Property playbackThreadConf;
         playbackThreadConf.put("device","PlaybackThread");
-        playbackThreadConf.put("file","/usr/local/share/roboticslab-tools/contexts/Playback/txt/testPlayback.txt");
+        playbackThreadConf.put("file",path);
         playbackThreadConf.put("timeIdx",0);
         playbackThreadConf.fromString("(mask 0 1 0 1)",false);
         bool ok = true;
@@ -49,14 +55,13 @@ public:
         ok &= playbackDevice.view(iPlaybackThread);
         if(ok)
         {
-            CD_SUCCESS("Configuration sucessful :)\n");
+            CD_SUCCESS("Configuration successful :)\n");
         }
         else
         {
             CD_ERROR("Bad Configuration\n");
             ::exit(1);
         }
-
     }
 
     virtual void TearDown()

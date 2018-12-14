@@ -1,5 +1,9 @@
 #include "gtest/gtest.h"
 
+#include <string>
+
+#include <yarp/os/ResourceFinder.h>
+
 #include <ColorDebug.h>
 
 #include "Playback.hpp"
@@ -17,22 +21,25 @@ public:
 
     virtual void SetUp()
     {
-
         // -- code here will execute just before the test ensues
 
+        yarp::os::ResourceFinder rf;
+        rf.setVerbose(true);
+        rf.setDefaultContext("Playback");
+        std::string path = rf.findFileByName("txt/testPlayback.txt");
+
         bool ok = true;
-        ok &= playback.fromFile("/usr/local/share/roboticslab-tools/contexts/Playback/txt/testPlayback.txt");
+        ok &= playback.fromFile(path);
 
         if(ok)
         {
-            CD_SUCCESS("Configuration sucessful :)\n");
+            CD_SUCCESS("Configuration successful :)\n");
         }
         else
         {
             CD_ERROR("Bad Configuration\n");
             ::exit(1);
         }
-
     }
 
     virtual void TearDown()
