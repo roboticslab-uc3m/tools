@@ -23,15 +23,6 @@ Installation instructions for installing from source can be found [here]( doc/to
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
 
-#### Manuals
-
-List of programs presented in this repo:
-
-- [meanVar](programs/meanVar)
-- [boxPlot](programs/boxPlot)
-- [plotTrajectories](programs/plotTrajectories)
-- [plotTrajectories3D](programs/plotTrajectories3D)
-
 ## Status
 
 [![Build Status (Linux/OSX)](https://travis-ci.org/roboticslab-uc3m/tools.svg?branch=develop)](https://travis-ci.org/roboticslab-uc3m/tools)
