@@ -30,8 +30,3 @@ Installation instructions for installing from source can be found [here]( doc/to
 [![Coverage Status](https://coveralls.io/repos/roboticslab-uc3m/tools/badge.svg)](https://coveralls.io/r/roboticslab-uc3m/tools)
 
 [![Issues](https://img.shields.io/github/issues/roboticslab-uc3m/tools.svg?label=Issues)](https://github.com/roboticslab-uc3m/tools/issues)
-
-## Links of interest:
-
-* [kinematics-dynamics](https://github.com/roboticslab-uc3m/kinematics-dynamics)
-* [yarp-devices](https://github.com/roboticslab-uc3m/yarp-devices)
