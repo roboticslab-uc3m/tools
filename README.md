@@ -27,7 +27,6 @@ Installation instructions for installing from source can be found [here]( doc/to
 
 List of programs presented in this repo:
 
-- [openraveToStl](programs/openraveppToSTL) 
 - [meanVar](programs/meanVar)
 - [boxPlot](programs/boxPlot)
 - [plotTrajectories](programs/plotTrajectories)
