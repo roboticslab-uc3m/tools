@@ -10,8 +10,7 @@ install_basic_package_files(ROBOTICSLAB_TOOLS
                             TARGETS_PROPERTY ROBOTICSLAB_TOOLS_TARGETS
                             NO_SET_AND_CHECK_MACRO
                             NO_CHECK_REQUIRED_COMPONENTS_MACRO
-                            NAMESPACE ROBOTICSLAB::
-                            NO_COMPATIBILITY_VARS)
+                            NAMESPACE ROBOTICSLAB::)
 
 # Configure and create uninstall target (YCM).
 include(AddUninstallTarget)
