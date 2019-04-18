@@ -43,9 +43,6 @@ add_subdirectory(doc)
 # Output configuration files.
 include(ROBOTICSLAB_TOOLSDescribe)
 
-# Create target for documentation generation.
-include(ROBOTICSLAB_TOOLSDoc)
-
 # Invoke CPack from here.
 include(ROBOTICSLAB_TOOLSPackage)
 
