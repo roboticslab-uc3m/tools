@@ -29,8 +29,9 @@ class MockRunnable : public IRunnable
 };
 
 /**
-* @brief Tests \ref Playback
-*/
+ * @ingroup roboticslab-tools-tests
+ * @brief Tests \ref Playback
+ */
 class PlaybackThreadTest : public testing::Test // -- inherit the Test class (gtest.h)
 {
 
