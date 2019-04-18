@@ -12,8 +12,9 @@ namespace roboticslab
 {
 
 /**
-* @brief Tests \ref Playback
-*/
+ * @ingroup roboticslab-tools-tests
+ * @brief Tests \ref Playback
+ */
 class PlaybackTest : public testing::Test // -- inherit the Test class (gtest.h)
 {
 

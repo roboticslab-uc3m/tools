@@ -37,3 +37,9 @@ namespace roboticslab {}
  *
  * @brief roboticslab-tools examples.
  */
+
+/**
+ * \defgroup roboticslab-tools-tests roboticslab-tools Tests
+ *
+ * @brief roboticslab-tools tests.
+ */
