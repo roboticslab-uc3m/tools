@@ -7,7 +7,7 @@
 #include <yarp/os/RateThread.h>
 
 #include <yarp/dev/PolyDriver.h>
-#include <yarp/dev/IControlMode2.h>
+#include <yarp/dev/IControlMode.h>
 #include <yarp/dev/IEncoders.h>
 #include <yarp/dev/IPositionDirect.h>
 
@@ -86,7 +86,7 @@ private:
     yarp::dev::IEncoders *iEncodersIn;
 
     // Out interfaces
-    yarp::dev::IControlMode2 *iControlMode2Out;
+    yarp::dev::IControlMode *iControlModeOut;
     yarp::dev::IPositionDirect *iPositionDirectOut;
 
 };

@@ -19,6 +19,3 @@ install(TARGETS Playback
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT playback_library
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT playback_library
         PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT playback_library)
-
-# Export library name and current target. Store include paths in target.
-set_property(GLOBAL APPEND PROPERTY ROBOTICSLAB_TOOLS_TARGETS Playback)

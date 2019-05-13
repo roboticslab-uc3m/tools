@@ -7,7 +7,6 @@ include(InstallBasicPackageFiles)
 install_basic_package_files(ROBOTICSLAB_TOOLS
                             VERSION ${ROBOTICSLAB_TOOLS_VERSION_SHORT}
                             COMPATIBILITY AnyNewerVersion
-                            TARGETS_PROPERTY ROBOTICSLAB_TOOLS_TARGETS
                             NO_SET_AND_CHECK_MACRO
                             NO_CHECK_REQUIRED_COMPONENTS_MACRO
                             NAMESPACE ROBOTICSLAB::)

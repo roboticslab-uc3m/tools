@@ -19,8 +19,5 @@ install(FILES IPlaybackThread.h
 install(TARGETS ToolsInterfaces
         EXPORT ROBOTICSLAB_TOOLS)
 
-# Export variables to the global scope.
-set_property(GLOBAL APPEND PROPERTY ROBOTICSLAB_TOOLS_TARGETS ToolsInterfaces)
-
 # YARP devices.
 add_subdirectory(PlaybackThread)
