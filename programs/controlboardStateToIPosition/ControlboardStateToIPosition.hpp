@@ -3,8 +3,8 @@
 
 #include <vector>
 
+#include <yarp/os/PeriodicThread.h>
 #include <yarp/os/RFModule.h>
-#include <yarp/os/RateThread.h>
 
 #include <yarp/dev/PolyDriver.h>
 #include <yarp/dev/IControlMode.h>
@@ -21,11 +21,11 @@ namespace roboticslab
 /**
  * @brief Reads joint positions from an input controlboard, sends to an output controlboard.
  */
-class ControlboardStateToIPosition : public yarp::os::RFModule, yarp::os::RateThread
+class ControlboardStateToIPosition : public yarp::os::RFModule, yarp::os::PeriodicThread
 {
 public:
 
-    ControlboardStateToIPosition() : yarp::os::RateThread(DEFAULT_RATE_MS) {}
+    ControlboardStateToIPosition() : yarp::os::PeriodicThread(DEFAULT_RATE_MS * 0.001) {}
 
     /**
      * Configure the module, pass a ResourceFinder object to the module.

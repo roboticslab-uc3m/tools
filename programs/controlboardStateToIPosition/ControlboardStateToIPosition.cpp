@@ -86,7 +86,7 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
     CD_SUCCESS("iEncodersIn->getAxes got %d axes.\n",axes);
 
 
-    //-- Start RateThread
+    //-- Start PeriodicThread
     if( ! this->start() )
     {
         CD_ERROR("Could not start thread.\n");
