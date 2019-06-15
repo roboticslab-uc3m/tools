@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 project(examplePlaybackThread LANGUAGES CXX)
 
 # Find YARP. Point the YARP_DIR environment variable at your build.
-find_package(YARP 3.0 REQUIRED COMPONENTS OS dev)
+find_package(YARP 3.1 REQUIRED COMPONENTS OS dev)
 
 # Find ROBOTICSLAB_COLOR_DEBUG.
 find_package(COLOR_DEBUG REQUIRED)
