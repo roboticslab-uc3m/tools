@@ -65,6 +65,7 @@ before_script:
   - mkdir -p "$TRAVIS_BUILD_DIR/build" && cd "$_"
   - cmake .. -DCMAKE_INSTALL_PREFIX="$PWD/install" -DENABLE_coverage:BOOL=ON
   - make install
+
   - export LD_LIBRARY_PATH=$PWD/install/lib:$LD_LIBRARY_PATH
   - export YARP_DATA_DIRS=$PWD/install/share/roboticslab-tools:$YARP_DATA_DIRS
   - export CMAKE_PREFIX_PATH="$PWD:$CMAKE_PREFIX_PATH"
@@ -73,8 +74,7 @@ before_script:
   - cmake "$TRAVIS_BUILD_DIR/examples/cpp/examplePlaybackThread" && make
 
 script:
-  - bin/testPlayback
-  - bin/testPlaybackThread
+  - cd "$TRAVIS_BUILD_DIR/build/tests" && ctest -V
 
 after_success:
   #-- Code coverage
