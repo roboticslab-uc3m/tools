@@ -6,6 +6,9 @@ project(examplePlaybackThread LANGUAGES CXX)
 # Find YARP. Point the YARP_DIR environment variable at your build.
 find_package(YARP 3.0 REQUIRED COMPONENTS OS dev)
 
+# Find ROBOTICSLAB_COLOR_DEBUG.
+find_package(COLOR_DEBUG REQUIRED)
+
 # Find ROBOTICSLAB_TOOLS.
 find_package(ROBOTICSLAB_TOOLS REQUIRED)
 
@@ -16,7 +19,8 @@ add_executable(examplePlaybackThread examplePlaybackThread.cpp)
 target_link_libraries(examplePlaybackThread YARP::YARP_OS
                                             YARP::YARP_init
                                             YARP::YARP_dev
-                                            ROBOTICSLAB::ToolsInterfaces)
+                                            ROBOTICSLAB::ToolsInterfaces
+                                            ROBOTICSLAB::ColorDebug)
 
 include(GNUInstallDirs)
 
