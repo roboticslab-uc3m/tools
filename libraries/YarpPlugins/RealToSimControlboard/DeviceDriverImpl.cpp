@@ -41,10 +41,10 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
         yarp::dev::PolyDriver* remoteControlboard = new yarp::dev::PolyDriver(options);
         if( ! remoteControlboard->isValid() )
         {
-            CD_ERROR("yarp plugin not valid.\n");
+            CD_ERROR("\"%s\" group did not create a valid yarp plugin!\n", remoteGroupName.c_str());
             return false;
         }
-        CD_SUCCESS("Valid yarp plugin.\n");
+        CD_SUCCESS("\"%s\" group created a valid yarp plugin!\n", remoteGroupName.c_str());
 
         remoteControlboards.push_back(remoteControlboard);
     }
