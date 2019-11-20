@@ -66,6 +66,11 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
         CD_SUCCESS("\"%s\" group found!\n", remoteGroupName.str().c_str());
         yarp::os::Bottle exposedGroup = config.findGroup(remoteGroupName.str());
         CD_INFO("%s\n", exposedGroup.toString().c_str());
+        for(size_t i=1; i< exposedGroup.size(); i++)
+        {
+            yarp::os::Bottle* b = exposedGroup.get(i).asList();
+            CD_DEBUG("%s\n", b->toString().c_str());
+        }
 
         idx++;
     }
