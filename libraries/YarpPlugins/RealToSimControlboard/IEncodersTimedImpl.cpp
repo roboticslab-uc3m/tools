@@ -91,8 +91,8 @@ bool roboticslab::RealToSimControlboard::getEncoderSpeed(int j, double *sp) {
 bool roboticslab::RealToSimControlboard::getEncoderSpeeds(double *spds) {
     //CD_INFO("\n");  //-- Way too verbose
     bool ok = true;
-    for(unsigned int i=0;i<axes;i++)
-        ok &= getEncoderSpeed(i,&spds[i]);
+    //for(unsigned int i=0;i<axes;i++)
+    //    ok &= getEncoderSpeed(i,&spds[i]);
     return ok;
 }
 
