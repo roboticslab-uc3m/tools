@@ -2,6 +2,8 @@
 
 #include "RealToSimControlboard.hpp"
 
+#include <sstream>
+
 namespace roboticslab
 {
 
@@ -47,6 +49,24 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
         CD_SUCCESS("\"%s\" group created a valid yarp plugin!\n", remoteGroupName.c_str());
 
         remoteControlboards.push_back(remoteControlboard);
+    }
+
+    int idx = 0;
+    bool done = false;
+    while(!done)
+    {
+        std::ostringstream remoteGroupName("exposed_joint_", std::ios_base::app);
+        remoteGroupName << idx;
+        if(!config.check(remoteGroupName.str()))
+        {
+            CD_INFO("Finished parsing \"exposed_joint_\" groups.\n");
+            done = true;
+        }
+        CD_SUCCESS("\"%s\" group found!\n", remoteGroupName.str().c_str());
+        yarp::os::Bottle exposedGroup = config.findGroup(remoteGroupName.str());
+        CD_INFO("%s\n", exposedGroup.toString().c_str());
+
+        idx++;
     }
 
     return true;
