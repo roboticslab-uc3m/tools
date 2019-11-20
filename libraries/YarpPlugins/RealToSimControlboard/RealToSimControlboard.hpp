@@ -447,6 +447,10 @@ private:
     // General Joint Motion Controller parameters //
     unsigned int axes;
 
+    //yarp::os::Network yarp; // Uncomment if required
+
+    std::vector<yarp::dev::PolyDriver*> remoteControlboards;
+
 };
 
 }  // namespace roboticslab
