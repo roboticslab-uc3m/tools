@@ -6,7 +6,7 @@
 
 bool roboticslab::RealToSimControlboard::getAxes(int *ax)
 {
-    *ax = 1;
+    *ax = axes;
     return true;
 }
 

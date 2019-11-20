@@ -52,16 +52,15 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
     }
 
     int idx = 0;
-    bool done = false;
-    while(!done)
+    while(true)
     {
         std::ostringstream remoteGroupName("exposed_joint_", std::ios_base::app);
         remoteGroupName << idx;
         if(!config.check(remoteGroupName.str()))
         {
-            CD_INFO("Finished parsing \"exposed_joint_\" groups.\n");
-            done = true;
-            continue;
+            axes = idx;
+            CD_INFO("Could not find \"%s\" group, setting number of exposed joints to %d.\n",remoteGroupName.str().c_str(), axes);
+            break;
         }
         CD_SUCCESS("\"%s\" group found!\n", remoteGroupName.str().c_str());
         yarp::os::Bottle exposedGroup = config.findGroup(remoteGroupName.str());
