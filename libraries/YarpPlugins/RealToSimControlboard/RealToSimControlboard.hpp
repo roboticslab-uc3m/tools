@@ -21,6 +21,7 @@ namespace roboticslab
 class ExposedJointControlledDevice
 {
 public:
+    ExposedJointControlledDevice(std::string name) : name(name) {}
     bool positionMove(double ref)
     {
         CD_INFO("* %s: %f\n",name.c_str(), ref);
