@@ -18,6 +18,21 @@
 namespace roboticslab
 {
 
+class ExposedJointControlledDevice
+{
+public:
+    bool positionMove(double ref)
+    {
+        CD_INFO("* %s: %f\n",name.c_str(), ref);
+        //positionMove(const int n_joint, const int *joints, const double *refs)
+        //iPositionControl->
+        return true;
+    }
+private:
+    yarp::dev::IPositionControl* iPositionControl;
+    std::string name;
+};
+
 class ExposedJoint
 {
 public:
@@ -25,13 +40,13 @@ public:
     bool positionMove(double ref)
     {
         CD_INFO("%s: %f\n",name.c_str(), ref);
-        //for(size_t i=0; i<iPositionControls.size();i++)
-            //positionMove(const int n_joint, const int *joints, const double *refs)
-            //iPositionControls[i]->
+        bool ok = true;
+        for(size_t i=0; i<exposedJointControlledDevices.size();i++)
+            ok &= exposedJointControlledDevices[i]->positionMove(ref);
         return true;
     }
 private:
-    std::vector<yarp::dev::IPositionControl*> iPositionControls;
+    std::vector<ExposedJointControlledDevice*> exposedJointControlledDevices;
     std::string name;
 };
 
