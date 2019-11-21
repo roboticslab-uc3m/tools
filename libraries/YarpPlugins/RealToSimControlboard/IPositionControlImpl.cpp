@@ -14,15 +14,7 @@ bool roboticslab::RealToSimControlboard::getAxes(int *ax)
 
 bool roboticslab::RealToSimControlboard::positionMove(int j, double ref)
 {
-    CD_WARNING("Only linear 1 implementation.\n");
-    for(size_t simJointIdx=0; simJointIdx<realToSimIPositionControl[j].size(); simJointIdx++)
-    {
-        CD_INFO("%d\n",simJointIdx);
-        yarp::dev::IPositionControl* iPositionControl = realToSimIPositionControl[j][simJointIdx];
-        double simJointRef = ref * 1.0; // linear 1
-        iPositionControl->positionMove(j,simJointRef);
-    }
-    return true;
+    return exposedJoints[j]->positionMove(ref);
 }
 
 // -----------------------------------------------------------------------------

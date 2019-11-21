@@ -18,6 +18,20 @@
 namespace roboticslab
 {
 
+class ExposedJoint
+{
+public:
+    ExposedJoint(std::string name) : name(name) {}
+    bool positionMove(double ref)
+    {
+        CD_INFO("%s: %f\n",name.c_str(), ref);
+        return true;
+    }
+private:
+    std::vector<yarp::dev::IPositionControl*> iPositionControls;
+    std::string name;
+};
+
 /**
  * @ingroup YarpPlugins
  * \defgroup RealToSimControlboard
@@ -450,7 +464,7 @@ private:
     //yarp::os::Network yarp; // Uncomment if required
     std::vector<yarp::dev::PolyDriver*> remoteControlboards;
 
-    std::vector<std::vector<yarp::dev::IPositionControl*>> realToSimIPositionControl;
+    std::vector<ExposedJoint*> exposedJoints;
 
 };
 

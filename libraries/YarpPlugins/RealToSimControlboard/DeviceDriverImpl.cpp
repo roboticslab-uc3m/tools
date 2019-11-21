@@ -65,6 +65,8 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
             break;
         }
         CD_SUCCESS("\"%s\" group found!\n", exposedGroupName.str().c_str());
+        ExposedJoint* exposedJoint = new ExposedJoint(exposedGroupName.str());
+        exposedJoints.push_back(exposedJoint);;
         yarp::os::Bottle exposedGroup = config.findGroup(exposedGroupName.str());
         CD_INFO("%s\n", exposedGroup.toString().c_str());
         for(size_t remoteGroupIdx=1; remoteGroupIdx< exposedGroup.size(); remoteGroupIdx++)
@@ -96,6 +98,11 @@ bool RealToSimControlboard::close()
         remoteControlboards[i]->close();
         delete remoteControlboards[i];
         remoteControlboards[i] = 0;
+    }
+    for(size_t i=0;i<exposedJoints.size();i++)
+    {
+        delete exposedJoints[i];
+        exposedJoints[i] = 0;
     }
     return true;
 }
