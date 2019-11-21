@@ -25,6 +25,9 @@ public:
     bool positionMove(double ref)
     {
         CD_INFO("%s: %f\n",name.c_str(), ref);
+        //for(size_t i=0; i<iPositionControls.size();i++)
+            //positionMove(const int n_joint, const int *joints, const double *refs)
+            //iPositionControls[i]->
         return true;
     }
 private:
