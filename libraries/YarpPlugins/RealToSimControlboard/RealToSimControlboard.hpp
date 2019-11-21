@@ -31,6 +31,7 @@ public:
     }
 private:
     yarp::dev::IPositionControl* iPositionControl;
+    std::vector<int> iPositionControlJoints;
     std::string name;
 };
 
@@ -38,6 +39,18 @@ class ExposedJoint
 {
 public:
     ExposedJoint(std::string name) : name(name) {}
+    ~ExposedJoint()
+    {
+        for(size_t i=0;i<exposedJointControlledDevices.size();i++)
+        {
+            delete exposedJointControlledDevices[i];
+            exposedJointControlledDevices[i] = 0;
+        }
+    }
+    void addExposedJointControlledDevice(ExposedJointControlledDevice* exposedJointControlledDevice)
+    {
+        exposedJointControlledDevices.push_back(exposedJointControlledDevice);
+    }
     bool positionMove(double ref)
     {
         CD_INFO("%s: %f\n",name.c_str(), ref);
