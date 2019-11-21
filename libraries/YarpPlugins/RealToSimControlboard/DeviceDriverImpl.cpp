@@ -75,7 +75,7 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
             CD_DEBUG("* %s [%d]\n", remoteName.c_str(), remoteNameToIdx[remoteName]);
             for(size_t remoteJointIdx=1; remoteJointIdx< remoteGroup->size(); remoteJointIdx++)
             {
-                yarp::os::Bottle* b = remoteGroup->get(remoteGroupIdx).asList();
+                yarp::os::Bottle* b = remoteGroup->get(remoteJointIdx).asList();
                 CD_DEBUG("* %s\n", b->toString().c_str());
             }
         }
