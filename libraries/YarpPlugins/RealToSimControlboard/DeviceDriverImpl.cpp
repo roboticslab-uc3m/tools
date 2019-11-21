@@ -68,18 +68,18 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
         CD_SUCCESS("\"%s\" group found!\n", exposedJointName.c_str());
         ExposedJoint* exposedJoint = new ExposedJoint(exposedJointName);
         exposedJoints.push_back(exposedJoint);;
-        yarp::os::Bottle exposedGroup = config.findGroup(exposedJointName);
-        CD_INFO("%s\n", exposedGroup.toString().c_str());
-        for(size_t remoteGroupIdx=1; remoteGroupIdx< exposedGroup.size(); remoteGroupIdx++)
+        yarp::os::Bottle exposedJointGroup = config.findGroup(exposedJointName);
+        CD_INFO("%s\n", exposedJointGroup.toString().c_str());
+        for(size_t exposedJointControlledDeviceIdx=1; exposedJointControlledDeviceIdx<exposedJointGroup.size(); exposedJointControlledDeviceIdx++)
         {
-            yarp::os::Bottle* remoteGroup = exposedGroup.get(remoteGroupIdx).asList();
-            CD_DEBUG("%s\n", remoteGroup->toString().c_str());
-            std::string remoteName = remoteGroup->get(0).asString();
-            CD_DEBUG("* %s [%d]\n", remoteName.c_str(), controlledDeviceNameToIdx[remoteName]);
-            for(size_t remoteJointIdx=1; remoteJointIdx< remoteGroup->size(); remoteJointIdx++)
+            yarp::os::Bottle* exposedJointControlledDeviceGroup = exposedJointGroup.get(exposedJointControlledDeviceIdx).asList();
+            CD_DEBUG("%s\n", exposedJointControlledDeviceGroup->toString().c_str());
+            std::string exposedJointControlledDeviceName = exposedJointControlledDeviceGroup->get(0).asString();
+            CD_DEBUG("* %s [%d]\n", exposedJointControlledDeviceName.c_str(), controlledDeviceNameToIdx[exposedJointControlledDeviceName]);
+            for(size_t exposedJointControlledDeviceJointIdx=1; exposedJointControlledDeviceJointIdx<exposedJointControlledDeviceGroup->size(); exposedJointControlledDeviceJointIdx++)
             {
-                yarp::os::Bottle* b = remoteGroup->get(remoteJointIdx).asList();
-                CD_DEBUG("* %s\n", b->toString().c_str());
+                yarp::os::Bottle* exposedJointControlledDeviceJointGroup = exposedJointControlledDeviceGroup->get(exposedJointControlledDeviceJointIdx).asList();
+                CD_DEBUG("* %s\n", exposedJointControlledDeviceJointGroup->toString().c_str());
             }
         }
 
