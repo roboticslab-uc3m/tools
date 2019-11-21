@@ -18,63 +18,64 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
         CD_ERROR("Required \"remotes\" list\n");
         return false;
     }
-    yarp::os::Bottle* remotesList = config.find("remotes").asList();
-    if (!remotesList)
+    yarp::os::Bottle* controlledDeviceList = config.find("remotes").asList();
+    if (!controlledDeviceList)
     {
         CD_ERROR("Error parsing parameters: \"remotes\" should be followed by a list\n");
         return false;
     }
-    CD_DEBUG("%s\n", remotesList->toString().c_str());
+    CD_DEBUG("%s\n", controlledDeviceList->toString().c_str());
 
-    std::map<std::string,int> remoteNameToIdx;
-    for(size_t i=0; i< remotesList->size(); i++)
+    std::map<std::string,int> controlledDeviceNameToIdx;
+    for(size_t controlledDeviceIdx=0; controlledDeviceIdx< controlledDeviceList->size(); controlledDeviceIdx++)
     {
-        std::string remoteGroupName = remotesList->get(i).asString();
-        if(!config.check(remoteGroupName))
+        std::string controlledDeviceName = controlledDeviceList->get(controlledDeviceIdx).asString();
+        if(!config.check(controlledDeviceName))
         {
-            CD_ERROR("\"%s\" group not found!\n", remoteGroupName.c_str());
+            CD_ERROR("\"%s\" group not found!\n", controlledDeviceName.c_str());
             return false;
         }
-        CD_SUCCESS("\"%s\" group found!\n", remoteGroupName.c_str());
-        yarp::os::Bottle remoteGroup = config.findGroup(remoteGroupName);
-        CD_INFO("%s\n", remoteGroup.toString().c_str());
-        yarp::os::Property options;
-        options.fromString(remoteGroup.toString());
+        CD_SUCCESS("\"%s\" group found!\n", controlledDeviceName.c_str());
+        yarp::os::Bottle controlledDeviceGroup = config.findGroup(controlledDeviceName);
+        CD_INFO("%s\n", controlledDeviceGroup.toString().c_str());
+        yarp::os::Property controlledDeviceOptions;
+        controlledDeviceOptions.fromString(controlledDeviceGroup.toString());
 
-        yarp::dev::PolyDriver* remoteControlboard = new yarp::dev::PolyDriver(options);
-        if( ! remoteControlboard->isValid() )
+        yarp::dev::PolyDriver* controlledDevice = new yarp::dev::PolyDriver(controlledDeviceOptions);
+        if( ! controlledDevice->isValid() )
         {
-            CD_ERROR("\"%s\" group did not create a valid yarp plugin!\n", remoteGroupName.c_str());
+            CD_ERROR("\"%s\" group did not create a valid yarp device!\n", controlledDeviceName.c_str());
             return false;
         }
-        CD_SUCCESS("\"%s\" group created a valid yarp plugin!\n", remoteGroupName.c_str());
+        CD_SUCCESS("\"%s\" group created a valid yarp device!\n", controlledDeviceName.c_str());
 
-        remoteNameToIdx[remoteGroupName] = i;
-        remoteControlboards.push_back(remoteControlboard);
+        controlledDeviceNameToIdx[controlledDeviceName] = controlledDeviceIdx;
+        controlledDevices.push_back(controlledDevice);
     }
 
     int idx = 0;
     while(true)
     {
-        std::ostringstream exposedGroupName("exposed_joint_", std::ios_base::app);
-        exposedGroupName << idx;
-        if(!config.check(exposedGroupName.str()))
+        std::ostringstream exposedJointNameStream("exposed_joint_", std::ios_base::app);
+        exposedJointNameStream << idx;
+        std::string exposedJointName(exposedJointNameStream.str());
+        if(!config.check(exposedJointName))
         {
             axes = idx;
-            CD_INFO("Could not find \"%s\" group, setting number of exposed joints to %d.\n",exposedGroupName.str().c_str(), axes);
+            CD_INFO("Could not find \"%s\" group, setting number of exposed joints to %d.\n",exposedJointName.c_str(), axes);
             break;
         }
-        CD_SUCCESS("\"%s\" group found!\n", exposedGroupName.str().c_str());
-        ExposedJoint* exposedJoint = new ExposedJoint(exposedGroupName.str());
+        CD_SUCCESS("\"%s\" group found!\n", exposedJointName.c_str());
+        ExposedJoint* exposedJoint = new ExposedJoint(exposedJointName);
         exposedJoints.push_back(exposedJoint);;
-        yarp::os::Bottle exposedGroup = config.findGroup(exposedGroupName.str());
+        yarp::os::Bottle exposedGroup = config.findGroup(exposedJointName);
         CD_INFO("%s\n", exposedGroup.toString().c_str());
         for(size_t remoteGroupIdx=1; remoteGroupIdx< exposedGroup.size(); remoteGroupIdx++)
         {
             yarp::os::Bottle* remoteGroup = exposedGroup.get(remoteGroupIdx).asList();
             CD_DEBUG("%s\n", remoteGroup->toString().c_str());
             std::string remoteName = remoteGroup->get(0).asString();
-            CD_DEBUG("* %s [%d]\n", remoteName.c_str(), remoteNameToIdx[remoteName]);
+            CD_DEBUG("* %s [%d]\n", remoteName.c_str(), controlledDeviceNameToIdx[remoteName]);
             for(size_t remoteJointIdx=1; remoteJointIdx< remoteGroup->size(); remoteJointIdx++)
             {
                 yarp::os::Bottle* b = remoteGroup->get(remoteJointIdx).asList();
@@ -93,11 +94,11 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
 bool RealToSimControlboard::close()
 {
     CD_INFO("\n");
-    for(size_t i=0;i<remoteControlboards.size();i++)
+    for(size_t i=0;i<controlledDevices.size();i++)
     {
-        remoteControlboards[i]->close();
-        delete remoteControlboards[i];
-        remoteControlboards[i] = 0;
+        controlledDevices[i]->close();
+        delete controlledDevices[i];
+        controlledDevices[i] = 0;
     }
     for(size_t i=0;i<exposedJoints.size();i++)
     {
