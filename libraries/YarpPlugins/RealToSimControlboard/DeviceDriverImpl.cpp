@@ -26,6 +26,7 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
     }
     CD_DEBUG("%s\n", remotesList->toString().c_str());
 
+    std::map<std::string,int> remoteNameToIdx;
     for(size_t i=0; i< remotesList->size(); i++)
     {
         std::string remoteGroupName = remotesList->get(i).asString();
@@ -48,27 +49,35 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
         }
         CD_SUCCESS("\"%s\" group created a valid yarp plugin!\n", remoteGroupName.c_str());
 
+        remoteNameToIdx[remoteGroupName] = i;
         remoteControlboards.push_back(remoteControlboard);
     }
 
     int idx = 0;
     while(true)
     {
-        std::ostringstream remoteGroupName("exposed_joint_", std::ios_base::app);
-        remoteGroupName << idx;
-        if(!config.check(remoteGroupName.str()))
+        std::ostringstream exposedGroupName("exposed_joint_", std::ios_base::app);
+        exposedGroupName << idx;
+        if(!config.check(exposedGroupName.str()))
         {
             axes = idx;
-            CD_INFO("Could not find \"%s\" group, setting number of exposed joints to %d.\n",remoteGroupName.str().c_str(), axes);
+            CD_INFO("Could not find \"%s\" group, setting number of exposed joints to %d.\n",exposedGroupName.str().c_str(), axes);
             break;
         }
-        CD_SUCCESS("\"%s\" group found!\n", remoteGroupName.str().c_str());
-        yarp::os::Bottle exposedGroup = config.findGroup(remoteGroupName.str());
+        CD_SUCCESS("\"%s\" group found!\n", exposedGroupName.str().c_str());
+        yarp::os::Bottle exposedGroup = config.findGroup(exposedGroupName.str());
         CD_INFO("%s\n", exposedGroup.toString().c_str());
-        for(size_t i=1; i< exposedGroup.size(); i++)
+        for(size_t remoteGroupIdx=1; remoteGroupIdx< exposedGroup.size(); remoteGroupIdx++)
         {
-            yarp::os::Bottle* b = exposedGroup.get(i).asList();
-            CD_DEBUG("%s\n", b->toString().c_str());
+            yarp::os::Bottle* remoteGroup = exposedGroup.get(remoteGroupIdx).asList();
+            CD_DEBUG("%s\n", remoteGroup->toString().c_str());
+            std::string remoteName = remoteGroup->get(0).asString();
+            CD_DEBUG("* %s [%d]\n", remoteName.c_str(), remoteNameToIdx[remoteName]);
+            for(size_t remoteJointIdx=1; remoteJointIdx< remoteGroup->size(); remoteJointIdx++)
+            {
+                yarp::os::Bottle* b = remoteGroup->get(remoteGroupIdx).asList();
+                CD_DEBUG("* %s\n", b->toString().c_str());
+            }
         }
 
         idx++;

@@ -448,8 +448,9 @@ private:
     unsigned int axes;
 
     //yarp::os::Network yarp; // Uncomment if required
-
     std::vector<yarp::dev::PolyDriver*> remoteControlboards;
+
+    std::vector<std::vector<yarp::dev::IPositionControl*>> realToSimIPositionControl;
 
 };
 
