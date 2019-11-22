@@ -12,6 +12,7 @@ if(NOT SKIP_RealToSimControlboard)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}) # yarp plugin builder needs this
 
 yarp_add_plugin(RealToSimControlboard RealToSimControlboard.hpp
+                                      RealToSimControlboard.cpp
                                       DeviceDriverImpl.cpp
                                       IEncodersTimedImpl.cpp
                                       IPositionControlImpl.cpp

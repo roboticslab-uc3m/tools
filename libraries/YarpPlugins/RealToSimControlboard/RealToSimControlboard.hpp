@@ -21,14 +21,8 @@ namespace roboticslab
 class ExposedJointControlledDevice
 {
 public:
-    ExposedJointControlledDevice(std::string name) : name(name) {}
-    bool positionMove(double ref)
-    {
-        CD_INFO("* %s: %f\n",name.c_str(), ref);
-        //positionMove(const int n_joint, const int *joints, const double *refs)
-        //iPositionControl->
-        return true;
-    }
+    ExposedJointControlledDevice(std::string name);
+    bool positionMove(double ref);
 private:
     yarp::dev::IPositionControl* iPositionControl;
     std::vector<int> iPositionControlJoints;
@@ -38,27 +32,10 @@ private:
 class ExposedJoint
 {
 public:
-    ExposedJoint(std::string name) : name(name) {}
-    ~ExposedJoint()
-    {
-        for(size_t i=0;i<exposedJointControlledDevices.size();i++)
-        {
-            delete exposedJointControlledDevices[i];
-            exposedJointControlledDevices[i] = 0;
-        }
-    }
-    void addExposedJointControlledDevice(ExposedJointControlledDevice* exposedJointControlledDevice)
-    {
-        exposedJointControlledDevices.push_back(exposedJointControlledDevice);
-    }
-    bool positionMove(double ref)
-    {
-        CD_INFO("%s: %f\n",name.c_str(), ref);
-        bool ok = true;
-        for(size_t i=0; i<exposedJointControlledDevices.size();i++)
-            ok &= exposedJointControlledDevices[i]->positionMove(ref);
-        return true;
-    }
+    ExposedJoint(std::string name);
+    ~ExposedJoint();
+    void addExposedJointControlledDevice(ExposedJointControlledDevice* exposedJointControlledDevice);
+    bool positionMove(double ref);
 private:
     std::vector<ExposedJointControlledDevice*> exposedJointControlledDevices;
     std::string name;
