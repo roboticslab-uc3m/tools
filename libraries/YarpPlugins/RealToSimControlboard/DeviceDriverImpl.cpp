@@ -51,8 +51,6 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
 
         controlledDeviceNameToIdx[controlledDeviceName] = controlledDeviceIdx;
         controlledDevices.push_back(controlledDevice);
-        CD_INFO("%d, %p\n",controlledDevices.size(), controlledDevices[0]);
-
     }
 
     int idx = 0;
@@ -81,8 +79,6 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
             std::string exposedJointControlledDeviceName = exposedJointControlledDeviceGroup->get(0).asString();
             int idx = controlledDeviceNameToIdx[exposedJointControlledDeviceName];
             CD_DEBUG("** %s [%d]\n", exposedJointControlledDeviceName.c_str(), idx);
-
-            CD_INFO("%d, %p\n",controlledDevices.size(), controlledDevices[0]);
 
             ExposedJointControlledDevice* exposedJointControlledDevice =
                 new ExposedJointControlledDevice(exposedJointControlledDeviceName, controlledDevices[idx]);
