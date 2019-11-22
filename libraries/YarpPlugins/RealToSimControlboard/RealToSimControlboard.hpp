@@ -25,9 +25,10 @@ public:
     bool addControlledDeviceJoint(int idx);
     bool positionMove(double ref);
 private:
-    yarp::dev::IPositionControl* iPositionControl;
-    std::vector<int> controlledDeviceJoints;
     std::string name;
+    size_t axes;
+    std::vector<int> controlledDeviceJoints;
+    yarp::dev::IPositionControl* iPositionControl;
 };
 
 class ExposedJoint

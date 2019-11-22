@@ -23,6 +23,7 @@ ExposedJointControlledDevice::ExposedJointControlledDevice(std::string name, yar
 bool ExposedJointControlledDevice::addControlledDeviceJoint(int idx)
 {
     controlledDeviceJoints.push_back(idx);
+    axes = controlledDeviceJoints.size();
     return true;
 }
 
@@ -37,7 +38,6 @@ bool ExposedJointControlledDevice::positionMove(double ref)
         return true;
     }
 
-    size_t axes = controlledDeviceJoints.size();
     std::vector<double> refs(axes);
     for(size_t i=0; i<axes; i++)
         refs[i] = ref * 1 + 0;
