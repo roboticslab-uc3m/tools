@@ -10,7 +10,10 @@ namespace roboticslab
 ExposedJointControlledDevice::ExposedJointControlledDevice(std::string name, yarp::dev::PolyDriver *device) : name(name)
 {
     if(! device->view(iPositionControl) )
+    {
         CD_DEBUG("%s: NO view IPositionControl\n", name.c_str());
+        iPositionControl = nullptr;
+    }
     else
         CD_DEBUG("%s: view IPositionControl\n", name.c_str());
 }
@@ -28,9 +31,18 @@ bool ExposedJointControlledDevice::addControlledDeviceJoint(int idx)
 bool ExposedJointControlledDevice::positionMove(double ref)
 {
     CD_INFO("* %s: %f\n",name.c_str(), ref);
-    //positionMove(const int n_joint, const int *joints, const double *refs)
-    //iPositionControl->
-    return true;
+    if(iPositionControl == nullptr)
+    {
+        CD_DEBUG("%s: NO view IPositionControl\n", name.c_str());
+        return true;
+    }
+
+    size_t axes = controlledDeviceJoints.size();
+    std::vector<double> refs(axes);
+    for(size_t i=0; i<axes; i++)
+        refs[i] = ref * 1 + 0;
+
+    return iPositionControl->positionMove(axes, controlledDeviceJoints.data(), refs.data());
 }
 
 // -----------------------------------------------------------------------------
