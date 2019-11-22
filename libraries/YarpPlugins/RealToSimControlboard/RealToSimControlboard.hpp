@@ -21,11 +21,12 @@ namespace roboticslab
 class ExposedJointControlledDevice
 {
 public:
-    ExposedJointControlledDevice(std::string name);
+    ExposedJointControlledDevice(std::string name, yarp::dev::PolyDriver* device);
+    bool addControlledDeviceJoint(int idx);
     bool positionMove(double ref);
 private:
     yarp::dev::IPositionControl* iPositionControl;
-    std::vector<int> iPositionControlJoints;
+    std::vector<int> controlledDeviceJoints;
     std::string name;
 };
 

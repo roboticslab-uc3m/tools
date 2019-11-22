@@ -51,6 +51,8 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
 
         controlledDeviceNameToIdx[controlledDeviceName] = controlledDeviceIdx;
         controlledDevices.push_back(controlledDevice);
+        CD_INFO("%d, %p\n",controlledDevices.size(), controlledDevices[0]);
+
     }
 
     int idx = 0;
@@ -77,15 +79,26 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
             yarp::os::Bottle* exposedJointControlledDeviceGroup = exposedJointGroup.get(exposedJointControlledDeviceIdx).asList();
             CD_DEBUG("** %s\n", exposedJointControlledDeviceGroup->toString().c_str());
             std::string exposedJointControlledDeviceName = exposedJointControlledDeviceGroup->get(0).asString();
+            int idx = controlledDeviceNameToIdx[exposedJointControlledDeviceName];
+            CD_DEBUG("** %s [%d]\n", exposedJointControlledDeviceName.c_str(), idx);
 
-            ExposedJointControlledDevice* exposedJointControlledDevice = new ExposedJointControlledDevice(exposedJointControlledDeviceName);
+            CD_INFO("%d, %p\n",controlledDevices.size(), controlledDevices[0]);
+
+            ExposedJointControlledDevice* exposedJointControlledDevice =
+                new ExposedJointControlledDevice(exposedJointControlledDeviceName, controlledDevices[idx]);
             exposedJoint->addExposedJointControlledDevice(exposedJointControlledDevice);
 
-            CD_DEBUG("** %s [%d]\n", exposedJointControlledDeviceName.c_str(), controlledDeviceNameToIdx[exposedJointControlledDeviceName]);
             for(size_t exposedJointControlledDeviceJointIdx=1; exposedJointControlledDeviceJointIdx<exposedJointControlledDeviceGroup->size(); exposedJointControlledDeviceJointIdx++)
             {
                 yarp::os::Bottle* exposedJointControlledDeviceJointGroup = exposedJointControlledDeviceGroup->get(exposedJointControlledDeviceJointIdx).asList();
                 CD_DEBUG("*** %s\n", exposedJointControlledDeviceJointGroup->toString().c_str());
+
+                if(!exposedJointControlledDeviceJointGroup->check("joint"))
+                {
+                    CD_ERROR("Must control at least one joint\n");
+                }
+                int jointIdx = exposedJointControlledDeviceJointGroup->find("joint").asInt();
+                exposedJointControlledDevice->addControlledDeviceJoint(jointIdx);
             }
         }
 
