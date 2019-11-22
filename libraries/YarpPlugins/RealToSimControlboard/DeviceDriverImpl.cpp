@@ -65,23 +65,27 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
             CD_INFO("Could not find \"%s\" group, setting number of exposed joints to %d.\n",exposedJointName.c_str(), axes);
             break;
         }
-        CD_SUCCESS("\"%s\" group found!\n", exposedJointName.c_str());
+        CD_SUCCESS("* %s group found!\n", exposedJointName.c_str());
+
         ExposedJoint* exposedJoint = new ExposedJoint(exposedJointName);
         exposedJoints.push_back(exposedJoint);;
+
         yarp::os::Bottle exposedJointGroup = config.findGroup(exposedJointName);
-        CD_INFO("%s\n", exposedJointGroup.toString().c_str());
+        CD_DEBUG("* %s\n", exposedJointGroup.toString().c_str());
         for(size_t exposedJointControlledDeviceIdx=1; exposedJointControlledDeviceIdx<exposedJointGroup.size(); exposedJointControlledDeviceIdx++)
         {
             yarp::os::Bottle* exposedJointControlledDeviceGroup = exposedJointGroup.get(exposedJointControlledDeviceIdx).asList();
-            CD_DEBUG("%s\n", exposedJointControlledDeviceGroup->toString().c_str());
+            CD_DEBUG("** %s\n", exposedJointControlledDeviceGroup->toString().c_str());
             std::string exposedJointControlledDeviceName = exposedJointControlledDeviceGroup->get(0).asString();
+
             ExposedJointControlledDevice* exposedJointControlledDevice = new ExposedJointControlledDevice(exposedJointControlledDeviceName);
             exposedJoint->addExposedJointControlledDevice(exposedJointControlledDevice);
-            CD_DEBUG("* %s [%d]\n", exposedJointControlledDeviceName.c_str(), controlledDeviceNameToIdx[exposedJointControlledDeviceName]);
+
+            CD_DEBUG("** %s [%d]\n", exposedJointControlledDeviceName.c_str(), controlledDeviceNameToIdx[exposedJointControlledDeviceName]);
             for(size_t exposedJointControlledDeviceJointIdx=1; exposedJointControlledDeviceJointIdx<exposedJointControlledDeviceGroup->size(); exposedJointControlledDeviceJointIdx++)
             {
                 yarp::os::Bottle* exposedJointControlledDeviceJointGroup = exposedJointControlledDeviceGroup->get(exposedJointControlledDeviceJointIdx).asList();
-                CD_DEBUG("* %s\n", exposedJointControlledDeviceJointGroup->toString().c_str());
+                CD_DEBUG("*** %s\n", exposedJointControlledDeviceJointGroup->toString().c_str());
             }
         }
 
