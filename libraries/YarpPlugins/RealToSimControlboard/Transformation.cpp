@@ -53,9 +53,17 @@ PiecewiseLinearTransformation::PiecewiseLinearTransformation(yarp::os::Searchabl
     std::string csvFileName = parameters->find("csvFile").asString();
     CD_DEBUG("**** \"csvFile\" parameter for PiecewiseLinearTransformation found: \"%s\"\n", csvFileName.c_str());
 
+    if(!parameters->check("context"))
+    {
+        CD_ERROR("**** \"context\" parameter for PiecewiseLinearTransformation NOT found\n");
+        return;
+    }
+    std::string context = parameters->find("context").asString();
+    CD_DEBUG("**** \"context\" parameter for PiecewiseLinearTransformation found: \"%s\"\n", context.c_str());
+
     yarp::os::ResourceFinder rf;
     rf.setVerbose(false);
-    rf.setDefaultContext("testRealToSimControlboard");
+    rf.setDefaultContext(context);
     std::string csvFileFullName = rf.findFileByName(csvFileName);
     if(csvFileFullName.empty())
     {
