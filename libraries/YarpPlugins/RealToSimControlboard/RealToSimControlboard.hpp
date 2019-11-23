@@ -22,8 +22,7 @@ class ExposedJointControlledDevice
 {
 public:
     ExposedJointControlledDevice(std::string name, yarp::dev::PolyDriver* device);
-    bool addControlledDeviceJoint(int idx);
-    bool addTransformation(const std::string& transformation);
+    bool addControlledDeviceJoint(yarp::os::Bottle* bottle);
     bool positionMove(double ref);
 private:
     std::string name;

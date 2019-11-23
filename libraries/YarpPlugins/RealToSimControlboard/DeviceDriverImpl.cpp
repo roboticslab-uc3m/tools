@@ -89,18 +89,7 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
                 yarp::os::Bottle* exposedJointControlledDeviceJointGroup = exposedJointControlledDeviceGroup->get(exposedJointControlledDeviceJointIdx).asList();
                 CD_DEBUG("*** %s\n", exposedJointControlledDeviceJointGroup->toString().c_str());
 
-                if(!exposedJointControlledDeviceJointGroup->check("joint"))
-                {
-                    CD_ERROR("*** Must control at least one joint\n");
-                }
-                int jointIdx = exposedJointControlledDeviceJointGroup->find("joint").asInt();
-                exposedJointControlledDevice->addControlledDeviceJoint(jointIdx);
-
-                if(!exposedJointControlledDeviceJointGroup->check("transformation"))
-                {
-                    CD_ERROR("*** Must define \"transformation\" for joint\n");
-                }
-                exposedJointControlledDevice->addTransformation(exposedJointControlledDeviceJointGroup->find("transformation").asString());
+                exposedJointControlledDevice->addControlledDeviceJoint(exposedJointControlledDeviceJointGroup);
             }
         }
 

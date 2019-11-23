@@ -9,29 +9,46 @@ namespace roboticslab
 
 ExposedJointControlledDevice::ExposedJointControlledDevice(std::string name, yarp::dev::PolyDriver *device) : name(name)
 {
+    CD_DEBUG("** %s\n", name.c_str());
     if(! device->view(iPositionControl) )
     {
-        CD_DEBUG("%s: NO view IPositionControl\n", name.c_str());
+        CD_DEBUG("** NO view IPositionControl\n");
         iPositionControl = nullptr;
     }
     else
-        CD_DEBUG("%s: view IPositionControl\n", name.c_str());
+        CD_DEBUG("** view IPositionControl\n");
 }
 
 // -----------------------------------------------------------------------------
 
-bool ExposedJointControlledDevice::addControlledDeviceJoint(int idx)
+bool ExposedJointControlledDevice::addControlledDeviceJoint(yarp::os::Bottle* bottle)
 {
-    controlledDeviceJoints.push_back(idx);
+    if(!bottle->check("joint"))
+    {
+        CD_ERROR("*** \"joint\" (index) for joint NOT found\n");
+        return false;
+    }
+    CD_DEBUG("*** \"joint\" (index) for joint found\n");
+    int jointIdx = bottle->find("joint").asInt();
+    controlledDeviceJoints.push_back(jointIdx);
     axes = controlledDeviceJoints.size();
-    return true;
-}
 
-// -----------------------------------------------------------------------------
+    if(!bottle->check("transformation"))
+    {
+        CD_ERROR("*** \"transformation\" for joint NOT found\n");
+        return false;
+    }
+    CD_DEBUG("*** \"transformation\" for joint found\n");
+    std::string transformation = bottle->find("transformation").asString();
 
-bool ExposedJointControlledDevice::addTransformation(const std::string& transformation)
-{
-    return true;
+
+    if(transformation == "linear")
+    {
+        CD_DEBUG("*** transformation of type \"%s\" set\n", transformation.c_str());
+        return true;
+    }
+    CD_ERROR("*** transformation of type \"%s\" NOT implemented \n",transformation.c_str());
+    return false;
 }
 
 // -----------------------------------------------------------------------------
