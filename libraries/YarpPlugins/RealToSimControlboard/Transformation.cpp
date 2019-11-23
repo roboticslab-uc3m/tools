@@ -26,7 +26,13 @@ LinearTransformation::LinearTransformation(yarp::os::Searchable* parameters)
     }
     CD_DEBUG("**** \"b\" for LinearTransformation found\n");
     b = parameters->find("b").asDouble();
+
+    valid = true;
 }
+
+// -----------------------------------------------------------------------------
+
+
 
 // -----------------------------------------------------------------------------
 
@@ -39,22 +45,23 @@ double LinearTransformation::transform(const double& value)
 
 PiecewiseLinearTransformation::PiecewiseLinearTransformation(yarp::os::Searchable* parameters)
 {
-    if(!parameters->check("file"))
+    if(!parameters->check("csvFile"))
     {
-        CD_ERROR("**** \"file\" for PiecewiseLinearTransformation NOT found\n");
+        CD_ERROR("**** \"csvFile\" for PiecewiseLinearTransformation NOT found\n");
         return;
     }
-    CD_DEBUG("**** \"file\" for PiecewiseLinearTransformation found\n");
-    std::string fileName = parameters->find("file").asString();
+    CD_DEBUG("**** \"csvFile\" for PiecewiseLinearTransformation found\n");
+    std::string csvFileName = parameters->find("csvFile").asString();
 
-    std::ifstream file(fileName);
-    if(!file.is_open())
+    std::ifstream csvFile(csvFileName);
+    if(!csvFile.is_open())
     {
-        CD_ERROR("**** file \"%s\" for PiecewiseLinearTransformation NOT open\n");
+        CD_ERROR("**** csvFile \"%s\" for PiecewiseLinearTransformation NOT open\n", csvFileName.c_str());
         return;
     }
-    CD_ERROR("**** file \"%s\" for PiecewiseLinearTransformation NOT open\n");
+    CD_DEBUG("**** csvFile \"%s\" for PiecewiseLinearTransformation open\n", csvFileName.c_str());
 
+    valid = true;
 }
 
 // -----------------------------------------------------------------------------

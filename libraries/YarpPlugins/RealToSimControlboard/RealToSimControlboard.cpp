@@ -58,6 +58,8 @@ bool ExposedJointControlledDevice::addControlledDeviceJoint(yarp::os::Searchable
     {
         CD_DEBUG("*** transformation of type \"%s\" set\n", transformation.c_str());
         Transformation* transformation = new LinearTransformation(parameters);
+        if(!transformation->isValid())
+            return false;
         transformations.push_back(transformation);
         return true;
     }
@@ -65,6 +67,8 @@ bool ExposedJointControlledDevice::addControlledDeviceJoint(yarp::os::Searchable
     {
         CD_DEBUG("*** transformation of type \"%s\" set\n", transformation.c_str());
         Transformation* transformation = new PiecewiseLinearTransformation(parameters);
+        if(!transformation->isValid())
+            return false;
         transformations.push_back(transformation);
         return true;
     }

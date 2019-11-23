@@ -15,8 +15,12 @@ namespace roboticslab
 class Transformation
 {
 public:
+    Transformation() : valid(false) {}
     virtual ~Transformation() {}
+    virtual bool isValid() const { return valid; }
     virtual double transform(const double& value) = 0;
+protected:
+    bool valid;
 };
 
 class LinearTransformation : public Transformation
