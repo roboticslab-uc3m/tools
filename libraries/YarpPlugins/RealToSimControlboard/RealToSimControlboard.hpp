@@ -5,13 +5,8 @@
 
 #include <yarp/os/all.h>
 #include <yarp/dev/all.h>
-#include <yarp/dev/IControlLimits2.h>
 
-#include <iostream>
-#include <stdio.h>
-#include <sstream>
 #include <vector>
-#include <math.h>
 
 #include "ColorDebug.h"
 
