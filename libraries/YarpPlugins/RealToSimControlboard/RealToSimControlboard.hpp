@@ -23,7 +23,7 @@ public:
 class LinearTransformation : public Transformation
 {
 public:
-    LinearTransformation(yarp::os::Bottle* bottle);
+    LinearTransformation(yarp::os::Searchable* parameters);
     double transform(const double& value);
 };
 
@@ -32,7 +32,7 @@ class ExposedJointControlledDevice
 public:
     ExposedJointControlledDevice(std::string name, yarp::dev::PolyDriver* device);
     ~ExposedJointControlledDevice();
-    bool addControlledDeviceJoint(yarp::os::Bottle* bottle);
+    bool addControlledDeviceJoint(yarp::os::Searchable* parameters);
     bool positionMove(double ref);
 private:
     std::string name;

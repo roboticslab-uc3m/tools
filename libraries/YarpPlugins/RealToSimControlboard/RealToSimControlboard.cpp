@@ -9,7 +9,7 @@ namespace roboticslab
 
 // -----------------------------------------------------------------------------
 
-LinearTransformation::LinearTransformation(yarp::os::Bottle* bottle)
+LinearTransformation::LinearTransformation(yarp::os::Searchable* parameters)
 {
 
 }
@@ -48,30 +48,30 @@ ExposedJointControlledDevice::~ExposedJointControlledDevice()
 
 // -----------------------------------------------------------------------------
 
-bool ExposedJointControlledDevice::addControlledDeviceJoint(yarp::os::Bottle* bottle)
+bool ExposedJointControlledDevice::addControlledDeviceJoint(yarp::os::Searchable* parameters)
 {
-    if(!bottle->check("joint"))
+    if(!parameters->check("joint"))
     {
         CD_ERROR("*** \"joint\" (index) for joint NOT found\n");
         return false;
     }
     CD_DEBUG("*** \"joint\" (index) for joint found\n");
-    int jointIdx = bottle->find("joint").asInt();
+    int jointIdx = parameters->find("joint").asInt();
     controlledDeviceJoints.push_back(jointIdx);
     axes = controlledDeviceJoints.size();
 
-    if(!bottle->check("transformation"))
+    if(!parameters->check("transformation"))
     {
         CD_ERROR("*** \"transformation\" for joint NOT found\n");
         return false;
     }
     CD_DEBUG("*** \"transformation\" for joint found\n");
-    std::string transformation = bottle->find("transformation").asString();
+    std::string transformation = parameters->find("transformation").asString();
 
     if(transformation == "linear")
     {
         CD_DEBUG("*** transformation of type \"%s\" set\n", transformation.c_str());
-        Transformation* transformation = new LinearTransformation(bottle);
+        Transformation* transformation = new LinearTransformation(parameters);
         transformations.push_back(transformation);
         return true;
     }
