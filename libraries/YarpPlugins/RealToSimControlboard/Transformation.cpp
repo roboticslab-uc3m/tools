@@ -113,7 +113,7 @@ PiecewiseLinearTransformation::PiecewiseLinearTransformation(yarp::os::Searchabl
                 yData.push_back(d);
             idx++;
         }
-        CD_DEBUG("***** %s [%f, %f]\n", line.c_str(), xData[xData.size()-1], yData[yData.size()-1]);
+        CD_DEBUG("***** [%f, %f] from %s\n", xData[xData.size()-1], yData[yData.size()-1], line.c_str());
     }
 
     csvFile.close();
