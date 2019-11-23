@@ -7,6 +7,13 @@ namespace roboticslab
 
 // -----------------------------------------------------------------------------
 
+double LinearTransformation::transform(const double& value)
+{
+    return value;
+}
+
+// -----------------------------------------------------------------------------
+
 ExposedJointControlledDevice::ExposedJointControlledDevice(std::string name, yarp::dev::PolyDriver *device) : name(name)
 {
     CD_DEBUG("** %s\n", name.c_str());
@@ -17,6 +24,17 @@ ExposedJointControlledDevice::ExposedJointControlledDevice(std::string name, yar
     }
     else
         CD_DEBUG("** view IPositionControl\n");
+}
+
+// -----------------------------------------------------------------------------
+
+ExposedJointControlledDevice::~ExposedJointControlledDevice()
+{
+    for(size_t i=0;i<transformations.size();i++)
+    {
+        delete transformations[i];
+        transformations[i] = 0;
+    }
 }
 
 // -----------------------------------------------------------------------------
@@ -41,10 +59,11 @@ bool ExposedJointControlledDevice::addControlledDeviceJoint(yarp::os::Bottle* bo
     CD_DEBUG("*** \"transformation\" for joint found\n");
     std::string transformation = bottle->find("transformation").asString();
 
-
     if(transformation == "linear")
     {
         CD_DEBUG("*** transformation of type \"%s\" set\n", transformation.c_str());
+        Transformation* transformation = new LinearTransformation();
+        transformations.push_back(transformation);
         return true;
     }
     CD_ERROR("*** transformation of type \"%s\" NOT implemented \n",transformation.c_str());
@@ -64,7 +83,7 @@ bool ExposedJointControlledDevice::positionMove(double ref)
 
     std::vector<double> refs(axes);
     for(size_t i=0; i<axes; i++)
-        refs[i] = ref * 1 + 0;
+        refs[i] = transformations[i]->transform(ref);
 
     return iPositionControl->positionMove(axes, controlledDeviceJoints.data(), refs.data());
 }

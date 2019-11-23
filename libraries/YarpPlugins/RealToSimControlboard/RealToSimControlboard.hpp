@@ -18,16 +18,31 @@
 namespace roboticslab
 {
 
+class Transformation
+{
+public:
+    virtual ~Transformation() {}
+    virtual double transform(const double& value) = 0;
+};
+
+class LinearTransformation : public Transformation
+{
+public:
+    double transform(const double& value);
+};
+
 class ExposedJointControlledDevice
 {
 public:
     ExposedJointControlledDevice(std::string name, yarp::dev::PolyDriver* device);
+    ~ExposedJointControlledDevice();
     bool addControlledDeviceJoint(yarp::os::Bottle* bottle);
     bool positionMove(double ref);
 private:
     std::string name;
-    std::vector<int> controlledDeviceJoints;
     size_t axes; // same as controlledDeviceJoints.size()
+    std::vector<int> controlledDeviceJoints;
+    std::vector<Transformation*> transformations;
     yarp::dev::IPositionControl* iPositionControl;
 };
 
