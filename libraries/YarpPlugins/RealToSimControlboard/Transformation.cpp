@@ -50,16 +50,22 @@ PiecewiseLinearTransformation::PiecewiseLinearTransformation(yarp::os::Searchabl
         CD_ERROR("**** \"csvFile\" for PiecewiseLinearTransformation NOT found\n");
         return;
     }
-    CD_DEBUG("**** \"csvFile\" for PiecewiseLinearTransformation found\n");
+    CD_DEBUG("**** \"csvFile\" parameter for PiecewiseLinearTransformation found\n");
     std::string csvFileName = parameters->find("csvFile").asString();
 
-    std::ifstream csvFile(csvFileName);
+    yarp::os::ResourceFinder rf;
+    rf.setVerbose(false);
+    rf.setDefaultContext("testRealToSimControlboard");
+    std::string csvFileFullPath = rf.findFileByName(csvFileName);
+    CD_DEBUG("**** \"csvFile\" file for PiecewiseLinearTransformation found: %s\n", csvFileName.c_str());
+
+    std::ifstream csvFile(csvFileFullPath);
     if(!csvFile.is_open())
     {
-        CD_ERROR("**** csvFile \"%s\" for PiecewiseLinearTransformation NOT open\n", csvFileName.c_str());
+        CD_ERROR("**** \"%s\" csvFile for PiecewiseLinearTransformation NOT open\n", csvFileName.c_str());
         return;
     }
-    CD_DEBUG("**** csvFile \"%s\" for PiecewiseLinearTransformation open\n", csvFileName.c_str());
+    CD_DEBUG("**** \"%s\" csvFile for PiecewiseLinearTransformation open\n", csvFileName.c_str());
 
     valid = true;
 }
