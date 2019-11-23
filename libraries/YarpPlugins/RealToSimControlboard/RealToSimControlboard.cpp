@@ -38,22 +38,29 @@ double LinearTransformation::transform(const double& value)
 
 // -----------------------------------------------------------------------------
 
-FileLUTTransformation::FileLUTTransformation(yarp::os::Searchable* parameters)
+PiecewiseLinearTransformation::PiecewiseLinearTransformation(yarp::os::Searchable* parameters)
 {
     if(!parameters->check("file"))
     {
-        CD_ERROR("**** \"file\" for FileLUTTransformation NOT found\n");
+        CD_ERROR("**** \"file\" for PiecewiseLinearTransformation NOT found\n");
         return;
     }
-    CD_DEBUG("**** \"file\" for FileLUTTransformation found\n");
+    CD_DEBUG("**** \"file\" for PiecewiseLinearTransformation found\n");
     std::string fileName = parameters->find("file").asString();
 
     std::ifstream file(fileName);
+    if(!file.is_open())
+    {
+        CD_ERROR("**** file \"%s\" for PiecewiseLinearTransformation NOT open\n");
+        return;
+    }
+    CD_ERROR("**** file \"%s\" for PiecewiseLinearTransformation NOT open\n");
+
 }
 
 // -----------------------------------------------------------------------------
 
-double FileLUTTransformation::transform(const double& value)
+double PiecewiseLinearTransformation::transform(const double& value)
 {
     return value;
 }
@@ -109,6 +116,13 @@ bool ExposedJointControlledDevice::addControlledDeviceJoint(yarp::os::Searchable
     {
         CD_DEBUG("*** transformation of type \"%s\" set\n", transformation.c_str());
         Transformation* transformation = new LinearTransformation(parameters);
+        transformations.push_back(transformation);
+        return true;
+    }
+    else if(transformation == "piecewiseLinear")
+    {
+        CD_DEBUG("*** transformation of type \"%s\" set\n", transformation.c_str());
+        Transformation* transformation = new PiecewiseLinearTransformation(parameters);
         transformations.push_back(transformation);
         return true;
     }
