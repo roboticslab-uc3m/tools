@@ -91,10 +91,16 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
 
                 if(!exposedJointControlledDeviceJointGroup->check("joint"))
                 {
-                    CD_ERROR("Must control at least one joint\n");
+                    CD_ERROR("*** Must control at least one joint\n");
                 }
                 int jointIdx = exposedJointControlledDeviceJointGroup->find("joint").asInt();
                 exposedJointControlledDevice->addControlledDeviceJoint(jointIdx);
+
+                if(!exposedJointControlledDeviceJointGroup->check("transformation"))
+                {
+                    CD_ERROR("*** Must define \"transformation\" for joint\n");
+                }
+                exposedJointControlledDevice->addTransformation(exposedJointControlledDeviceJointGroup->find("transformation").asString());
             }
         }
 

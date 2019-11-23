@@ -29,6 +29,13 @@ bool ExposedJointControlledDevice::addControlledDeviceJoint(int idx)
 
 // -----------------------------------------------------------------------------
 
+bool ExposedJointControlledDevice::addTransformation(const std::string& transformation)
+{
+    return true;
+}
+
+// -----------------------------------------------------------------------------
+
 bool ExposedJointControlledDevice::positionMove(double ref)
 {
     CD_INFO("* %s: %f\n",name.c_str(), ref);

@@ -23,11 +23,12 @@ class ExposedJointControlledDevice
 public:
     ExposedJointControlledDevice(std::string name, yarp::dev::PolyDriver* device);
     bool addControlledDeviceJoint(int idx);
+    bool addTransformation(const std::string& transformation);
     bool positionMove(double ref);
 private:
     std::string name;
-    size_t axes;
     std::vector<int> controlledDeviceJoints;
+    size_t axes; // same as controlledDeviceJoints.size()
     yarp::dev::IPositionControl* iPositionControl;
 };
 
