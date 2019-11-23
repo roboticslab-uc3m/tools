@@ -13,18 +13,18 @@ LinearTransformation::LinearTransformation(yarp::os::Searchable* parameters)
 {
     if(!parameters->check("m"))
     {
-        CD_ERROR("**** \"m\" for LinearTransformation NOT found\n");
+        CD_ERROR("**** \"m\" parameter for LinearTransformation NOT found\n");
         return;
     }
-    CD_DEBUG("**** \"m\" for LinearTransformation found\n");
+    CD_DEBUG("**** \"m\" parameter for LinearTransformation found\n");
     m = parameters->find("m").asDouble();
 
     if(!parameters->check("b"))
     {
-        CD_ERROR("**** \"b\" for LinearTransformation NOT found\n");
+        CD_ERROR("**** \"b\" parameter for LinearTransformation NOT found\n");
         return;
     }
-    CD_DEBUG("**** \"b\" for LinearTransformation found\n");
+    CD_DEBUG("**** \"b\" parameter for LinearTransformation found\n");
     b = parameters->find("b").asDouble();
 
     valid = true;
@@ -47,19 +47,24 @@ PiecewiseLinearTransformation::PiecewiseLinearTransformation(yarp::os::Searchabl
 {
     if(!parameters->check("csvFile"))
     {
-        CD_ERROR("**** \"csvFile\" for PiecewiseLinearTransformation NOT found\n");
+        CD_ERROR("**** \"csvFile\" parameter for PiecewiseLinearTransformation NOT found\n");
         return;
     }
-    CD_DEBUG("**** \"csvFile\" parameter for PiecewiseLinearTransformation found\n");
     std::string csvFileName = parameters->find("csvFile").asString();
+    CD_DEBUG("**** \"csvFile\" parameter for PiecewiseLinearTransformation found: \"%s\"\n", csvFileName.c_str());
 
     yarp::os::ResourceFinder rf;
     rf.setVerbose(false);
     rf.setDefaultContext("testRealToSimControlboard");
-    std::string csvFileFullPath = rf.findFileByName(csvFileName);
-    CD_DEBUG("**** \"csvFile\" file for PiecewiseLinearTransformation found: %s\n", csvFileName.c_str());
+    std::string csvFileFullName = rf.findFileByName(csvFileName);
+    if(csvFileFullName.empty())
+    {
+        CD_ERROR("**** full path for file NOT found\n");
+        return;
+    }
+    CD_DEBUG("**** full path for file found: \"%s\"\n", csvFileFullName.c_str());
 
-    std::ifstream csvFile(csvFileFullPath);
+    std::ifstream csvFile(csvFileFullName);
     if(!csvFile.is_open())
     {
         CD_ERROR("**** \"%s\" csvFile for PiecewiseLinearTransformation NOT open\n", csvFileName.c_str());
