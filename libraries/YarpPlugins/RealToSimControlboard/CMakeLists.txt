@@ -16,7 +16,9 @@ yarp_add_plugin(RealToSimControlboard RealToSimControlboard.hpp
                                       DeviceDriverImpl.cpp
                                       IEncodersTimedImpl.cpp
                                       IPositionControlImpl.cpp
-                                      IVelocityControlImpl.cpp)
+                                      IVelocityControlImpl.cpp
+                                      Transformation.cpp
+                                      Transformation.hpp)
 
 target_link_libraries(RealToSimControlboard YARP::YARP_OS
                                             YARP::YARP_dev

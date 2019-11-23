@@ -10,32 +10,10 @@
 
 #include "ColorDebug.h"
 
+#include "Transformation.hpp"
+
 namespace roboticslab
 {
-
-class Transformation
-{
-public:
-    virtual ~Transformation() {}
-    virtual double transform(const double& value) = 0;
-};
-
-class LinearTransformation : public Transformation
-{
-public:
-    LinearTransformation(yarp::os::Searchable* parameters);
-    double transform(const double& value);
-private:
-    double m, b;
-};
-
-class PiecewiseLinearTransformation : public Transformation
-{
-public:
-    PiecewiseLinearTransformation(yarp::os::Searchable* parameters);
-    double transform(const double& value);
-private:
-};
 
 class ExposedJointControlledDevice
 {
