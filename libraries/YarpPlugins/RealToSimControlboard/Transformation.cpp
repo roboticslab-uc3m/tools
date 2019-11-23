@@ -72,6 +72,8 @@ PiecewiseLinearTransformation::PiecewiseLinearTransformation(yarp::os::Searchabl
     }
     CD_DEBUG("**** \"%s\" csvFile for PiecewiseLinearTransformation open\n", csvFileName.c_str());
 
+    csvFile.close();
+
     valid = true;
 }
 
