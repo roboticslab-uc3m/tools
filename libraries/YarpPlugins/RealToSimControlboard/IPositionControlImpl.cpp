@@ -21,8 +21,10 @@ bool roboticslab::RealToSimControlboard::positionMove(int j, double ref)
 
 bool roboticslab::RealToSimControlboard::positionMove(const double *refs)
 {
-    CD_ERROR("Not implemented yet.\n");
-    return true;
+    bool ok = true;
+    for(unsigned int i=0; i < axes; i++)
+        ok &= positionMove(i, refs[i]);
+    return ok;
 }
 
 // -----------------------------------------------------------------------------
