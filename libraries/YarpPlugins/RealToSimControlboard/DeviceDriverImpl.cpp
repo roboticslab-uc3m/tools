@@ -62,6 +62,7 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
         if(!config.check(exposedJointName))
         {
             axes = idx;
+            storedPositions.resize(axes);
             CD_INFO("Could not find \"%s\" group, setting number of exposed joints to %d.\n",exposedJointName.c_str(), axes);
             break;
         }

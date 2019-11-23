@@ -62,7 +62,7 @@ bool roboticslab::RealToSimControlboard::setEncoders(const double *vals) {
 
 bool roboticslab::RealToSimControlboard::getEncoder(int j, double *v) {
     //CD_INFO("\n");  //-- Way too verbose
-    //*v = radToDegIfNotPrismatic(j, vectorOfJointPtr[j]->GetValue(0) );
+    *v = storedPositions[j];
 
     return true;
 }

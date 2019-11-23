@@ -14,6 +14,7 @@ bool roboticslab::RealToSimControlboard::getAxes(int *ax)
 
 bool roboticslab::RealToSimControlboard::positionMove(int j, double ref)
 {
+    storedPositions[j] = ref;
     return exposedJoints[j]->positionMove(ref);
 }
 

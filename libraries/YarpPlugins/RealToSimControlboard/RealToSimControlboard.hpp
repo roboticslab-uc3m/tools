@@ -471,6 +471,8 @@ private:
     // General Joint Motion Controller parameters //
     unsigned int axes;
 
+    std::vector<double> storedPositions;
+
     //yarp::os::Network yarp; // Uncomment if required
     std::vector<yarp::dev::PolyDriver*> controlledDevices;
 
