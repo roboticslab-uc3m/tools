@@ -3,6 +3,7 @@
 #include "RealToSimControlboard.hpp"
 
 #include <sstream>
+#include <fstream>
 
 namespace roboticslab
 {
@@ -39,6 +40,15 @@ double LinearTransformation::transform(const double& value)
 
 FileLUTTransformation::FileLUTTransformation(yarp::os::Searchable* parameters)
 {
+    if(!parameters->check("file"))
+    {
+        CD_ERROR("**** \"file\" for FileLUTTransformation NOT found\n");
+        return;
+    }
+    CD_DEBUG("**** \"file\" for FileLUTTransformation found\n");
+    std::string fileName = parameters->find("file").asString();
+
+    std::ifstream file(fileName);
 }
 
 // -----------------------------------------------------------------------------
