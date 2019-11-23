@@ -38,6 +38,8 @@ public:
     PiecewiseLinearTransformation(yarp::os::Searchable* parameters);
     double transform(const double& value) override;
 private:
+    std::vector<double> xData;
+    std::vector<double> yData;
 };
 
 }  // namespace roboticslab

@@ -61,6 +61,22 @@ PiecewiseLinearTransformation::PiecewiseLinearTransformation(yarp::os::Searchabl
     std::string context = parameters->find("context").asString();
     CD_DEBUG("**** \"context\" parameter for PiecewiseLinearTransformation found: \"%s\"\n", context.c_str());
 
+    if(!parameters->check("inColumn"))
+    {
+        CD_ERROR("**** \"inColumn\" parameter for PiecewiseLinearTransformation NOT found\n");
+        return;
+    }
+    const int inColumn = parameters->find("inColumn").asInt();
+    CD_DEBUG("**** \"inColumn\" parameter for PiecewiseLinearTransformation found: \"%d\"\n", inColumn);
+
+    if(!parameters->check("outColumn"))
+    {
+        CD_ERROR("**** \"outColumn\" parameter for PiecewiseLinearTransformation NOT found\n");
+        return;
+    }
+    const int outColumn = parameters->find("outColumn").asInt();
+    CD_DEBUG("**** \"outColumn\" parameter for PiecewiseLinearTransformation found: \"%d\"\n", outColumn);
+
     yarp::os::ResourceFinder rf;
     rf.setVerbose(false);
     rf.setDefaultContext(context);
@@ -79,6 +95,26 @@ PiecewiseLinearTransformation::PiecewiseLinearTransformation(yarp::os::Searchabl
         return;
     }
     CD_DEBUG("**** \"%s\" csvFile for PiecewiseLinearTransformation open\n", csvFileName.c_str());
+
+    std::string line;
+    while (std::getline(csvFile, line))
+    {
+        std::stringstream lineSS(line);
+        std::string token;
+        int idx = 0;
+        while(std::getline(lineSS, token, ','))
+        {
+            std::stringstream tokenSS(token);
+            double d;
+            tokenSS >> d;
+            if(inColumn == idx)
+                xData.push_back(d);
+            if(outColumn == idx)
+                yData.push_back(d);
+            idx++;
+        }
+        CD_DEBUG("***** %s [%f, %f]\n", line.c_str(), xData[xData.size()-1], yData[yData.size()-1]);
+    }
 
     csvFile.close();
 
