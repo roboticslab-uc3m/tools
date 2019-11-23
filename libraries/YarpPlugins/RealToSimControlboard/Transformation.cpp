@@ -108,12 +108,12 @@ PiecewiseLinearTransformation::PiecewiseLinearTransformation(yarp::os::Searchabl
             double d;
             tokenSS >> d;
             if(inColumn == idx)
-                xData.push_back(d);
+                inData.push_back(d);
             if(outColumn == idx)
-                yData.push_back(d);
+                outData.push_back(d);
             idx++;
         }
-        CD_DEBUG("***** [%f, %f] from %s\n", xData[xData.size()-1], yData[yData.size()-1], line.c_str());
+        CD_DEBUG("***** [%f, %f] from %s\n", inData[inData.size()-1], outData[outData.size()-1], line.c_str());
     }
 
     csvFile.close();
@@ -123,9 +123,33 @@ PiecewiseLinearTransformation::PiecewiseLinearTransformation(yarp::os::Searchabl
 
 // -----------------------------------------------------------------------------
 
+// <http://www.cplusplus.com/forum/general/216928/> "lastchance" on May 31, 2017 at 5:55pm
 double PiecewiseLinearTransformation::transform(const double& value)
 {
-    return value;
+    bool extrapolate = true; // determines behaviour beyond ends of array (if needed)
+
+    int size = inData.size();
+
+    int i = 0; // find left end of interval for interpolation
+    if ( value >= inData[size - 2] ) // special case: beyond right end
+    {
+       i = size - 2;
+    }
+    else
+    {
+       while ( value > inData[i+1] ) i++;
+    }
+    double xL = inData[i], yL = outData[i], xR = inData[i+1], yR = outData[i+1]; // points on either side (unless beyond ends)
+    if ( !extrapolate ) // if beyond ends of array and not extrapolating
+    {
+       if ( value < xL ) yR = yL;
+       if ( value > xR ) yL = yR;
+    }
+
+    double dydx = ( yR - yL ) / ( xR - xL ); // gradient
+
+    CD_DEBUG("Ret: %f\n", yL + dydx * ( value - xL ));
+    return yL + dydx * ( value - xL ); // linear interpolation
 }
 
 // -----------------------------------------------------------------------------
