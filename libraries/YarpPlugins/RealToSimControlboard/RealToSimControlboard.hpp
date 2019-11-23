@@ -28,6 +28,7 @@ public:
 class LinearTransformation : public Transformation
 {
 public:
+    LinearTransformation(yarp::os::Bottle* bottle);
     double transform(const double& value);
 };
 

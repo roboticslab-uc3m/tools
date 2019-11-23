@@ -7,6 +7,13 @@ namespace roboticslab
 
 // -----------------------------------------------------------------------------
 
+LinearTransformation::LinearTransformation(yarp::os::Bottle* bottle)
+{
+
+}
+
+// -----------------------------------------------------------------------------
+
 double LinearTransformation::transform(const double& value)
 {
     return value;
@@ -62,7 +69,7 @@ bool ExposedJointControlledDevice::addControlledDeviceJoint(yarp::os::Bottle* bo
     if(transformation == "linear")
     {
         CD_DEBUG("*** transformation of type \"%s\" set\n", transformation.c_str());
-        Transformation* transformation = new LinearTransformation();
+        Transformation* transformation = new LinearTransformation(bottle);
         transformations.push_back(transformation);
         return true;
     }
