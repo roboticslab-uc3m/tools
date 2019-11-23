@@ -11,14 +11,28 @@ namespace roboticslab
 
 LinearTransformation::LinearTransformation(yarp::os::Searchable* parameters)
 {
+    if(!parameters->check("m"))
+    {
+        CD_ERROR("**** \"m\" for LinearTransformation NOT found\n");
+        return;
+    }
+    CD_DEBUG("**** \"m\" for LinearTransformation found\n");
+    m = parameters->find("m").asDouble();
 
+    if(!parameters->check("b"))
+    {
+        CD_ERROR("**** \"b\" for LinearTransformation NOT found\n");
+        return;
+    }
+    CD_DEBUG("**** \"b\" for LinearTransformation found\n");
+    b = parameters->find("b").asDouble();
 }
 
 // -----------------------------------------------------------------------------
 
 double LinearTransformation::transform(const double& value)
 {
-    return value;
+    return value * m + b;
 }
 
 // -----------------------------------------------------------------------------

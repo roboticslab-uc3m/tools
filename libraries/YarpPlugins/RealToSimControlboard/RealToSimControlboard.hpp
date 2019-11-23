@@ -25,6 +25,8 @@ class LinearTransformation : public Transformation
 public:
     LinearTransformation(yarp::os::Searchable* parameters);
     double transform(const double& value);
+private:
+    double m, b;
 };
 
 class ExposedJointControlledDevice
