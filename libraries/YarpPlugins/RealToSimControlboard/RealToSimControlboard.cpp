@@ -37,6 +37,19 @@ double LinearTransformation::transform(const double& value)
 
 // -----------------------------------------------------------------------------
 
+FileLUTTransformation::FileLUTTransformation(yarp::os::Searchable* parameters)
+{
+}
+
+// -----------------------------------------------------------------------------
+
+double FileLUTTransformation::transform(const double& value)
+{
+    return value;
+}
+
+// -----------------------------------------------------------------------------
+
 ExposedJointControlledDevice::ExposedJointControlledDevice(std::string name, yarp::dev::PolyDriver *device) : name(name)
 {
     CD_DEBUG("** %s\n", name.c_str());

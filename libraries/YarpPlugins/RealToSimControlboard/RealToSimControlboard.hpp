@@ -29,6 +29,14 @@ private:
     double m, b;
 };
 
+class FileLUTTransformation : public Transformation
+{
+public:
+    FileLUTTransformation(yarp::os::Searchable* parameters);
+    double transform(const double& value);
+private:
+};
+
 class ExposedJointControlledDevice
 {
 public:
