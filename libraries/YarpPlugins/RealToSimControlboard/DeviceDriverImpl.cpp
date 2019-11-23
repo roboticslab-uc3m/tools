@@ -89,7 +89,8 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
                 yarp::os::Bottle* exposedJointControlledDeviceJointGroup = exposedJointControlledDeviceGroup->get(exposedJointControlledDeviceJointIdx).asList();
                 CD_DEBUG("*** %s\n", exposedJointControlledDeviceJointGroup->toString().c_str());
 
-                exposedJointControlledDevice->addControlledDeviceJoint(exposedJointControlledDeviceJointGroup);
+                if(!exposedJointControlledDevice->addControlledDeviceJoint(exposedJointControlledDeviceJointGroup))
+                    return false;
             }
         }
 
