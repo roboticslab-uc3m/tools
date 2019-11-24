@@ -4,3 +4,4 @@
 
 ### Go through single applications
 add_subdirectory(Playback)
+add_subdirectory(testRealToSimControlboard)

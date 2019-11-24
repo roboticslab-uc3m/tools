@@ -21,3 +21,4 @@ install(TARGETS ToolsInterfaces
 
 # YARP devices.
 add_subdirectory(PlaybackThread)
+add_subdirectory(RealToSimControlboard)
