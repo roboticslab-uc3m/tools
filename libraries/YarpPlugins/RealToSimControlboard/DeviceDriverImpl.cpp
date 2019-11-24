@@ -69,7 +69,7 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
         CD_SUCCESS("* %s group found!\n", exposedJointName.c_str());
 
         ExposedJoint* exposedJoint = new ExposedJoint(exposedJointName);
-        exposedJoints.push_back(exposedJoint);;
+        exposedJoints.push_back(exposedJoint);
 
         yarp::os::Bottle exposedJointGroup = config.findGroup(exposedJointName);
         CD_DEBUG("* %s\n", exposedJointGroup.toString().c_str());
