@@ -36,7 +36,7 @@ LinearTransformation::LinearTransformation(yarp::os::Searchable* parameters)
 
 // -----------------------------------------------------------------------------
 
-double LinearTransformation::transform(const double& value)
+double LinearTransformation::transform(const double value)
 {
     return value * m + b;
 }
@@ -124,7 +124,7 @@ PiecewiseLinearTransformation::PiecewiseLinearTransformation(yarp::os::Searchabl
 // -----------------------------------------------------------------------------
 
 // <http://www.cplusplus.com/forum/general/216928/> "lastchance" on May 31, 2017 at 5:55pm
-double PiecewiseLinearTransformation::transform(const double& value)
+double PiecewiseLinearTransformation::transform(const double value)
 {
     bool extrapolate = true; // determines behaviour beyond ends of array (if needed)
 
