@@ -21,6 +21,9 @@ if(ENABLE_tests)
                                            gtest_main)
 
         gtest_add_tests(testPlayback "" AUTO)
+
+        configure_file(${CMAKE_CURRENT_SOURCE_DIR}/resources/testPlayback.txt ${CMAKE_CURRENT_BINARY_DIR}/resources/testPlayback.txt COPYONLY)
+
     endif()
 
     # testPlaybackThread
