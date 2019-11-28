@@ -4,10 +4,6 @@
 #set(applications)
 set(contexts)
 
-if(ENABLE_Playback)
-    list(APPEND contexts contexts/Playback)
-endif()
-
 if(ENABLE_RealToSimControlboard)
     list(APPEND contexts contexts/RealToSimControlboard)
 endif()
