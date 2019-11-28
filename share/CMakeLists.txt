@@ -2,6 +2,13 @@
 # Authors: Juan G Victores
 # CopyPolicy: Released under the terms of the LGPLv2.1 or later
 
-### Go through single applications
-add_subdirectory(Playback)
-add_subdirectory(testRealToSimControlboard)
+set(applications)
+set(contexts)
+
+if(ENABLE_Playback)
+    list(APPEND contexts contexts/Playback)
+endif()
+
+if(ENABLE_RealToSimControlboard)
+    list(APPEND contexts contexts/RealToSimControlboard)
+endif()
