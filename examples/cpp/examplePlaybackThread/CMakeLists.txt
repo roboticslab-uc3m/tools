@@ -21,9 +21,3 @@ target_link_libraries(examplePlaybackThread YARP::YARP_OS
                                             YARP::YARP_dev
                                             ROBOTICSLAB::ToolsInterfaces
                                             ROBOTICSLAB::ColorDebug)
-
-include(GNUInstallDirs)
-
-# Install rule.
-install(TARGETS examplePlaybackThread
-        DESTINATION ${CMAKE_INSTALL_BINDIR})
