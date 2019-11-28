@@ -27,7 +27,7 @@ public:
         yarp::os::ResourceFinder rf;
         rf.setVerbose(true);
         rf.setDefaultContext("Playback");
-        std::string path = rf.findFileByName("txt/testPlayback.txt");
+        std::string path = rf.findFileByName("testPlayback.txt");
 
         bool ok = true;
         ok &= playback.fromFile(path);
