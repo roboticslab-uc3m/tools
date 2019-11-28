@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include <yarp/os/ResourceFinder.h>
+#include <yarp/os/Network.h>
 
 #include <ColorDebug.h>
 
@@ -23,24 +23,16 @@ public:
     virtual void SetUp()
     {
         // -- code here will execute just before the test ensues
+        std::string fileName("resources");
+        fileName += yarp::os::NetworkBase::getDirectorySeparator();
+        fileName += "testPlayback.txt";
 
-        yarp::os::ResourceFinder rf;
-        rf.setVerbose(true);
-        rf.setDefaultContext("Playback");
-        std::string path = rf.findFileByName("testPlayback.txt");
-
-        bool ok = true;
-        ok &= playback.fromFile(path);
-
-        if(ok)
-        {
-            CD_SUCCESS("Configuration successful :)\n");
-        }
-        else
+        if(!playback.fromFile(fileName))
         {
             CD_ERROR("Bad Configuration\n");
             ::exit(1);
         }
+        CD_SUCCESS("Configuration successful :)\n");
     }
 
     virtual void TearDown()

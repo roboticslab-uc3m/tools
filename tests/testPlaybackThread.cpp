@@ -1,8 +1,7 @@
-#include "gtest/gtest.h" // -- We load the librarie of GoogleTest
+#include "gtest/gtest.h"
 
 #include <string>
 
-// -- We load the rest of libraries that we will use to call the functions of our code
 #include <yarp/os/all.h>
 #include <yarp/dev/all.h>
 
@@ -40,15 +39,13 @@ public:
     virtual void SetUp()
     {
         // -- code here will execute just before the test ensues
-
-        yarp::os::ResourceFinder rf;
-        rf.setVerbose(true);
-        rf.setDefaultContext("Playback");
-        std::string path = rf.findFileByName("testPlayback.txt");
+        std::string fileName("resources");
+        fileName += yarp::os::NetworkBase::getDirectorySeparator();
+        fileName += "testPlayback.txt";
 
         yarp::os::Property playbackThreadConf;
         playbackThreadConf.put("device","PlaybackThread");
-        playbackThreadConf.put("file",path);
+        playbackThreadConf.put("file",fileName);
         playbackThreadConf.put("timeIdx",0);
         playbackThreadConf.fromString("(mask 0 1 0 1)",false);
         bool ok = true;

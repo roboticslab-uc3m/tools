@@ -4,7 +4,6 @@
 
 #include <yarp/os/Network.h>
 #include <yarp/os/Property.h>
-#include <yarp/os/ResourceFinder.h>
 
 #include <yarp/dev/IPositionControl.h>
 #include <yarp/dev/PolyDriver.h>
@@ -49,15 +48,15 @@ int main(int argc, char *argv[])
     }
 
     //-- playbackThreadDevice and interface
-    yarp::os::ResourceFinder rf;
-    rf.setVerbose(true);
-    rf.setDefaultContext("Playback");
-
-    std::string path = rf.findFileByName("txt/yarpdatadumper-teo-right-arm.txt");
+    std::string fileName("..");
+    fileName += yarp::os::NetworkBase::getDirectorySeparator();
+    fileName += "resources";
+    fileName += yarp::os::NetworkBase::getDirectorySeparator();
+    fileName += "yarpdatadumper-teo-rightArm.txt";
 
     yarp::os::Property playbackThreadOptions;
     playbackThreadOptions.put("device", "PlaybackThread");
-    playbackThreadOptions.put("file", path);
+    playbackThreadOptions.put("file", fileName);
     playbackThreadOptions.put("timeIdx", 1);
     playbackThreadOptions.put("timeScale", 0.000001);
     playbackThreadOptions.fromString("(mask 0 0 1 1 1 1 1 1 1)", false);
