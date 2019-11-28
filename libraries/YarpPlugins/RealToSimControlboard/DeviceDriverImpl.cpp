@@ -26,6 +26,13 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
     }
     CD_DEBUG("%s\n", controlledDeviceList->toString().c_str());
 
+    std::string prefix;
+    if(config.check("prefix","prefix for all local and remote ports"))
+    {
+        prefix = config.find("prefix").asString();
+        CD_INFO("Using prefix: %s\n",prefix.c_str());
+    }
+
     std::map<std::string,int> controlledDeviceNameToIdx;
     for(size_t controlledDeviceIdx=0; controlledDeviceIdx< controlledDeviceList->size(); controlledDeviceIdx++)
     {
@@ -40,6 +47,23 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
         CD_INFO("%s\n", controlledDeviceGroup.toString().c_str());
         yarp::os::Property controlledDeviceOptions;
         controlledDeviceOptions.fromString(controlledDeviceGroup.toString());
+        if(!prefix.empty())
+        {
+            if(controlledDeviceOptions.check("remote"))
+            {
+                std::string remote(prefix);
+                remote += controlledDeviceOptions.find("remote").asString();
+                controlledDeviceOptions.unput("remote");
+                controlledDeviceOptions.put("remote",remote);
+            }
+            if(controlledDeviceOptions.check("local"))
+            {
+                std::string local(prefix);
+                local += controlledDeviceOptions.find("local").asString();
+                controlledDeviceOptions.unput("local");
+                controlledDeviceOptions.put("local",local);
+            }
+        }
 
         yarp::dev::PolyDriver* controlledDevice = new yarp::dev::PolyDriver(controlledDeviceOptions);
         if( ! controlledDevice->isValid() )
