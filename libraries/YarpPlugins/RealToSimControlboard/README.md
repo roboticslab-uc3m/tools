@@ -1,5 +1,5 @@
 # RealToSimControlboard
 
 ```bash
-yarpdev --device RealToSimControlboard --context testRealToSimControlboard --from testRealToSimControlboard.ini
+yarpdev --device RealToSimControlboard --context RealToSimControlboard --from testRealToSimControlboard.ini
 ```
