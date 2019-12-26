@@ -20,9 +20,10 @@ if(ENABLE_tests)
                                            Playback
                                            gtest_main)
 
-        gtest_add_tests(testPlayback "" AUTO)
+        gtest_discover_tests(testPlayback)
 
-        configure_file(${CMAKE_CURRENT_SOURCE_DIR}/resources/testPlayback.txt ${CMAKE_CURRENT_BINARY_DIR}/resources/testPlayback.txt COPYONLY)
+        configure_file(${CMAKE_CURRENT_SOURCE_DIR}/resources/testPlayback.txt
+                       ${CMAKE_CURRENT_BINARY_DIR}/resources/testPlayback.txt COPYONLY)
 
     endif()
 
@@ -37,7 +38,7 @@ if(ENABLE_tests)
                                                  ToolsInterfaces
                                                  gtest_main)
 
-        gtest_add_tests(testPlaybackThread "" AUTO)
+        gtest_discover_tests(testPlaybackThread)
     endif()
 else()
     set(ENABLE_tests OFF CACHE BOOL "Enable/disable unit tests" FORCE)
