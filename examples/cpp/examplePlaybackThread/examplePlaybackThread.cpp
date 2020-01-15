@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
     //-- playbackThreadDevice and interface
     std::string fileName("..");
     fileName += yarp::os::NetworkBase::getDirectorySeparator();
-    fileName += "leftArmLFlower1344";
+    fileName += "rightArmLFlower1344";
     fileName += yarp::os::NetworkBase::getDirectorySeparator();
     fileName += "data-awk.log";
 
