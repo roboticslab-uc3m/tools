@@ -6,6 +6,7 @@
 #include <yarp/os/Property.h>
 
 #include <yarp/dev/IPositionControl.h>
+#include <yarp/dev/IPositionDirect.h>
 #include <yarp/dev/PolyDriver.h>
 
 #include <yarp/conf/version.h>
@@ -23,11 +24,13 @@ class PositionMoveRunnable : public roboticslab::IRunnable
 public:
     virtual bool run(const std::vector<double> &v)
     {
-        iPositionControl->positionMove( v.data() );
+        //iPositionControl->positionMove( v.data() );
+        iPositionDirect->setPositions( v.data() );
         return true;
     }
 
     yarp::dev::IPositionControl* iPositionControl;
+    yarp::dev::IPositionDirect* iPositionDirect;
 };
 
 int main(int argc, char *argv[])
@@ -54,24 +57,17 @@ int main(int argc, char *argv[])
 
     //-- playbackThreadDevice and interface
     std::string fileName("..");
-#if YARP_VERSION_MINOR >= 3
-    fileName += yarp::conf::filesystem::preferred_separator;
-    fileName += "resources";
-    fileName += yarp::conf::filesystem::preferred_separator;
-    fileName += "yarpdatadumper-teo-rightArm.txt";
-#else
     fileName += yarp::os::NetworkBase::getDirectorySeparator();
-    fileName += "resources";
+    fileName += "leftArmLFlower1344";
     fileName += yarp::os::NetworkBase::getDirectorySeparator();
-    fileName += "yarpdatadumper-teo-rightArm.txt";
-#endif
+    fileName += "data-awk.log";
 
     yarp::os::Property playbackThreadOptions;
     playbackThreadOptions.put("device", "PlaybackThread");
     playbackThreadOptions.put("file", fileName);
-    playbackThreadOptions.put("timeIdx", 1);
-    playbackThreadOptions.put("timeScale", 0.000001);
-    playbackThreadOptions.fromString("(mask 0 0 1 1 1 1 1 1 1)", false);
+    playbackThreadOptions.put("timeIdx", 0);
+    playbackThreadOptions.put("timeScale", 0.0025);
+    playbackThreadOptions.fromString("(mask 0 0 0 1 1 1 1 1 1)", false);
     playbackThreadDevice.open(playbackThreadOptions);
 
     if (!playbackThreadDevice.isValid())
@@ -92,7 +88,7 @@ int main(int argc, char *argv[])
     yarp::os::Property robotOptions;
     robotOptions.put("device", "remote_controlboard");
     robotOptions.put("local", "/playback");
-    robotOptions.put("remote", "/teoSim/rightArm");
+    robotOptions.put("remote", "/teo/rightArm");
     robotDevice.open(robotOptions);
 
     if (!robotDevice.isValid())
@@ -102,6 +98,7 @@ int main(int argc, char *argv[])
     }
 
     robotDevice.view(positionMoveRunnable.iPositionControl);
+    robotDevice.view(positionMoveRunnable.iPositionDirect );
     roboticslab::IRunnable* iRunnable = dynamic_cast<roboticslab::IRunnable*>(&positionMoveRunnable);
     iPlaybackThread->setIRunnable(iRunnable);
 
