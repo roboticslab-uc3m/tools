@@ -15,11 +15,11 @@ yarpdev --device RealToSimControlboard --context RealToSimControlboard --from le
 
 ## Example with Left Dextra in a teoSim
 ```bash
-teoSim
+teoSim dextra
 ```
 
 ```bash
-yarpdev --device RealToSimControlboard --context RealToSimControlboard --from leftDextra.ini --prefix teoSim
+yarpdev --device RealToSimControlboard --context RealToSimControlboard --from leftDextra.ini --name /teoSim/leftDextra
 ```
 
 ## Example with Lacquey Fetch
@@ -28,14 +28,14 @@ openrave --module OpenraveYarpPluginLoader "env openrave/lacqueyFetch/lacqueyFet
 ```
 
 ```bash
-yarpdev --device RealToSimControlboard --context RealToSimControlboard --from lacqueyFetch.ini --prefix /lacqueyFetch
+yarpdev --device RealToSimControlboard --context RealToSimControlboard --from lacqueyFetch.ini
 ```
 
-## Example with Lacquey Fetch in a teoSim
+## Example with Lacquey Fetch (left) in a teoSim
 ```bash
 teoSim
 ```
 
 ```bash
-yarpdev --device RealToSimControlboard --context RealToSimControlboard --from lacqueyFetch.ini
+yarpdev --device RealToSimControlboard --context RealToSimControlboard --from lacqueyFetch.ini --name /teoSim/leftLacqueyFetch
 ```
