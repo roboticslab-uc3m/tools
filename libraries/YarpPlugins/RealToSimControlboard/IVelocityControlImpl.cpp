@@ -55,35 +55,3 @@ bool roboticslab::RealToSimControlboard::getRefVelocities(const int n_joint, con
 }
 
 // -----------------------------------------------------------------------------
-
-bool roboticslab::RealToSimControlboard::setVelPid(int j, const yarp::dev::Pid &pid)
-{
-    CD_ERROR("Not implemented yet.\n");
-    return true;
-}
-
-// -----------------------------------------------------------------------------
-
-bool roboticslab::RealToSimControlboard::setVelPids(const yarp::dev::Pid *pids)
-{
-    CD_ERROR("Not implemented yet.\n");
-    return true;
-}
-
-// -----------------------------------------------------------------------------
-
-bool roboticslab::RealToSimControlboard::getVelPid(int j, yarp::dev::Pid *pid)
-{
-    CD_ERROR("Not implemented yet.\n");
-    return true;
-}
-
-// -----------------------------------------------------------------------------
-
-bool roboticslab::RealToSimControlboard::getVelPids(yarp::dev::Pid *pids)
-{
-    CD_ERROR("Not implemented yet.\n");
-    return true;
-}
-
-// -----------------------------------------------------------------------------
