@@ -3,10 +3,10 @@
 #ifndef __REAL_TO_SIM_CONTROLBOARD_HPP__
 #define __REAL_TO_SIM_CONTROLBOARD_HPP__
 
-#include <yarp/os/all.h>
-#include <yarp/dev/all.h>
-
 #include <vector>
+
+#include <yarp/dev/PolyDriver.h>
+#include <yarp/dev/ControlBoardInterfaces.h>
 
 #include "ColorDebug.h"
 
@@ -56,6 +56,7 @@ private:
  */
 class RealToSimControlboard :
         public yarp::dev::DeviceDriver,
+        public yarp::dev::IControlMode,
         public yarp::dev::IEncodersTimed,
         public yarp::dev::IPositionControl,
         public yarp::dev::IVelocityControl
@@ -66,6 +67,15 @@ public:
 
     virtual bool open(yarp::os::Searchable& config) override;
     virtual bool close() override;
+
+    //  --------- IControlMode declarations. Implementation in IControlModeImpl.cpp ---------
+
+    virtual bool getControlMode(int j, int * mode) override;
+    virtual bool getControlModes(int * modes) override;
+    virtual bool getControlModes(int n_joint, const int * joints, int * modes) override;
+    virtual bool setControlMode(int j, const int mode) override;
+    virtual bool setControlModes(int n_joint, const int * joints, int * modes) override;
+    virtual bool setControlModes(int * modes) override;
 
     //  ---------- IEncodersTimed Declarations. Implementation in IEncodersTimedImpl.cpp ----------
 
@@ -125,8 +135,11 @@ public:
 
 private:
 
+    enum jmc_mode { POSITION_MODE, VELOCITY_MODE, POSITION_DIRECT_MODE };
+
     // General Joint Motion Controller parameters //
     unsigned int axes;
+    jmc_mode controlMode;
 
     std::vector<double> storedPositions;
 
