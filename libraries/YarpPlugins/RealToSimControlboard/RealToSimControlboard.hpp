@@ -135,8 +135,11 @@ public:
 
 private:
 
+    enum jmc_mode { POSITION_MODE, VELOCITY_MODE, POSITION_DIRECT_MODE };
+
     // General Joint Motion Controller parameters //
     unsigned int axes;
+    jmc_mode controlMode;
 
     std::vector<double> storedPositions;
 

@@ -4,42 +4,104 @@
 
 // ------------------ IControlMode Related ----------------------------------------
 
-bool getControlMode(int j, int * mode)
+bool roboticslab::RealToSimControlboard::getControlMode(int j, int * mode)
 {
+    if (controlMode == POSITION_MODE)
+    {
+        *mode = VOCAB_CM_POSITION;
+    }
+    else if (controlMode == VELOCITY_MODE)
+    {
+        *mode = VOCAB_CM_VELOCITY;
+    }
+    else if (controlMode == POSITION_DIRECT_MODE)
+    {
+        *mode = VOCAB_CM_POSITION_DIRECT;
+    }
+    else
+    {
+        CD_ERROR("Currently unsupported mode.\n");
+        return false;
+    }
+
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool getControlModes(int * modes)
+bool roboticslab::RealToSimControlboard::getControlModes(int * modes)
 {
-    return true;
+    bool ok = true;
+
+    for (unsigned int i = 0; i < axes; i++)
+    {
+        ok &= getControlMode(i, &modes[i]);
+    }
+
+    return ok;
 }
 
 // -----------------------------------------------------------------------------
 
-bool getControlModes(int n_joint, const int * joints, int * modes)
+bool roboticslab::RealToSimControlboard::getControlModes(int n_joint, const int * joints, int * modes)
 {
-    return true;
+    CD_DEBUG("(%d)\n", n_joint);
+    bool ok = true;
+
+    for (int i = 0; i < n_joint; i++)
+    {
+        ok &= getControlMode(joints[i], &modes[i]);
+    }
+
+    return ok;
 }
 
 // -----------------------------------------------------------------------------
 
-bool setControlMode(int j, const int mode)
+bool roboticslab::RealToSimControlboard::setControlMode(int j, const int mode)
 {
-    return true;
+    CD_DEBUG("(%d, %s)\n", j, yarp::os::Vocab::decode(mode).c_str());
+
+    if ((unsigned int)j > axes)
+    {
+        CD_ERROR("axis index more than axes.\n");
+        return false;
+    }
+
+    switch (mode)
+    {
+    case VOCAB_CM_POSITION:
+        controlMode = POSITION_MODE;
+        return true;
+    case VOCAB_CM_VELOCITY:
+        controlMode = VELOCITY_MODE;
+        return true;
+    case VOCAB_CM_POSITION_DIRECT:
+        controlMode = POSITION_DIRECT_MODE;
+        return true;
+    default:
+        return false;
+    }
 }
 
 // -----------------------------------------------------------------------------
 
-bool setControlModes(int n_joint, const int * joints, int * modes)
+bool roboticslab::RealToSimControlboard::setControlModes(int n_joint, const int * joints, int * modes)
 {
-    return true;
+    CD_DEBUG("\n");
+    bool ok = true;
+
+    for (unsigned int i = 0; i < axes; i++)
+    {
+        ok &= setControlMode(i, modes[i]);
+    }
+
+    return ok;
 }
 
 // -----------------------------------------------------------------------------
 
-bool setControlModes(int * modes)
+bool roboticslab::RealToSimControlboard::setControlModes(int * modes)
 {
     return true;
 }
