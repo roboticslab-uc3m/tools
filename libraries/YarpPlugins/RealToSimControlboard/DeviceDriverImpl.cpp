@@ -5,6 +5,8 @@
 #include <map>
 #include <sstream>
 
+#define DEFAULT_MODE_POS_VEL 0  // 0=Position, 1=Velocity.
+
 namespace roboticslab
 {
 
@@ -13,6 +15,21 @@ namespace roboticslab
 bool RealToSimControlboard::open(yarp::os::Searchable& config)
 {
     CD_DEBUG("config: %s\n",config.toString().c_str());
+
+    int modePosVelInt = config.check("modePosVel", yarp::os::Value(DEFAULT_MODE_POS_VEL), "0:pos, 1:vel").asInt32();
+
+    switch (modePosVelInt)
+    {
+    case 0:
+        controlMode = POSITION_MODE;
+        break;
+    case 1:
+        controlMode = VELOCITY_MODE;
+        break;
+    default:
+        CD_ERROR("Unrecognized mode identifier: %d (0:pos, 1:vel).\n", modePosVelInt);
+        return false;
+    }
 
     if(!config.check("remotes", "list of remotes to which this device connects"))
     {
