@@ -28,7 +28,7 @@ openrave --module OpenraveYarpPluginLoader "env openrave/lacqueyFetch/lacqueyFet
 ```
 
 ```bash
-yarpdev --device RealToSimControlboard --context RealToSimControlboard --from lacqueyFetch.ini
+yarpdev --device RealToSimControlboard --context RealToSimControlboard --from lacqueyFetch.ini --prefix /lacqueyFetch
 ```
 
 ## Example with Lacquey Fetch in a teoSim
