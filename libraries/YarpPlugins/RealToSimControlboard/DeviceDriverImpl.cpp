@@ -2,6 +2,7 @@
 
 #include "RealToSimControlboard.hpp"
 
+#include <map>
 #include <sstream>
 
 namespace roboticslab

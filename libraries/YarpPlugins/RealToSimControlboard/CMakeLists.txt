@@ -17,6 +17,7 @@ if(NOT SKIP_RealToSimControlboard)
     yarp_add_plugin(RealToSimControlboard RealToSimControlboard.hpp
                                           RealToSimControlboard.cpp
                                           DeviceDriverImpl.cpp
+                                          IControlModeImpl.cpp
                                           IEncodersTimedImpl.cpp
                                           IPositionControlImpl.cpp
                                           IVelocityControlImpl.cpp
