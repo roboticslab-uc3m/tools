@@ -19,3 +19,7 @@ yarpdev --device RealToSimControlboard --context RealToSimControlboard --from le
 ```bash
 openrave --module OpenraveYarpPluginLoader "env openrave/lacqueyFetch/lacqueyFetch.robot.xml open --device controlboardwrapper2 --subdevice YarpOpenraveControlboard --robotIndex 0 --allManipulators" --viewer qtcoin --collision ode
 ```
+
+```bash
+yarpdev --device RealToSimControlboard --context RealToSimControlboard --from lacqueyFetch.ini
+```
