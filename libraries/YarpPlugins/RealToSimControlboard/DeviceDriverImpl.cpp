@@ -26,7 +26,11 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
     }
     CD_DEBUG("%s\n", controlledDeviceList->toString().c_str());
 
-    std::string name = config.find("name").asString();
+    std::string remotePrefix;
+    if(config.check("remotePrefix", "global prefix to remote ports"))
+    {
+        remotePrefix = config.find("remotePrefix").asString();
+    }
 
     std::map<std::string,int> controlledDeviceNameToIdx;
     for(size_t controlledDeviceIdx=0; controlledDeviceIdx< controlledDeviceList->size(); controlledDeviceIdx++)
@@ -43,18 +47,16 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
         yarp::os::Property controlledDeviceOptions;
         controlledDeviceOptions.fromString(controlledDeviceGroup.toString());
 
-        if(controlledDeviceOptions.check("remote"))
+        if(controlledDeviceOptions.check("remoteSuffix", "suffix used for local and remote of each remote_controlboard"))
         {
-            std::string remote(name);
-            remote += controlledDeviceOptions.find("remote").asString();
-            controlledDeviceOptions.unput("remote");
+            std::string remote(remotePrefix);
+            remote += controlledDeviceOptions.find("remoteSuffix").asString();
+            controlledDeviceOptions.unput("remoteSuffix");
             controlledDeviceOptions.put("remote",remote);
-        }
-        if(controlledDeviceOptions.check("local"))
-        {
-            std::string local(name);
-            local += controlledDeviceOptions.find("local").asString();
-            controlledDeviceOptions.unput("local");
+
+            std::string local(remotePrefix);
+            local += controlledDeviceOptions.find("localSuffix").asString();
+            controlledDeviceOptions.unput("localSuffix");
             controlledDeviceOptions.put("local",local);
         }
 

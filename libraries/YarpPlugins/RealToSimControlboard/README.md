@@ -19,7 +19,7 @@ teoSim dextra
 ```
 
 ```bash
-yarpdev --device RealToSimControlboard --context RealToSimControlboard --from leftDextra.ini --name /teoSim/leftDextra
+yarpdev --device RealToSimControlboard --context RealToSimControlboard --from leftDextra.ini --name /teoSim/leftHand --remotePrefix /teoSim/leftDextra
 ```
 
 ## Example with Lacquey Fetch
@@ -37,5 +37,5 @@ teoSim
 ```
 
 ```bash
-yarpdev --device RealToSimControlboard --context RealToSimControlboard --from lacqueyFetch.ini --name /teoSim/leftLacqueyFetch
+yarpdev --device RealToSimControlboard --context RealToSimControlboard --from lacqueyFetch.ini --name /teoSim/leftHand --remotePrefix /teoSim/leftLacqueyFetch
 ```
