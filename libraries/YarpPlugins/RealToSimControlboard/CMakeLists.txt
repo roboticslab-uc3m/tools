@@ -5,7 +5,8 @@ yarp_prepare_plugin(RealToSimControlboard
                     CATEGORY device
                     TYPE roboticslab::RealToSimControlboard
                     INCLUDE RealToSimControlboard.hpp
-                    DEFAULT ON)
+                    DEFAULT ON
+                    EXTRA_CONFIG WRAPPER=controlboardwrapper2)
 
 if(NOT SKIP_RealToSimControlboard)
 
