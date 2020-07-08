@@ -24,13 +24,13 @@ class PositionMoveRunnable : public roboticslab::IRunnable
 public:
     virtual bool run(const std::vector<double> &v)
     {
-        //iPositionControl->positionMove( v.data() );
-        iPositionDirect->setPositions( v.data() );
+        iPositionControl->positionMove( v.data() );
+        //iPositionDirect->setPositions( v.data() );
         return true;
     }
 
     yarp::dev::IPositionControl* iPositionControl;
-    yarp::dev::IPositionDirect* iPositionDirect;
+    //yarp::dev::IPositionDirect* iPositionDirect;
 };
 
 int main(int argc, char *argv[])
@@ -58,15 +58,19 @@ int main(int argc, char *argv[])
     //-- playbackThreadDevice and interface
     std::string fileName("..");
     fileName += yarp::os::NetworkBase::getDirectorySeparator();
-    fileName += "rightArmLFlower1344";
+    fileName += "bags";
+    fileName += yarp::os::NetworkBase::getDirectorySeparator();
+    fileName += "flower-0";
     fileName += yarp::os::NetworkBase::getDirectorySeparator();
     fileName += "data-awk.log";
 
     yarp::os::Property playbackThreadOptions;
     playbackThreadOptions.put("device", "PlaybackThread");
     playbackThreadOptions.put("file", fileName);
-    playbackThreadOptions.put("timeIdx", 0);
-    playbackThreadOptions.put("timeScale", 0.0025);
+    playbackThreadOptions.put("timeIdx", 1);
+    //playbackThreadOptions.put("timeScale", 0.0025);
+    playbackThreadOptions.put("timeScale", 0.05);
+    //playbackThreadOptions.put("timeScale", 0.0025);
     playbackThreadOptions.fromString("(mask 0 0 0 1 1 1 1 1 1)", false);
     playbackThreadDevice.open(playbackThreadOptions);
 
@@ -98,7 +102,7 @@ int main(int argc, char *argv[])
     }
 
     robotDevice.view(positionMoveRunnable.iPositionControl);
-    robotDevice.view(positionMoveRunnable.iPositionDirect );
+    //robotDevice.view(positionMoveRunnable.iPositionDirect );
     roboticslab::IRunnable* iRunnable = dynamic_cast<roboticslab::IRunnable*>(&positionMoveRunnable);
     iPlaybackThread->setIRunnable(iRunnable);
 
