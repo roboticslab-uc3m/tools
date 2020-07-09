@@ -8,6 +8,7 @@
 #include <yarp/dev/IPositionControl.h>
 #include <yarp/dev/IPositionDirect.h>
 #include <yarp/dev/PolyDriver.h>
+#include <yarp/dev/IControlMode.h>
 
 #include <yarp/conf/version.h>
 #if YARP_VERSION_MINOR >= 3
@@ -24,13 +25,14 @@ class PositionMoveRunnable : public roboticslab::IRunnable
 public:
     virtual bool run(const std::vector<double> &v)
     {
-        iPositionControl->positionMove( v.data() );
-        //iPositionDirect->setPositions( v.data() );
+        //iPositionControl->positionMove( v.data() );
+        iPositionDirect->setPositions( v.data() );
         return true;
     }
+    yarp::dev::IControlMode * mode;
+    //yarp::dev::IPositionControl* iPositionControl;
+    yarp::dev::IPositionDirect* iPositionDirect;
 
-    yarp::dev::IPositionControl* iPositionControl;
-    //yarp::dev::IPositionDirect* iPositionDirect;
 };
 
 int main(int argc, char *argv[])
@@ -67,9 +69,9 @@ int main(int argc, char *argv[])
     yarp::os::Property playbackThreadOptions;
     playbackThreadOptions.put("device", "PlaybackThread");
     playbackThreadOptions.put("file", fileName);
-    playbackThreadOptions.put("timeIdx", 1);
+    playbackThreadOptions.put("timeIdx", 0);
     //playbackThreadOptions.put("timeScale", 0.0025);
-    playbackThreadOptions.put("timeScale", 0.05);
+    playbackThreadOptions.put("timeScale", 0.02);
     //playbackThreadOptions.put("timeScale", 0.0025);
     playbackThreadOptions.fromString("(mask 0 0 0 1 1 1 1 1 1)", false);
     playbackThreadDevice.open(playbackThreadOptions);
@@ -101,10 +103,19 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    robotDevice.view(positionMoveRunnable.iPositionControl);
-    //robotDevice.view(positionMoveRunnable.iPositionDirect );
+    //robotDevice.view(positionMoveRunnable.iPositionControl);
+    robotDevice.view(positionMoveRunnable.iPositionDirect );
+    robotDevice.view(positionMoveRunnable.mode );
     roboticslab::IRunnable* iRunnable = dynamic_cast<roboticslab::IRunnable*>(&positionMoveRunnable);
     iPlaybackThread->setIRunnable(iRunnable);
+
+    std::vector<int> positionMode(6, VOCAB_CM_POSITION_DIRECT); //6:Num_joints
+
+    if (!positionMoveRunnable.mode->setControlModes(positionMode.data()))
+    {
+        CD_ERROR("Problems setting position control: POSITION_DIRECT.\n");
+        return 1;
+    }
 
     iPlaybackThread->play();
     while (iPlaybackThread->isPlaying()) {}
