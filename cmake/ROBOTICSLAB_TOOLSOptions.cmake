@@ -2,16 +2,10 @@ include(CMakeDependentOption)
 
 # options: cpp libraries
 option(ENABLE_Playback "Enable/disable compilation of Playback" ON)
-
-# options: cpp libraries (plugins)
-option(ENABLE_YarpPlugins "Enable/disable compilation of YARP plugins" ON)
+option(ENABLE_PlaybackThread "Enable/disable compilation of PlaybackThread" ON)
 
 # options: cpp programs
 option(ENABLE_controlboardStateToIPosition "Enable/disable compilation of controlboardStateToIPosition" ON)
-
-# options: YARP plugins dependent on the ENABLE_YarpPlugins option
-cmake_dependent_option(ENABLE_PlaybackThread "Enable/disable compilation of PlaybackThread" ON
-                       ENABLE_YarpPlugins OFF)
 
 # options: unit testing
 cmake_dependent_option(ENABLE_tests "Enable/disable unit tests" ON
@@ -22,7 +16,6 @@ option(ENABLE_coverage "Choose if you want to enable coverage collection" OFF)
 
 # Register features.
 add_feature_info(Playback ENABLE_Playback "Playback library.")
-add_feature_info(YarpPlugins ENABLE_YarpPlugins "YARP DL plugins.")
 add_feature_info(PlayBackThread ENABLE_PlaybackThread "PlaybackThread YARP plugin.")
 add_feature_info(controlboardStateToIPosition ENABLE_controlboardStateToIPosition "controlboardStateToIPosition program.")
 

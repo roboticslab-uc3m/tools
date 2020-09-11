@@ -52,7 +52,7 @@ class PlaybackThread : public yarp::dev::DeviceDriver, public IPlaybackThread, p
         virtual bool setTimeScale(double timeScale);
         virtual void setIRunnable(IRunnable* iRunnable);
 
-        // --------- RateThread Declarations. Implementation in RateThreadImpl.cpp ---------
+        // --------- Thread Declarations. Implementation in ThreadImpl.cpp ---------
         virtual void run();
         virtual void onStop();
 

@@ -3,11 +3,11 @@
 
 #include <vector>
 
+#include <yarp/os/PeriodicThread.h>
 #include <yarp/os/RFModule.h>
-#include <yarp/os/RateThread.h>
 
 #include <yarp/dev/PolyDriver.h>
-#include <yarp/dev/IControlMode2.h>
+#include <yarp/dev/IControlMode.h>
 #include <yarp/dev/IEncoders.h>
 #include <yarp/dev/IPositionDirect.h>
 
@@ -21,11 +21,11 @@ namespace roboticslab
 /**
  * @brief Reads joint positions from an input controlboard, sends to an output controlboard.
  */
-class ControlboardStateToIPosition : public yarp::os::RFModule, yarp::os::RateThread
+class ControlboardStateToIPosition : public yarp::os::RFModule, yarp::os::PeriodicThread
 {
 public:
 
-    ControlboardStateToIPosition() : yarp::os::RateThread(DEFAULT_RATE_MS) {}
+    ControlboardStateToIPosition() : yarp::os::PeriodicThread(DEFAULT_RATE_MS * 0.001) {}
 
     /**
      * Configure the module, pass a ResourceFinder object to the module.
@@ -86,7 +86,7 @@ private:
     yarp::dev::IEncoders *iEncodersIn;
 
     // Out interfaces
-    yarp::dev::IControlMode2 *iControlMode2Out;
+    yarp::dev::IControlMode *iControlModeOut;
     yarp::dev::IPositionDirect *iPositionDirectOut;
 
 };

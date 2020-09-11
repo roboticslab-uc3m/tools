@@ -2,7 +2,12 @@
 
 #include <string>
 
-#include <yarp/os/ResourceFinder.h>
+#include <yarp/conf/version.h>
+#if YARP_VERSION_MINOR >= 3
+# include <yarp/conf/filesystem.h>
+#else
+# include <yarp/os/Network.h>
+#endif
 
 #include <ColorDebug.h>
 
@@ -12,8 +17,9 @@ namespace roboticslab
 {
 
 /**
-* @brief Tests \ref Playback
-*/
+ * @ingroup roboticslab-tools-tests
+ * @brief Tests \ref Playback
+ */
 class PlaybackTest : public testing::Test // -- inherit the Test class (gtest.h)
 {
 
@@ -22,24 +28,20 @@ public:
     virtual void SetUp()
     {
         // -- code here will execute just before the test ensues
+        std::string fileName("resources");
+#if YARP_VERSION_MINOR >= 3
+        fileName += yarp::conf::filesystem::preferred_separator;
+#else
+        fileName += yarp::os::NetworkBase::getDirectorySeparator();
+#endif
+        fileName += "testPlayback.txt";
 
-        yarp::os::ResourceFinder rf;
-        rf.setVerbose(true);
-        rf.setDefaultContext("Playback");
-        std::string path = rf.findFileByName("txt/testPlayback.txt");
-
-        bool ok = true;
-        ok &= playback.fromFile(path);
-
-        if(ok)
-        {
-            CD_SUCCESS("Configuration successful :)\n");
-        }
-        else
+        if(!playback.fromFile(fileName))
         {
             CD_ERROR("Bad Configuration\n");
             ::exit(1);
         }
+        CD_SUCCESS("Configuration successful :)\n");
     }
 
     virtual void TearDown()

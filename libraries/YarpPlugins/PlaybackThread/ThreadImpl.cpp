@@ -43,7 +43,7 @@ void PlaybackThread::run()
             else
             {
                 for(int i=0; i<mask.size(); i++)
-                    if( mask.get(i).asInt() == 1 )
+                    if( mask.get(i).asInt32() == 1 )
                         maskedRow.push_back( row[i] );
             }
 

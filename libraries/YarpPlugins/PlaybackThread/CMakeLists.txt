@@ -9,28 +9,25 @@ yarp_prepare_plugin(PlaybackThread
 
 if(NOT SKIP_PlaybackThread)
 
-  include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+    if(NOT YARP_VERSION VERSION_GREATER_EQUAL 3.4)
+        set(CMAKE_INCLUDE_CURRENT_DIR TRUE) # yarp plugin builder needs this
+    endif()
 
-  yarp_add_plugin(PlaybackThread PlaybackThread.hpp
-                                 PlaybackThread.cpp
-                                 DeviceDriverImpl.cpp
-                                 IPlaybackThreadImpl.cpp
-                                 ThreadImpl.cpp)
+    yarp_add_plugin(PlaybackThread PlaybackThread.hpp
+                                   PlaybackThread.cpp
+                                   DeviceDriverImpl.cpp
+                                   IPlaybackThreadImpl.cpp
+                                   ThreadImpl.cpp)
 
-  target_link_libraries(PlaybackThread YARP::YARP_OS
-                                       YARP::YARP_dev
-                                       ROBOTICSLAB::ColorDebug
-                                       Playback
-                                       ToolsInterfaces)
+    target_link_libraries(PlaybackThread YARP::YARP_OS
+                                         YARP::YARP_dev
+                                         ROBOTICSLAB::ColorDebug
+                                         Playback
+                                         ToolsInterfaces)
 
-  yarp_install(TARGETS PlaybackThread
-               EXPORT ROBOTICSLAB_TOOLS
-               COMPONENT runtime
-               LIBRARY DESTINATION ${ROBOTICSLAB-TOOLS_DYNAMIC_PLUGINS_INSTALL_DIR}
-               ARCHIVE DESTINATION ${ROBOTICSLAB-TOOLS_STATIC_PLUGINS_INSTALL_DIR})
-
-  yarp_install(FILES PlaybackThread.ini
-               COMPONENT runtime
-               DESTINATION ${ROBOTICSLAB-TOOLS_PLUGIN_MANIFESTS_INSTALL_DIR})
+    yarp_install(TARGETS PlaybackThread
+                 LIBRARY DESTINATION ${ROBOTICSLAB-TOOLS_DYNAMIC_PLUGINS_INSTALL_DIR}
+                 ARCHIVE DESTINATION ${ROBOTICSLAB-TOOLS_STATIC_PLUGINS_INSTALL_DIR}
+                 YARP_INI DESTINATION ${ROBOTICSLAB-TOOLS_PLUGIN_MANIFESTS_INSTALL_DIR})
 
 endif()

@@ -55,9 +55,9 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
         return false;
     }
 
-    if( ! outRobotDevice.view(iControlMode2Out) )
+    if( ! outRobotDevice.view(iControlModeOut) )
     {
-        CD_ERROR("Could not view iControlMode2Out in: %s.\n", outStr.c_str());
+        CD_ERROR("Could not view iControlModeOut in: %s.\n", outStr.c_str());
         return false;
     }
     if( ! outRobotDevice.view(iPositionDirectOut) )
@@ -79,14 +79,14 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
 
     //-- Set PositionDirect
     std::vector<int> modes(axes,VOCAB_CM_POSITION_DIRECT);
-    if( ! iControlMode2Out->setControlModes( modes.data() ) )
+    if( ! iControlModeOut->setControlModes( modes.data() ) )
     {
-        CD_ERROR("Failed to iControlMode2Out->setControlModes.\n");
+        CD_ERROR("Failed to iControlModeOut->setControlModes.\n");
     }
     CD_SUCCESS("iEncodersIn->getAxes got %d axes.\n",axes);
 
 
-    //-- Start RateThread
+    //-- Start PeriodicThread
     if( ! this->start() )
     {
         CD_ERROR("Could not start thread.\n");

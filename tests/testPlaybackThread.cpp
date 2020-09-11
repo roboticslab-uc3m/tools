@@ -1,10 +1,16 @@
-#include "gtest/gtest.h" // -- We load the librarie of GoogleTest
+#include "gtest/gtest.h"
 
 #include <string>
 
-// -- We load the rest of libraries that we will use to call the functions of our code
 #include <yarp/os/all.h>
 #include <yarp/dev/all.h>
+
+#include <yarp/conf/version.h>
+#if YARP_VERSION_MINOR >= 3
+# include <yarp/conf/filesystem.h>
+#else
+# include <yarp/os/Network.h>
+#endif
 
 #include <ColorDebug.h>
 
@@ -29,8 +35,9 @@ class MockRunnable : public IRunnable
 };
 
 /**
-* @brief Tests \ref Playback
-*/
+ * @ingroup roboticslab-tools-tests
+ * @brief Tests \ref Playback
+ */
 class PlaybackThreadTest : public testing::Test // -- inherit the Test class (gtest.h)
 {
 
@@ -39,15 +46,17 @@ public:
     virtual void SetUp()
     {
         // -- code here will execute just before the test ensues
-
-        yarp::os::ResourceFinder rf;
-        rf.setVerbose(true);
-        rf.setDefaultContext("Playback");
-        std::string path = rf.findFileByName("txt/testPlayback.txt");
+        std::string fileName("resources");
+#if YARP_VERSION_MINOR >= 3
+        fileName += yarp::conf::filesystem::preferred_separator;
+#else
+        fileName += yarp::os::NetworkBase::getDirectorySeparator();
+#endif
+        fileName += "testPlayback.txt";
 
         yarp::os::Property playbackThreadConf;
         playbackThreadConf.put("device","PlaybackThread");
-        playbackThreadConf.put("file",path);
+        playbackThreadConf.put("file",fileName);
         playbackThreadConf.put("timeIdx",0);
         playbackThreadConf.fromString("(mask 0 1 0 1)",false);
         bool ok = true;

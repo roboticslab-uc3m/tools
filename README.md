@@ -23,25 +23,10 @@ Installation instructions for installing from source can be found [here]( doc/to
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create a new Pull Request
 
-#### Manuals
-
-List of programs presented in this repo:
-
-- [openraveToStl](programs/openraveppToSTL) 
-- [meanVar](programs/meanVar)
-- [boxPlot](programs/boxPlot)
-- [plotTrajectories](programs/plotTrajectories)
-- [plotTrajectories3D](programs/plotTrajectories3D)
-
 ## Status
 
-[![Build Status (Linux/OSX)](https://travis-ci.org/roboticslab-uc3m/tools.svg?branch=develop)](https://travis-ci.org/roboticslab-uc3m/tools)
+[![Build Status (Linux)](https://travis-ci.com/roboticslab-uc3m/tools.svg?branch=develop)](https://travis-ci.com/roboticslab-uc3m/tools)
 
 [![Coverage Status](https://coveralls.io/repos/roboticslab-uc3m/tools/badge.svg)](https://coveralls.io/r/roboticslab-uc3m/tools)
 
 [![Issues](https://img.shields.io/github/issues/roboticslab-uc3m/tools.svg?label=Issues)](https://github.com/roboticslab-uc3m/tools/issues)
-
-## Links of interest:
-
-* [kinematics-dynamics](https://github.com/roboticslab-uc3m/kinematics-dynamics)
-* [yarp-devices](https://github.com/roboticslab-uc3m/yarp-devices)

@@ -6,6 +6,4 @@ if(ENABLE_Playback)
     add_subdirectory(Playback)
 endif()
 
-if(ENABLE_YarpPlugins)
-    add_subdirectory(YarpPlugins)
-endif()
+add_subdirectory(YarpPlugins)
