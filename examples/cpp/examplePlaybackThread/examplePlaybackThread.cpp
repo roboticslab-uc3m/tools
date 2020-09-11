@@ -7,11 +7,7 @@
 
 #include <yarp/dev/IPositionControl.h>
 #include <yarp/dev/PolyDriver.h>
-
-#include <yarp/conf/version.h>
-#if YARP_VERSION_MINOR >= 3
-# include <yarp/conf/filesystem.h>
-#endif
+#include <yarp/conf/filesystem.h>
 
 #include <IPlaybackThread.h>
 #include <IRunnable.h>
@@ -54,17 +50,10 @@ int main(int argc, char *argv[])
 
     //-- playbackThreadDevice and interface
     std::string fileName("..");
-#if YARP_VERSION_MINOR >= 3
     fileName += yarp::conf::filesystem::preferred_separator;
     fileName += "resources";
     fileName += yarp::conf::filesystem::preferred_separator;
     fileName += "yarpdatadumper-teo-rightArm.txt";
-#else
-    fileName += yarp::os::NetworkBase::getDirectorySeparator();
-    fileName += "resources";
-    fileName += yarp::os::NetworkBase::getDirectorySeparator();
-    fileName += "yarpdatadumper-teo-rightArm.txt";
-#endif
 
     yarp::os::Property playbackThreadOptions;
     playbackThreadOptions.put("device", "PlaybackThread");

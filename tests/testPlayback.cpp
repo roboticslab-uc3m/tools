@@ -2,12 +2,7 @@
 
 #include <string>
 
-#include <yarp/conf/version.h>
-#if YARP_VERSION_MINOR >= 3
-# include <yarp/conf/filesystem.h>
-#else
-# include <yarp/os/Network.h>
-#endif
+#include <yarp/conf/filesystem.h>
 
 #include <ColorDebug.h>
 
@@ -29,11 +24,7 @@ public:
     {
         // -- code here will execute just before the test ensues
         std::string fileName("resources");
-#if YARP_VERSION_MINOR >= 3
         fileName += yarp::conf::filesystem::preferred_separator;
-#else
-        fileName += yarp::os::NetworkBase::getDirectorySeparator();
-#endif
         fileName += "testPlayback.txt";
 
         if(!playback.fromFile(fileName))

@@ -8,7 +8,7 @@ add_executable(controlboardStateToIPosition main.cpp
                                             ControlboardStateToIPosition.hpp)
 
 # Link external libraries.
-target_link_libraries(controlboardStateToIPosition YARP::YARP_OS
+target_link_libraries(controlboardStateToIPosition YARP::YARP_os
                                                    YARP::YARP_init
                                                    YARP::YARP_dev
                                                    ROBOTICSLAB::ColorDebug)

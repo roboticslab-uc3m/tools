@@ -24,7 +24,7 @@ if(NOT SKIP_RealToSimControlboard)
                                           Transformation.cpp
                                           Transformation.hpp)
 
-    target_link_libraries(RealToSimControlboard YARP::YARP_OS
+    target_link_libraries(RealToSimControlboard YARP::YARP_os
                                                 YARP::YARP_dev
                                                 ROBOTICSLAB::ColorDebug)
 

@@ -15,7 +15,7 @@ if(ENABLE_tests)
     if(TARGET Playback)
         add_executable(testPlayback testPlayback.cpp)
 
-        target_link_libraries(testPlayback YARP::YARP_OS
+        target_link_libraries(testPlayback YARP::YARP_os
                                            ROBOTICSLAB::ColorDebug
                                            Playback
                                            gtest_main)
@@ -32,7 +32,7 @@ if(ENABLE_tests)
     if(TARGET ToolsInterfaces)
         add_executable(testPlaybackThread testPlaybackThread.cpp)
 
-        target_link_libraries(testPlaybackThread YARP::YARP_OS
+        target_link_libraries(testPlaybackThread YARP::YARP_os
                                                  YARP::YARP_dev
                                                  ROBOTICSLAB::ColorDebug
                                                  ToolsInterfaces
