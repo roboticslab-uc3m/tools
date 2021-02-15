@@ -19,6 +19,9 @@ install(FILES IPlaybackThread.h
 install(TARGETS ToolsInterfaces
         EXPORT ROBOTICSLAB_TOOLS)
 
+# Create alias target.
+add_library(ROBOTICSLAB::ToolsInterfaces ALIAS ToolsInterfaces)
+
 # YARP devices.
 add_subdirectory(PlaybackThread)
 add_subdirectory(RealToSimControlboard)

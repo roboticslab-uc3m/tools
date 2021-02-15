@@ -12,12 +12,12 @@ if(ENABLE_tests)
 
     # testPlayback
 
-    if(TARGET Playback)
+    if(TARGET ROBOTICSLAB::Playback)
         add_executable(testPlayback testPlayback.cpp)
 
         target_link_libraries(testPlayback YARP::YARP_os
                                            ROBOTICSLAB::ColorDebug
-                                           Playback
+                                           ROBOTICSLAB::Playback
                                            gtest_main)
 
         gtest_discover_tests(testPlayback)
@@ -29,13 +29,13 @@ if(ENABLE_tests)
 
     # testPlaybackThread
 
-    if(TARGET ToolsInterfaces)
+    if(TARGET ROBOTICSLAB::ToolsInterfaces)
         add_executable(testPlaybackThread testPlaybackThread.cpp)
 
         target_link_libraries(testPlaybackThread YARP::YARP_os
                                                  YARP::YARP_dev
                                                  ROBOTICSLAB::ColorDebug
-                                                 ToolsInterfaces
+                                                 ROBOTICSLAB::ToolsInterfaces
                                                  gtest_main)
 
         gtest_discover_tests(testPlaybackThread)

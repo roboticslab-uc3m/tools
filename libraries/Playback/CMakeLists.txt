@@ -19,3 +19,6 @@ install(TARGETS Playback
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT playback_library
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT playback_library
         PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT playback_library)
+
+# Create alias target.
+add_library(ROBOTICSLAB::Playback ALIAS Playback)

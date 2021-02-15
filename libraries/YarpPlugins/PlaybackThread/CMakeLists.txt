@@ -22,8 +22,8 @@ if(NOT SKIP_PlaybackThread)
     target_link_libraries(PlaybackThread YARP::YARP_os
                                          YARP::YARP_dev
                                          ROBOTICSLAB::ColorDebug
-                                         Playback
-                                         ToolsInterfaces)
+                                         ROBOTICSLAB::Playback
+                                         ROBOTICSLAB::ToolsInterfaces)
 
     yarp_install(TARGETS PlaybackThread
                  LIBRARY DESTINATION ${ROBOTICSLAB-TOOLS_DYNAMIC_PLUGINS_INSTALL_DIR}
