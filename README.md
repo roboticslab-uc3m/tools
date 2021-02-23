@@ -25,7 +25,7 @@ Installation instructions for installing from source can be found [here]( doc/to
 
 ## Status
 
-[![Build Status (Linux)](https://travis-ci.com/roboticslab-uc3m/tools.svg?branch=master)](https://travis-ci.com/roboticslab-uc3m/tools)
+[![CI (Linux)](https://github.com/roboticslab-uc3m/tools/workflows/Continuous%20Integration/badge.svg)](https://github.com/roboticslab-uc3m/tools/actions)
 
 [![Coverage Status](https://coveralls.io/repos/roboticslab-uc3m/tools/badge.svg)](https://coveralls.io/r/roboticslab-uc3m/tools)
 
