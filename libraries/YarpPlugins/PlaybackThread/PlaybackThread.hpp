@@ -9,8 +9,6 @@
 
 #include <limits>  // NAN
 
-#include <ColorDebug.h>
-
 #include "Playback.hpp"
 
 #include "IPlaybackThread.h"
@@ -79,4 +77,3 @@ class PlaybackThread : public yarp::dev::DeviceDriver, public IPlaybackThread, p
 }  // namespace roboticslab
 
 #endif  // __PLAYBACK_THREAD__
-

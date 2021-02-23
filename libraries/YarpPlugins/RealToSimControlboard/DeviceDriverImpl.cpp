@@ -5,6 +5,8 @@
 #include <map>
 #include <sstream>
 
+#include <yarp/os/LogStream.h>
+
 #define DEFAULT_MODE_POS_VEL 0  // 0=Position, 1=Velocity.
 
 namespace roboticslab
@@ -14,7 +16,7 @@ namespace roboticslab
 
 bool RealToSimControlboard::open(yarp::os::Searchable& config)
 {
-    CD_DEBUG("config: %s\n",config.toString().c_str());
+    yDebug() << "RealToSimControlboard config:" << config.toString();
 
     int modePosVelInt = config.check("modePosVel", yarp::os::Value(DEFAULT_MODE_POS_VEL), "0:pos, 1:vel").asInt32();
 
@@ -27,22 +29,22 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
         controlMode = VELOCITY_MODE;
         break;
     default:
-        CD_ERROR("Unrecognized mode identifier: %d (0:pos, 1:vel).\n", modePosVelInt);
+        yError() << "Unrecognized mode identifier:" << modePosVelInt << "(0:pos, 1:vel)";
         return false;
     }
 
     if(!config.check("remotes", "list of remotes to which this device connects"))
     {
-        CD_ERROR("Required \"remotes\" list\n");
+        yError() << "Required \"remotes\" list";
         return false;
     }
     yarp::os::Bottle* controlledDeviceList = config.find("remotes").asList();
     if (!controlledDeviceList)
     {
-        CD_ERROR("Error parsing parameters: \"remotes\" should be followed by a list\n");
+        yError() << "Error parsing parameters: \"remotes\" should be followed by a list";
         return false;
     }
-    CD_DEBUG("%s\n", controlledDeviceList->toString().c_str());
+    yDebug() << controlledDeviceList->toString();
 
     std::string remotePrefix;
     if(config.check("remotePrefix", "global prefix to remote ports"))
@@ -56,12 +58,12 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
         std::string controlledDeviceName = controlledDeviceList->get(controlledDeviceIdx).asString();
         if(!config.check(controlledDeviceName))
         {
-            CD_ERROR("\"%s\" group not found!\n", controlledDeviceName.c_str());
+            yError("\"%s\" group not found!", controlledDeviceName.c_str());
             return false;
         }
-        CD_SUCCESS("\"%s\" group found!\n", controlledDeviceName.c_str());
+        yInfo("\"%s\" group found!", controlledDeviceName.c_str());
         yarp::os::Bottle controlledDeviceGroup = config.findGroup(controlledDeviceName);
-        CD_INFO("%s\n", controlledDeviceGroup.toString().c_str());
+        yInfo() << controlledDeviceGroup.toString();
         yarp::os::Property controlledDeviceOptions;
         controlledDeviceOptions.fromString(controlledDeviceGroup.toString());
 
@@ -81,10 +83,10 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
         yarp::dev::PolyDriver* controlledDevice = new yarp::dev::PolyDriver(controlledDeviceOptions);
         if( ! controlledDevice->isValid() )
         {
-            CD_ERROR("\"%s\" group did not create a valid yarp device!\n", controlledDeviceName.c_str());
+            yError("\"%s\" group did not create a valid yarp device!", controlledDeviceName.c_str());
             return false;
         }
-        CD_SUCCESS("\"%s\" group created a valid yarp device!\n", controlledDeviceName.c_str());
+        yInfo("\"%s\" group created a valid yarp device!", controlledDeviceName.c_str());
 
         controlledDeviceNameToIdx[controlledDeviceName] = controlledDeviceIdx;
         controlledDevices.push_back(controlledDevice);
@@ -100,23 +102,23 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
         {
             axes = idx;
             storedPositions.resize(axes);
-            CD_INFO("Could not find \"%s\" group, setting number of exposed joints to %d.\n",exposedJointName.c_str(), axes);
+            yInfo("Could not find \"%s\" group, setting number of exposed joints to %d",exposedJointName.c_str(), axes);
             break;
         }
-        CD_SUCCESS("* %s group found!\n", exposedJointName.c_str());
+        yInfo("* %s group found!", exposedJointName.c_str());
 
         ExposedJoint* exposedJoint = new ExposedJoint(exposedJointName);
         exposedJoints.push_back(exposedJoint);
 
         yarp::os::Bottle exposedJointGroup = config.findGroup(exposedJointName);
-        CD_DEBUG("* %s\n", exposedJointGroup.toString().c_str());
+        yDebug("* %s", exposedJointGroup.toString().c_str());
         for(size_t exposedJointControlledDeviceIdx=1; exposedJointControlledDeviceIdx<exposedJointGroup.size(); exposedJointControlledDeviceIdx++)
         {
             yarp::os::Bottle* exposedJointControlledDeviceGroup = exposedJointGroup.get(exposedJointControlledDeviceIdx).asList();
-            CD_DEBUG("** %s\n", exposedJointControlledDeviceGroup->toString().c_str());
+            yDebug("** %s", exposedJointControlledDeviceGroup->toString().c_str());
             std::string exposedJointControlledDeviceName = exposedJointControlledDeviceGroup->get(0).asString();
             int idx = controlledDeviceNameToIdx[exposedJointControlledDeviceName];
-            CD_DEBUG("** %s [%d]\n", exposedJointControlledDeviceName.c_str(), idx);
+            yDebug("** %s [%d]", exposedJointControlledDeviceName.c_str(), idx);
 
             ExposedJointControlledDevice* exposedJointControlledDevice =
                 new ExposedJointControlledDevice(exposedJointControlledDeviceName, controlledDevices[idx]);
@@ -125,7 +127,7 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
             for(size_t exposedJointControlledDeviceJointIdx=1; exposedJointControlledDeviceJointIdx<exposedJointControlledDeviceGroup->size(); exposedJointControlledDeviceJointIdx++)
             {
                 yarp::os::Bottle* exposedJointControlledDeviceJointGroup = exposedJointControlledDeviceGroup->get(exposedJointControlledDeviceJointIdx).asList();
-                CD_DEBUG("*** %s\n", exposedJointControlledDeviceJointGroup->toString().c_str());
+                yDebug("*** %s", exposedJointControlledDeviceJointGroup->toString().c_str());
 
                 if(!exposedJointControlledDevice->addControlledDeviceJoint(exposedJointControlledDeviceJointGroup))
                     return false;
@@ -142,7 +144,6 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
 
 bool RealToSimControlboard::close()
 {
-    CD_INFO("\n");
     for(size_t i=0;i<controlledDevices.size();i++)
     {
         controlledDevices[i]->close();

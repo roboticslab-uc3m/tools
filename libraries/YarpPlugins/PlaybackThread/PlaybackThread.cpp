@@ -21,7 +21,6 @@ int PlaybackThread::getState()
 
 void PlaybackThread::setState( const int& state)
 {
-    //CD_DEBUG("%d\n",state);
     _stateSemaphore.wait();
     _state = state;
     _stateSemaphore.post();

@@ -2,9 +2,8 @@
 
 #include <string>
 
+#include <yarp/os/LogStream.h>
 #include <yarp/conf/filesystem.h>
-
-#include <ColorDebug.h>
 
 #include "Playback.hpp"
 
@@ -29,10 +28,10 @@ public:
 
         if(!playback.fromFile(fileName))
         {
-            CD_ERROR("Bad Configuration\n");
+            yError() << "Bad Configuration";
             ::exit(1);
         }
-        CD_SUCCESS("Configuration successful :)\n");
+        yInfo() << "Configuration successful";
     }
 
     virtual void TearDown()

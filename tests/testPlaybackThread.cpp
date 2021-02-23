@@ -6,8 +6,6 @@
 #include <yarp/dev/all.h>
 #include <yarp/conf/filesystem.h>
 
-#include <ColorDebug.h>
-
 #include "IPlaybackThread.h"
 
 namespace roboticslab
@@ -54,11 +52,11 @@ public:
         ok &= playbackDevice.view(iPlaybackThread);
         if(ok)
         {
-            CD_SUCCESS("Configuration successful :)\n");
+            yInfo() << "Configuration successful";
         }
         else
         {
-            CD_ERROR("Bad Configuration\n");
+            yError() << "Bad Configuration";
             ::exit(1);
         }
     }
@@ -98,24 +96,24 @@ TEST_F( PlaybackThreadTest, PlaybackThreadTestPlayReplay )
 
 TEST_F( PlaybackThreadTest, PlaybackThreadTestPause )
 {
-    CD_INFO("Play 2 seconds.\n");
+    yInfo() << "Play 2 seconds";
     iPlaybackThread->play();
     yarp::os::Time::delay(0.5);
     iPlaybackThread->pause();
-    CD_INFO("Pause 7 seconds (normal for one to pass).\n");
+    yInfo() << "Pause 7 seconds (normal for one to pass)";
     yarp::os::Time::delay(7);
-    CD_INFO("Play untill end.\n");
+    yInfo() << "Play untill end";
     iPlaybackThread->play();
     while( iPlaybackThread->isPlaying() );
 }
 
 TEST_F( PlaybackThreadTest, PlaybackThreadTestTimeScale )
 {
-    CD_INFO("Play x2 slower.\n");
+    yInfo() << "Play x2 slower";
     iPlaybackThread->setTimeScale(2);
     iPlaybackThread->play();
     while( iPlaybackThread->isPlaying() );
-    CD_INFO("Play x10 faster.\n");
+    yInfo() << "Play x10 faster";
     iPlaybackThread->setTimeScale(0.1);
     iPlaybackThread->play();
     while( iPlaybackThread->isPlaying() );

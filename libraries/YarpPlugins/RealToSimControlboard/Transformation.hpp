@@ -7,8 +7,6 @@
 
 #include <vector>
 
-#include "ColorDebug.h"
-
 namespace roboticslab
 {
 

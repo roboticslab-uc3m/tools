@@ -2,17 +2,21 @@
 
 #include "RealToSimControlboard.hpp"
 
+#include <yarp/os/LogStream.h>
+
 // ------------------ IVelocityControl Related ----------------------------------------
 
-bool roboticslab::RealToSimControlboard::velocityMove(int j, double sp) {  // velExposed = sp;
-
+bool roboticslab::RealToSimControlboard::velocityMove(int j, double sp)
+{
+    yTrace();
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::velocityMove(const double *sp) {
-    CD_INFO("\n");
+bool roboticslab::RealToSimControlboard::velocityMove(const double *sp)
+{
+    yTrace();
     bool ok = true;
     for(unsigned int i=0;i<axes;i++)
         ok &= velocityMove(i,sp[i]);
@@ -23,7 +27,7 @@ bool roboticslab::RealToSimControlboard::velocityMove(const double *sp) {
 
 bool roboticslab::RealToSimControlboard::velocityMove(const int n_joint, const int *joints, const double *spds)
 {
-    CD_INFO("\n");
+    yTrace();
     bool ok = true;
     for(int i=0;i<n_joint;i++)
         ok &= velocityMove(joints[i],spds[i]);
@@ -34,7 +38,7 @@ bool roboticslab::RealToSimControlboard::velocityMove(const int n_joint, const i
 
 bool roboticslab::RealToSimControlboard::getRefVelocity(const int joint, double *vel)
 {
-    CD_ERROR("Not implemented yet.\n");
+    yError() << "getRefVelocity() not implemented yet";
     return true;
 }
 
@@ -42,7 +46,7 @@ bool roboticslab::RealToSimControlboard::getRefVelocity(const int joint, double 
 
 bool roboticslab::RealToSimControlboard::getRefVelocities(double *vels)
 {
-    CD_ERROR("Not implemented yet.\n");
+    yError() << "getRefVelocities() not implemented yet";
     return true;
 }
 
@@ -50,7 +54,7 @@ bool roboticslab::RealToSimControlboard::getRefVelocities(double *vels)
 
 bool roboticslab::RealToSimControlboard::getRefVelocities(const int n_joint, const int *joints, double *vels)
 {
-    CD_ERROR("Not implemented yet.\n");
+    yError() << "getRefVelocities() not implemented yet";
     return true;
 }
 

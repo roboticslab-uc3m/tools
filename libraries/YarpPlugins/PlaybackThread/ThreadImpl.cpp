@@ -4,6 +4,8 @@
 
 #include <iostream>
 
+#include <yarp/os/LogStream.h>
+
 namespace roboticslab {
 
 // -----------------------------------------------------------------------------
@@ -13,16 +15,14 @@ void PlaybackThread::run()
 
     while ( ! this->isStopping() )
     {
-        //CD_DEBUG("\n");
         if ( getState() == PLAYING )
         {
-            //CD_DEBUG("PLAYING. %d\n", this->getIter() );
             std::vector<double> row, maskedRow;
 
             if( ! this->getNext(row) )
             {
                 stopPlay();
-                CD_INFO("End of rows, auto stopPlay()\n");
+                yInfo() << "End of rows, auto stopPlay()";
                 continue;
             }
 
@@ -67,7 +67,6 @@ void PlaybackThread::run()
 void PlaybackThread::onStop()
 {
     setState( NOT_PLAYING );
-    //CD_DEBUG("Bye!\n");
 }
 
 // -----------------------------------------------------------------------------

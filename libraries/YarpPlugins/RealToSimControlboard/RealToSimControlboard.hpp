@@ -8,8 +8,6 @@
 #include <yarp/dev/PolyDriver.h>
 #include <yarp/dev/ControlBoardInterfaces.h>
 
-#include "ColorDebug.h"
-
 #include "Transformation.hpp"
 
 namespace roboticslab

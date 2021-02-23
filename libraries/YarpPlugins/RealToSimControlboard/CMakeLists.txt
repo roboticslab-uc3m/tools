@@ -25,8 +25,7 @@ if(NOT SKIP_RealToSimControlboard)
                                           Transformation.hpp)
 
     target_link_libraries(RealToSimControlboard YARP::YARP_os
-                                                YARP::YARP_dev
-                                                ROBOTICSLAB::ColorDebug)
+                                                YARP::YARP_dev)
 
     yarp_install(TARGETS RealToSimControlboard
                  LIBRARY DESTINATION ${ROBOTICSLAB-TOOLS_DYNAMIC_PLUGINS_INSTALL_DIR}

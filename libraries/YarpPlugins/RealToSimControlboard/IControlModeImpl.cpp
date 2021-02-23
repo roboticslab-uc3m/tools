@@ -2,6 +2,8 @@
 
 #include "RealToSimControlboard.hpp"
 
+#include <yarp/os/LogStream.h>
+
 // ------------------ IControlMode Related ----------------------------------------
 
 bool roboticslab::RealToSimControlboard::getControlMode(int j, int * mode)
@@ -20,7 +22,7 @@ bool roboticslab::RealToSimControlboard::getControlMode(int j, int * mode)
     }
     else
     {
-        CD_ERROR("Currently unsupported mode.\n");
+        yError() << "Currently unsupported mode";
         return false;
     }
 
@@ -45,7 +47,6 @@ bool roboticslab::RealToSimControlboard::getControlModes(int * modes)
 
 bool roboticslab::RealToSimControlboard::getControlModes(int n_joint, const int * joints, int * modes)
 {
-    CD_DEBUG("(%d)\n", n_joint);
     bool ok = true;
 
     for (int i = 0; i < n_joint; i++)
@@ -60,11 +61,9 @@ bool roboticslab::RealToSimControlboard::getControlModes(int n_joint, const int 
 
 bool roboticslab::RealToSimControlboard::setControlMode(int j, const int mode)
 {
-    CD_DEBUG("(%d, %s)\n", j, yarp::os::Vocab::decode(mode).c_str());
-
     if ((unsigned int)j > axes)
     {
-        CD_ERROR("axis index more than axes.\n");
+        yError() << "Axis index greater than number of than axes";
         return false;
     }
 
@@ -88,7 +87,6 @@ bool roboticslab::RealToSimControlboard::setControlMode(int j, const int mode)
 
 bool roboticslab::RealToSimControlboard::setControlModes(int n_joint, const int * joints, int * modes)
 {
-    CD_DEBUG("\n");
     bool ok = true;
 
     for (unsigned int i = 0; i < axes; i++)

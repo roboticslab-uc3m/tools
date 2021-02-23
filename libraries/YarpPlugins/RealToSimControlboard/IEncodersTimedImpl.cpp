@@ -4,8 +4,8 @@
 
 // ------------------ IEncodersTimed Related -----------------------------------------
 
-bool roboticslab::RealToSimControlboard::getEncodersTimed(double *encs, double *time) {
-    //CD_INFO("\n");  //-- Way too verbose
+bool roboticslab::RealToSimControlboard::getEncodersTimed(double *encs, double *time)
+{
     bool ok = true;
     for(unsigned int i=0; i < axes; i++)
         ok &= getEncoderTimed(i,&(encs[i]),&(time[i]));
@@ -14,27 +14,25 @@ bool roboticslab::RealToSimControlboard::getEncodersTimed(double *encs, double *
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::getEncoderTimed(int j, double *encs, double *time) {
-    //CD_INFO("(%d)\n",j);  //-- Way too verbose
-
+bool roboticslab::RealToSimControlboard::getEncoderTimed(int j, double *encs, double *time)
+{
     getEncoder(j, encs);
     *time = yarp::os::Time::now();
-
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::resetEncoder(int j) {
-    CD_INFO("\n");
+bool roboticslab::RealToSimControlboard::resetEncoder(int j)
+{
     if ((unsigned int)j>axes) return false;
     return setEncoder(j,0.0);
-  }
+}
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::resetEncoders() {
-    CD_INFO("\n");
+bool roboticslab::RealToSimControlboard::resetEncoders()
+{
     bool ok = true;
     for(unsigned int i=0;i<axes;i++)
         ok &= resetEncoder(i);
@@ -43,15 +41,15 @@ bool roboticslab::RealToSimControlboard::resetEncoders() {
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::setEncoder(int j, double val) {  // encExposed = val;
-    CD_INFO("\n");
+bool roboticslab::RealToSimControlboard::setEncoder(int j, double val)
+{
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::setEncoders(const double *vals) {
-    CD_INFO("\n");
+bool roboticslab::RealToSimControlboard::setEncoders(const double *vals)
+{
     bool ok = true;
     for(unsigned int i=0;i<axes;i++)
         ok &= setEncoder(i,vals[i]);
@@ -60,17 +58,16 @@ bool roboticslab::RealToSimControlboard::setEncoders(const double *vals) {
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::getEncoder(int j, double *v) {
-    //CD_INFO("\n");  //-- Way too verbose
+bool roboticslab::RealToSimControlboard::getEncoder(int j, double *v)
+{
     *v = storedPositions[j];
-
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::getEncoders(double *encs) {
-    //CD_INFO("\n");  //-- Way too verbose
+bool roboticslab::RealToSimControlboard::getEncoders(double *encs)
+{
     bool ok = true;
     for(unsigned int i=0;i<axes;i++)
         ok &= getEncoder(i,&encs[i]);
@@ -79,8 +76,8 @@ bool roboticslab::RealToSimControlboard::getEncoders(double *encs) {
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::getEncoderSpeed(int j, double *sp) {
-    //CD_INFO("\n");  //-- Way too verbose
+bool roboticslab::RealToSimControlboard::getEncoderSpeed(int j, double *sp)
+{
     // Make it easy, give the current reference speed.
     *sp = 0;  // begins to look like we should use semaphores.
     return true;
@@ -88,8 +85,8 @@ bool roboticslab::RealToSimControlboard::getEncoderSpeed(int j, double *sp) {
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::getEncoderSpeeds(double *spds) {
-    //CD_INFO("\n");  //-- Way too verbose
+bool roboticslab::RealToSimControlboard::getEncoderSpeeds(double *spds)
+{
     bool ok = true;
     //for(unsigned int i=0;i<axes;i++)
     //    ok &= getEncoderSpeed(i,&spds[i]);
@@ -98,15 +95,15 @@ bool roboticslab::RealToSimControlboard::getEncoderSpeeds(double *spds) {
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::getEncoderAcceleration(int j, double *spds) {
-    //CD_INFO("\n");  //-- Way too verbose
+bool roboticslab::RealToSimControlboard::getEncoderAcceleration(int j, double *spds)
+{
     return false;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::getEncoderAccelerations(double *accs) {
-    //CD_INFO("\n");  //-- Way too verbose
+bool roboticslab::RealToSimControlboard::getEncoderAccelerations(double *accs)
+{
     return false;
 }
 

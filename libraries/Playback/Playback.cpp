@@ -2,7 +2,7 @@
 
 #include "Playback.hpp"
 
-#include <ColorDebug.h>
+#include <yarp/os/LogStream.h>
 
 namespace roboticslab
 {
@@ -14,10 +14,10 @@ bool Playback::fromFile(const std::string& fileName)
     file.open(fileName.c_str());
     if( ! file.is_open() )
     {
-          CD_ERROR("Not able to open file: %s\n",fileName.c_str());
-          return false;
+        yError() << "Not able to open file:" << fileName;
+        return false;
     }
-    CD_SUCCESS("Opened file: %s\n",fileName.c_str());
+    yInfo() << "Opened file:" << fileName;
 
     std::vector<double> doublesOnFileLine;
 

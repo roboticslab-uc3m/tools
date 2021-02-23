@@ -21,7 +21,6 @@ if(NOT SKIP_PlaybackThread)
 
     target_link_libraries(PlaybackThread YARP::YARP_os
                                          YARP::YARP_dev
-                                         ROBOTICSLAB::ColorDebug
                                          ROBOTICSLAB::Playback
                                          ROBOTICSLAB::ToolsInterfaces)
 

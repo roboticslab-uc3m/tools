@@ -4,6 +4,8 @@
 
 #include <sstream>
 
+#include <yarp/os/LogStream.h>
+
 namespace roboticslab
 {
 
@@ -11,14 +13,14 @@ namespace roboticslab
 
 ExposedJointControlledDevice::ExposedJointControlledDevice(std::string name, yarp::dev::PolyDriver *device) : name(name)
 {
-    CD_DEBUG("** %s\n", name.c_str());
+    yDebug("** %s", name.c_str());
     if(! device->view(iPositionControl) )
     {
-        CD_DEBUG("** NO view IPositionControl\n");
+        yDebug() << "** NO view IPositionControl";
         iPositionControl = nullptr;
     }
     else
-        CD_DEBUG("** view IPositionControl\n");
+        yDebug() << "** view IPositionControl";
 }
 
 // -----------------------------------------------------------------------------
@@ -38,25 +40,25 @@ bool ExposedJointControlledDevice::addControlledDeviceJoint(yarp::os::Searchable
 {
     if(!parameters->check("joint"))
     {
-        CD_ERROR("*** \"joint\" (index) for joint NOT found\n");
+        yError() << "*** \"joint\" (index) for joint NOT found";
         return false;
     }
-    CD_DEBUG("*** \"joint\" (index) for joint found\n");
+    yDebug() << "*** \"joint\" (index) for joint found";
     int jointIdx = parameters->find("joint").asInt();
     controlledDeviceJoints.push_back(jointIdx);
     axes = controlledDeviceJoints.size();
 
     if(!parameters->check("transformation"))
     {
-        CD_ERROR("*** \"transformation\" for joint NOT found\n");
+        yError() << "*** \"transformation\" for joint NOT found";
         return false;
     }
-    CD_DEBUG("*** \"transformation\" for joint found\n");
+    yDebug() << "*** \"transformation\" for joint found";
     std::string transformation = parameters->find("transformation").asString();
 
     if(transformation == "linear")
     {
-        CD_DEBUG("*** transformation of type \"%s\" set\n", transformation.c_str());
+        yDebug("*** transformation of type \"%s\" set", transformation.c_str());
         Transformation* transformation = new LinearTransformation(parameters);
         if(!transformation->isValid())
             return false;
@@ -65,14 +67,14 @@ bool ExposedJointControlledDevice::addControlledDeviceJoint(yarp::os::Searchable
     }
     else if(transformation == "piecewiseLinear")
     {
-        CD_DEBUG("*** transformation of type \"%s\" set\n", transformation.c_str());
+        yDebug("*** transformation of type \"%s\" set", transformation.c_str());
         Transformation* transformation = new PiecewiseLinearTransformation(parameters);
         if(!transformation->isValid())
             return false;
         transformations.push_back(transformation);
         return true;
     }
-    CD_ERROR("*** transformation of type \"%s\" NOT implemented \n",transformation.c_str());
+    yError("*** transformation of type \"%s\" NOT implemented",transformation.c_str());
     return false;
 }
 
@@ -80,10 +82,10 @@ bool ExposedJointControlledDevice::addControlledDeviceJoint(yarp::os::Searchable
 
 bool ExposedJointControlledDevice::positionMove(double ref)
 {
-    CD_INFO("* %s: %f\n",name.c_str(), ref);
+    yInfo("* %s: %f",name.c_str(), ref);
     if(iPositionControl == nullptr)
     {
-        CD_DEBUG("%s: NO view IPositionControl\n", name.c_str());
+        yDebug("%s: NO view IPositionControl", name.c_str());
         return true;
     }
 
@@ -122,7 +124,7 @@ void ExposedJoint::addExposedJointControlledDevice(ExposedJointControlledDevice*
 
 bool ExposedJoint::positionMove(double ref)
 {
-    CD_INFO("%s: %f\n",name.c_str(), ref);
+    yInfo("%s: %f",name.c_str(), ref);
     bool ok = true;
     for(size_t i=0; i<exposedJointControlledDevices.size();i++)
         ok &= exposedJointControlledDevices[i]->positionMove(ref);

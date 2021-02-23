@@ -13,9 +13,6 @@ if(NOT TARGET ROBOTICSLAB::ToolsInterfaces)
     find_package(ROBOTICSLAB_TOOLS REQUIRED)
 endif()
 
-# Find ROBOTICSLAB_COLOR_DEBUG.
-find_package(COLOR_DEBUG REQUIRED)
-
 # Set up our main executable.
 add_executable(examplePlaybackThread examplePlaybackThread.cpp)
 
@@ -23,5 +20,4 @@ add_executable(examplePlaybackThread examplePlaybackThread.cpp)
 target_link_libraries(examplePlaybackThread YARP::YARP_os
                                             YARP::YARP_init
                                             YARP::YARP_dev
-                                            ROBOTICSLAB::ToolsInterfaces
-                                            ROBOTICSLAB::ColorDebug)
+                                            ROBOTICSLAB::ToolsInterfaces)

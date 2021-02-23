@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include <yarp/os/LogStream.h>
 #include <yarp/os/Network.h>
 #include <yarp/os/Property.h>
 
@@ -11,8 +12,6 @@
 
 #include <IPlaybackThread.h>
 #include <IRunnable.h>
-
-#include <ColorDebug.h>
 
 class PositionMoveRunnable : public roboticslab::IRunnable
 {
@@ -32,7 +31,7 @@ int main(int argc, char *argv[])
 
     if (!yarp::os::Network::checkNetwork())
     {
-        CD_ERROR("Please start a yarp name server first\n");
+        yError() << "Please start a yarp name server first";
         return 1;
     }
 
@@ -41,12 +40,6 @@ int main(int argc, char *argv[])
 
     yarp::dev::PolyDriver robotDevice;
     PositionMoveRunnable positionMoveRunnable;
-
-    if (!yarp::os::Network::checkNetwork())
-    {
-        CD_ERROR("Please start a yarp name server first.\n");
-        return(1);
-    }
 
     //-- playbackThreadDevice and interface
     std::string fileName("..");
@@ -65,17 +58,15 @@ int main(int argc, char *argv[])
 
     if (!playbackThreadDevice.isValid())
     {
-        CD_ERROR("playbackThreadDevice not available.\n");
+        yError() << "playbackThreadDevice not available";
         return 1;
     }
 
     if (!playbackThreadDevice.view(iPlaybackThread))
     {
-        CD_ERROR("Problems acquiring iPlaybackThread interface.\n");
+        yError() << "Problems acquiring iPlaybackThread interface";
         return 1;
     }
-
-    CD_SUCCESS("Acquired iPlaybackThread interface.\n");
 
     //-- robotDevice
     yarp::os::Property robotOptions;
@@ -86,7 +77,7 @@ int main(int argc, char *argv[])
 
     if (!robotDevice.isValid())
     {
-        CD_ERROR("robotDevice not available.\n");
+        yError() << "robotDevice not available";
         return 1;
     }
 

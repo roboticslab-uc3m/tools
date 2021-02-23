@@ -3,11 +3,10 @@
 #include <string>
 #include <vector>
 
+#include <yarp/os/LogStream.h>
 #include <yarp/os/Property.h>
 #include <yarp/os/Value.h>
 #include <yarp/dev/IControlMode.h> // Defines VOCAB_CM_POSITION_DIRECT.
-
-#include <ColorDebug.h>
 
 namespace roboticslab
 {
@@ -28,14 +27,14 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
 
     if( ! inRobotDevice.open(inOptions) )
     {
-        CD_ERROR("Could not open() inRobotDevice: %s\n", inStr.c_str());
-        CD_ERROR("Please review or set --in\n");
+        yError() << "Could not open() inRobotDevice:" << inStr;
+        yError() << "Please review or set --in";
         return false;
     }
 
     if( ! inRobotDevice.view(iEncodersIn) )
     {
-        CD_ERROR("Could not view iEncodersIn in: %s.\n", inStr.c_str());
+        yError() << "Could not view iEncodersIn in:" << inStr;
         return false;
     }
 
@@ -50,19 +49,19 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
 
     if( ! outRobotDevice.open(options) )
     {
-        CD_ERROR("Could not open() outRobotDevice: %s\n", outStr.c_str());
-        CD_ERROR("Please review or set --out\n");
+        yError() << "Could not open() outRobotDevice:" << outStr;
+        yError() << "Please review or set --out";
         return false;
     }
 
     if( ! outRobotDevice.view(iControlModeOut) )
     {
-        CD_ERROR("Could not view iControlModeOut in: %s.\n", outStr.c_str());
+        yError() << "Could not view iControlModeOut in:" << outStr;
         return false;
     }
     if( ! outRobotDevice.view(iPositionDirectOut) )
     {
-        CD_ERROR("Could not view iPositionDirectOut in: %s.\n", outStr.c_str());
+        yError() << "Could not view iPositionDirectOut in:" << outStr;
         return false;
     }
 
@@ -71,9 +70,9 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
 
     if( ! iEncodersIn->getAxes(&axes) )
     {
-        CD_ERROR("Failed to iEncodersIn->getAxes.\n");
+        yError() << "Failed to iEncodersIn->getAxes()";
     }
-    CD_SUCCESS("iEncodersIn->getAxes got %d axes.\n",axes);
+    yInfo() << "iEncodersIn->getAxes() got" << axes << "axes";
 
     encPoss.resize(axes);
 
@@ -81,17 +80,15 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
     std::vector<int> modes(axes,VOCAB_CM_POSITION_DIRECT);
     if( ! iControlModeOut->setControlModes( modes.data() ) )
     {
-        CD_ERROR("Failed to iControlModeOut->setControlModes.\n");
+        yError() << "Failed to iControlModeOut->setControlModes()";
     }
-    CD_SUCCESS("iEncodersIn->getAxes got %d axes.\n",axes);
-
 
     //-- Start PeriodicThread
     if( ! this->start() )
     {
-        CD_ERROR("Could not start thread.\n");
+        yError() << "Could not start thread";
     }
-    CD_SUCCESS("Started thread.\n");
+    yInfo() << "Started thread";
 
     return true;
 }
@@ -106,7 +103,7 @@ bool ControlboardStateToIPosition::close()
 
 bool ControlboardStateToIPosition::updateModule()
 {
-    CD_INFO("Alive...\n");
+    yInfo() << "Alive...";
     return true;
 }
 
@@ -114,18 +111,15 @@ void ControlboardStateToIPosition::run()
 {
     if( ! iEncodersIn->getEncoders( encPoss.data() ) )
     {
-        CD_WARNING("Failed iEncodersIn->getEncoders\n");
+        yWarning() << "Failed iEncodersIn->getEncoders()";
         return;
     }
 
-    CD_DEBUG("Got in:");
-    for(size_t i=0;i<encPoss.size();i++)
-        CD_DEBUG_NO_HEADER(" %f", encPoss[i]);
-    CD_DEBUG_NO_HEADER("\n");
+    yDebug() << "Got in:" << encPoss;
 
     if( ! iPositionDirectOut->setPositions( encPoss.data() ) )
     {
-        CD_WARNING("Failed iPositionDirectOut->setPositions\n");
+        yWarning() << "Failed iPositionDirectOut->setPositions()";
         return;
     }
 }

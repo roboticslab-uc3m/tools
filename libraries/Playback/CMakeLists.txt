@@ -10,7 +10,7 @@ target_include_directories(Playback PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOU
                                            $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 # Specify usage requirements.
-target_link_libraries(Playback PRIVATE ROBOTICSLAB::ColorDebug)
+target_link_libraries(Playback PRIVATE YARP::YARP_os)
 
 # Create installation rule.
 install(TARGETS Playback

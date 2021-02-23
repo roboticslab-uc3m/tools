@@ -2,6 +2,8 @@
 
 #include "PlaybackThread.hpp"
 
+#include <yarp/os/LogStream.h>
+
 namespace roboticslab {
 
 // -----------------------------------------------------------------------------
@@ -13,10 +15,10 @@ bool PlaybackThread::open(yarp::os::Searchable& config)
     timeScale = config.check("timeScale",yarp::os::Value(DEFAULT_TIME_SCALE),"time scaling of timestamp").asFloat64();
     mask = config.findGroup("mask","filter to apply to each item in a row ('1': process, '0': ignore)").tail();
 
-    CD_INFO("file: %s [%s]\n", fileName.c_str(), DEFAULT_FILE_NAME);
-    CD_INFO("timeIdx: %d [%d]\n", timeIdx, DEFAULT_TIME_IDX);
-    CD_INFO("timeScale: %f [%f]\n", timeScale, DEFAULT_TIME_SCALE);
-    CD_INFO("mask: %s (%d)\n", mask.toString().c_str(), mask.size());
+    yInfo("file: %s [%s]", fileName.c_str(), DEFAULT_FILE_NAME);
+    yInfo("timeIdx: %d [%d]", timeIdx, DEFAULT_TIME_IDX);
+    yInfo("timeScale: %f [%f]", timeScale, DEFAULT_TIME_SCALE);
+    yInfo("mask: %s (%zu)", mask.toString().c_str(), mask.size());
 
     _iRunnable = NULL;
 

@@ -4,6 +4,8 @@
 
 #include <fstream>
 
+#include <yarp/os/LogStream.h>
+
 namespace roboticslab
 {
 
@@ -13,18 +15,18 @@ LinearTransformation::LinearTransformation(yarp::os::Searchable* parameters)
 {
     if(!parameters->check("m"))
     {
-        CD_ERROR("**** \"m\" parameter for LinearTransformation NOT found\n");
+        yError() << "**** \"m\" parameter for LinearTransformation NOT found";
         return;
     }
-    CD_DEBUG("**** \"m\" parameter for LinearTransformation found\n");
+    yDebug() << "**** \"m\" parameter for LinearTransformation found";
     m = parameters->find("m").asDouble();
 
     if(!parameters->check("b"))
     {
-        CD_ERROR("**** \"b\" parameter for LinearTransformation NOT found\n");
+        yError() << "**** \"b\" parameter for LinearTransformation NOT found";
         return;
     }
-    CD_DEBUG("**** \"b\" parameter for LinearTransformation found\n");
+    yDebug() << "**** \"b\" parameter for LinearTransformation found";
     b = parameters->find("b").asDouble();
 
     valid = true;
@@ -47,35 +49,35 @@ PiecewiseLinearTransformation::PiecewiseLinearTransformation(yarp::os::Searchabl
 {
     if(!parameters->check("csvFile"))
     {
-        CD_ERROR("**** \"csvFile\" parameter for PiecewiseLinearTransformation NOT found\n");
+        yError() << "**** \"csvFile\" parameter for PiecewiseLinearTransformation NOT found";
         return;
     }
     std::string csvFileName = parameters->find("csvFile").asString();
-    CD_DEBUG("**** \"csvFile\" parameter for PiecewiseLinearTransformation found: \"%s\"\n", csvFileName.c_str());
+    yDebug("**** \"csvFile\" parameter for PiecewiseLinearTransformation found: \"%s\"", csvFileName.c_str());
 
     if(!parameters->check("context"))
     {
-        CD_ERROR("**** \"context\" parameter for PiecewiseLinearTransformation NOT found\n");
+        yError() << "**** \"context\" parameter for PiecewiseLinearTransformation NOT found";
         return;
     }
     std::string context = parameters->find("context").asString();
-    CD_DEBUG("**** \"context\" parameter for PiecewiseLinearTransformation found: \"%s\"\n", context.c_str());
+    yDebug("**** \"context\" parameter for PiecewiseLinearTransformation found: \"%s\"", context.c_str());
 
     if(!parameters->check("inColumn"))
     {
-        CD_ERROR("**** \"inColumn\" parameter for PiecewiseLinearTransformation NOT found\n");
+        yError() << "**** \"inColumn\" parameter for PiecewiseLinearTransformation NOT found";
         return;
     }
     const int inColumn = parameters->find("inColumn").asInt();
-    CD_DEBUG("**** \"inColumn\" parameter for PiecewiseLinearTransformation found: \"%d\"\n", inColumn);
+    yDebug("**** \"inColumn\" parameter for PiecewiseLinearTransformation found: \"%d\"", inColumn);
 
     if(!parameters->check("outColumn"))
     {
-        CD_ERROR("**** \"outColumn\" parameter for PiecewiseLinearTransformation NOT found\n");
+        yError() << "**** \"outColumn\" parameter for PiecewiseLinearTransformation NOT found";
         return;
     }
     const int outColumn = parameters->find("outColumn").asInt();
-    CD_DEBUG("**** \"outColumn\" parameter for PiecewiseLinearTransformation found: \"%d\"\n", outColumn);
+    yDebug("**** \"outColumn\" parameter for PiecewiseLinearTransformation found: \"%d\"", outColumn);
 
     yarp::os::ResourceFinder rf;
     rf.setVerbose(false);
@@ -83,18 +85,18 @@ PiecewiseLinearTransformation::PiecewiseLinearTransformation(yarp::os::Searchabl
     std::string csvFileFullName = rf.findFileByName(csvFileName);
     if(csvFileFullName.empty())
     {
-        CD_ERROR("**** full path for file NOT found\n");
+        yError() << "**** full path for file NOT found";
         return;
     }
-    CD_DEBUG("**** full path for file found: \"%s\"\n", csvFileFullName.c_str());
+    yDebug("**** full path for file found: \"%s\"", csvFileFullName.c_str());
 
     std::ifstream csvFile(csvFileFullName);
     if(!csvFile.is_open())
     {
-        CD_ERROR("**** \"%s\" csvFile for PiecewiseLinearTransformation NOT open\n", csvFileName.c_str());
+        yError("**** \"%s\" csvFile for PiecewiseLinearTransformation NOT open", csvFileName.c_str());
         return;
     }
-    CD_DEBUG("**** \"%s\" csvFile for PiecewiseLinearTransformation open\n", csvFileName.c_str());
+    yDebug("**** \"%s\" csvFile for PiecewiseLinearTransformation open", csvFileName.c_str());
 
     std::string line;
     while (std::getline(csvFile, line))
@@ -113,7 +115,7 @@ PiecewiseLinearTransformation::PiecewiseLinearTransformation(yarp::os::Searchabl
                 outData.push_back(d);
             idx++;
         }
-        CD_DEBUG("***** [%f, %f] from %s\n", inData[inData.size()-1], outData[outData.size()-1], line.c_str());
+        yDebug("***** [%f, %f] from %s", inData[inData.size()-1], outData[outData.size()-1], line.c_str());
     }
 
     csvFile.close();
@@ -148,7 +150,7 @@ double PiecewiseLinearTransformation::transform(const double value)
 
     double dydx = ( yR - yL ) / ( xR - xL ); // gradient
 
-    CD_DEBUG("Ret: %f\n", yL + dydx * ( value - xL ));
+    yDebug() << "Ret:" << yL + dydx * ( value - xL );
     return yL + dydx * ( value - xL ); // linear interpolation
 }
 
