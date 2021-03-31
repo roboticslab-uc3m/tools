@@ -2,11 +2,11 @@
 
 Additional software tools.
 
-Link to Doxygen generated documentation: http://robots.uc3m.es/dox-tools
+Link to Doxygen generated documentation: https://roboticslab-uc3m.github.io/tools
 
 ## Installation
 
-Installation instructions for installing from source can be found [here]( doc/tools-install.md ).
+Installation instructions for installing from source can be found [here](doc/tools-install.md ).
 
 ## Contributing
 
