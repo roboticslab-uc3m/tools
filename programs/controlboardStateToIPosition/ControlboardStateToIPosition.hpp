@@ -3,6 +3,8 @@
 
 #include <vector>
 
+#include <yarp/conf/version.h>
+
 #include <yarp/os/PeriodicThread.h>
 #include <yarp/os/RFModule.h>
 
@@ -25,7 +27,13 @@ class ControlboardStateToIPosition : public yarp::os::RFModule, yarp::os::Period
 {
 public:
 
-    ControlboardStateToIPosition() : yarp::os::PeriodicThread(DEFAULT_RATE_MS * 0.001) {}
+    ControlboardStateToIPosition()
+#if YARP_VERSION_MINOR >= 5
+        : yarp::os::PeriodicThread(DEFAULT_RATE_MS * 0.001, yarp::os::PeriodicThreadClock::Absolute)
+#else
+        : yarp::os::PeriodicThread(DEFAULT_RATE_MS * 0.001)
+#endif
+    {}
 
     /**
      * Configure the module, pass a ResourceFinder object to the module.
