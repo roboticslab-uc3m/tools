@@ -19,7 +19,7 @@ LinearTransformation::LinearTransformation(yarp::os::Searchable* parameters)
         return;
     }
     yDebug() << "**** \"m\" parameter for LinearTransformation found";
-    m = parameters->find("m").asDouble();
+    m = parameters->find("m").asFloat64();
 
     if(!parameters->check("b"))
     {
@@ -27,7 +27,7 @@ LinearTransformation::LinearTransformation(yarp::os::Searchable* parameters)
         return;
     }
     yDebug() << "**** \"b\" parameter for LinearTransformation found";
-    b = parameters->find("b").asDouble();
+    b = parameters->find("b").asFloat64();
 
     valid = true;
 }
@@ -68,7 +68,7 @@ PiecewiseLinearTransformation::PiecewiseLinearTransformation(yarp::os::Searchabl
         yError() << "**** \"inColumn\" parameter for PiecewiseLinearTransformation NOT found";
         return;
     }
-    const int inColumn = parameters->find("inColumn").asInt();
+    const int inColumn = parameters->find("inColumn").asInt32();
     yDebug("**** \"inColumn\" parameter for PiecewiseLinearTransformation found: \"%d\"", inColumn);
 
     if(!parameters->check("outColumn"))
@@ -76,7 +76,7 @@ PiecewiseLinearTransformation::PiecewiseLinearTransformation(yarp::os::Searchabl
         yError() << "**** \"outColumn\" parameter for PiecewiseLinearTransformation NOT found";
         return;
     }
-    const int outColumn = parameters->find("outColumn").asInt();
+    const int outColumn = parameters->find("outColumn").asInt32();
     yDebug("**** \"outColumn\" parameter for PiecewiseLinearTransformation found: \"%d\"", outColumn);
 
     yarp::os::ResourceFinder rf;

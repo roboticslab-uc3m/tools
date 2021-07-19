@@ -44,7 +44,7 @@ bool ExposedJointControlledDevice::addControlledDeviceJoint(yarp::os::Searchable
         return false;
     }
     yDebug() << "*** \"joint\" (index) for joint found";
-    int jointIdx = parameters->find("joint").asInt();
+    int jointIdx = parameters->find("joint").asInt32();
     controlledDeviceJoints.push_back(jointIdx);
     axes = controlledDeviceJoints.size();
 
