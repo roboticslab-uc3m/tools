@@ -13,25 +13,22 @@
 #include <yarp/dev/IEncoders.h>
 #include <yarp/dev/IPositionDirect.h>
 
-#define DEFAULT_IN "/teo/rightArm"
-#define DEFAULT_OUT "/teoSim/rightArm"
-#define DEFAULT_RATE_MS 20.0
-
 namespace roboticslab
 {
 
 /**
  * @brief Reads joint positions from an input controlboard, sends to an output controlboard.
  */
-class ControlboardStateToIPosition : public yarp::os::RFModule, yarp::os::PeriodicThread
+class ControlboardStateToIPosition : public yarp::os::RFModule,
+                                     public yarp::os::PeriodicThread
 {
 public:
 
     ControlboardStateToIPosition()
 #if YARP_VERSION_MINOR >= 5
-        : yarp::os::PeriodicThread(DEFAULT_RATE_MS * 0.001, yarp::os::PeriodicThreadClock::Absolute)
+        : yarp::os::PeriodicThread(1.0, yarp::os::PeriodicThreadClock::Absolute)
 #else
-        : yarp::os::PeriodicThread(DEFAULT_RATE_MS * 0.001)
+        : yarp::os::PeriodicThread(1.0)
 #endif
     {}
 
@@ -44,7 +41,7 @@ public:
      * \note attachTerminal() is no longer called automatically. You
      * can call it in the configure function.
      */
-    virtual bool configure(yarp::os::ResourceFinder &rf);
+    bool configure(yarp::os::ResourceFinder &rf) override;
 
     /**
      * Close function.
@@ -56,7 +53,7 @@ public:
      *
      * @return true/false on success failure.
      */
-    virtual bool close();
+    bool close() override;
 
     /**
      * Override this to do whatever your module needs to do.
@@ -67,7 +64,7 @@ public:
      *
      * @return true iff module should continue
     */
-    virtual bool updateModule();
+    bool updateModule() override;
 
     /**
      * Loop function. This is the thread itself.
@@ -80,7 +77,7 @@ public:
      * Note: after each run is completed, the thread will call a yield()
      * in order to facilitate other threads to run.
      */
-    virtual void run();
+    void run() override;
 
 private:
 
@@ -96,7 +93,6 @@ private:
     // Out interfaces
     yarp::dev::IControlMode *iControlModeOut;
     yarp::dev::IPositionDirect *iPositionDirectOut;
-
 };
 
 }

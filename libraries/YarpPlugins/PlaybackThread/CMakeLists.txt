@@ -13,7 +13,9 @@ if(NOT SKIP_PlaybackThread)
                                    PlaybackThread.cpp
                                    DeviceDriverImpl.cpp
                                    IPlaybackThreadImpl.cpp
-                                   ThreadImpl.cpp)
+                                   ThreadImpl.cpp
+                                   LogComponent.hpp
+                                   LogComponent.cpp)
 
     target_link_libraries(PlaybackThread YARP::YARP_os
                                          YARP::YARP_dev

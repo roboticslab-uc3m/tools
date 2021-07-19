@@ -6,13 +6,14 @@
 
 #include <yarp/os/LogStream.h>
 
-namespace roboticslab {
+#include "LogComponent.hpp"
+
+using namespace roboticslab;
 
 // -----------------------------------------------------------------------------
 
 void PlaybackThread::run()
 {
-
     while ( ! this->isStopping() )
     {
         if ( getState() == PLAYING )
@@ -22,7 +23,7 @@ void PlaybackThread::run()
             if( ! this->getNext(row) )
             {
                 stopPlay();
-                yInfo() << "End of rows, auto stopPlay()";
+                yCInfo(PBT) << "End of rows, auto stopPlay()";
                 continue;
             }
 
@@ -70,5 +71,3 @@ void PlaybackThread::onStop()
 }
 
 // -----------------------------------------------------------------------------
-
-}  // namespace roboticslab

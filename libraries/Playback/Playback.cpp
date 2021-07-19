@@ -2,10 +2,15 @@
 
 #include "Playback.hpp"
 
+#include <yarp/os/LogComponent.h>
 #include <yarp/os/LogStream.h>
 
-namespace roboticslab
+using namespace roboticslab;
+
+namespace
 {
+    YARP_LOG_COMPONENT(PLAY, "rl.Playback")
+}
 
 // -----------------------------------------------------------------------------
 
@@ -14,10 +19,10 @@ bool Playback::fromFile(const std::string& fileName)
     file.open(fileName.c_str());
     if( ! file.is_open() )
     {
-        yError() << "Not able to open file:" << fileName;
+        yCError(PLAY) << "Not able to open file:" << fileName;
         return false;
     }
-    yInfo() << "Opened file:" << fileName;
+    yCInfo(PLAY) << "Opened file:" << fileName;
 
     std::vector<double> doublesOnFileLine;
 
@@ -91,5 +96,3 @@ bool Playback::parseFileLine(std::vector<double>& doublesOnFileLine)
 }
 
 // -----------------------------------------------------------------------------
-
-}  // namespace roboticslab

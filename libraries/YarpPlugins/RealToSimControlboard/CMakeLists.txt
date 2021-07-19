@@ -18,7 +18,9 @@ if(NOT SKIP_RealToSimControlboard)
                                           IPositionControlImpl.cpp
                                           IVelocityControlImpl.cpp
                                           Transformation.cpp
-                                          Transformation.hpp)
+                                          Transformation.hpp
+                                          LogComponent.hpp
+                                          LogComponent.cpp)
 
     target_link_libraries(RealToSimControlboard YARP::YARP_os
                                                 YARP::YARP_dev)

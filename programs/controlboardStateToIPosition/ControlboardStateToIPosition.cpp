@@ -3,13 +3,22 @@
 #include <string>
 #include <vector>
 
+#include <yarp/os/LogComponent.h>
 #include <yarp/os/LogStream.h>
 #include <yarp/os/Property.h>
 #include <yarp/os/Value.h>
 #include <yarp/dev/IControlMode.h> // Defines VOCAB_CM_POSITION_DIRECT.
 
-namespace roboticslab
+using namespace roboticslab;
+
+namespace
 {
+    YARP_LOG_COMPONENT(CBS2P, "rl.ControlboardStateToIPosition")
+}
+
+constexpr auto DEFAULT_IN = "/teo/rightArm";
+constexpr auto DEFAULT_OUT = "/teoSim/rightArm";
+constexpr auto DEFAULT_RATE_MS = 20.0;
 
 bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
 {
@@ -27,14 +36,14 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
 
     if( ! inRobotDevice.open(inOptions) )
     {
-        yError() << "Could not open() inRobotDevice:" << inStr;
-        yError() << "Please review or set --in";
+        yCError(CBS2P) << "Could not open() inRobotDevice:" << inStr;
+        yCError(CBS2P) << "Please review or set --in";
         return false;
     }
 
     if( ! inRobotDevice.view(iEncodersIn) )
     {
-        yError() << "Could not view iEncodersIn in:" << inStr;
+        yCError(CBS2P) << "Could not view iEncodersIn in:" << inStr;
         return false;
     }
 
@@ -49,19 +58,19 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
 
     if( ! outRobotDevice.open(options) )
     {
-        yError() << "Could not open() outRobotDevice:" << outStr;
-        yError() << "Please review or set --out";
+        yCError(CBS2P) << "Could not open() outRobotDevice:" << outStr;
+        yCError(CBS2P) << "Please review or set --out";
         return false;
     }
 
     if( ! outRobotDevice.view(iControlModeOut) )
     {
-        yError() << "Could not view iControlModeOut in:" << outStr;
+        yCError(CBS2P) << "Could not view iControlModeOut in:" << outStr;
         return false;
     }
     if( ! outRobotDevice.view(iPositionDirectOut) )
     {
-        yError() << "Could not view iPositionDirectOut in:" << outStr;
+        yCError(CBS2P) << "Could not view iPositionDirectOut in:" << outStr;
         return false;
     }
 
@@ -70,9 +79,9 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
 
     if( ! iEncodersIn->getAxes(&axes) )
     {
-        yError() << "Failed to iEncodersIn->getAxes()";
+        yCError(CBS2P) << "Failed to iEncodersIn->getAxes()";
     }
-    yInfo() << "iEncodersIn->getAxes() got" << axes << "axes";
+    yCInfo(CBS2P) << "iEncodersIn->getAxes() got" << axes << "axes";
 
     encPoss.resize(axes);
 
@@ -80,15 +89,17 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
     std::vector<int> modes(axes,VOCAB_CM_POSITION_DIRECT);
     if( ! iControlModeOut->setControlModes( modes.data() ) )
     {
-        yError() << "Failed to iControlModeOut->setControlModes()";
+        yCError(CBS2P) << "Failed to iControlModeOut->setControlModes()";
     }
+
+    this->setPeriod(DEFAULT_RATE_MS * 0.001);
 
     //-- Start PeriodicThread
     if( ! this->start() )
     {
-        yError() << "Could not start thread";
+        yCError(CBS2P) << "Could not start thread";
     }
-    yInfo() << "Started thread";
+    yCInfo(CBS2P) << "Started thread";
 
     return true;
 }
@@ -103,7 +114,7 @@ bool ControlboardStateToIPosition::close()
 
 bool ControlboardStateToIPosition::updateModule()
 {
-    yInfo() << "Alive...";
+    yCInfo(CBS2P) << "Alive...";
     return true;
 }
 
@@ -111,17 +122,15 @@ void ControlboardStateToIPosition::run()
 {
     if( ! iEncodersIn->getEncoders( encPoss.data() ) )
     {
-        yWarning() << "Failed iEncodersIn->getEncoders()";
+        yCWarning(CBS2P) << "Failed iEncodersIn->getEncoders()";
         return;
     }
 
-    yDebug() << "Got in:" << encPoss;
+    yCDebug(CBS2P) << "Got in:" << encPoss;
 
     if( ! iPositionDirectOut->setPositions( encPoss.data() ) )
     {
-        yWarning() << "Failed iPositionDirectOut->setPositions()";
+        yCWarning(CBS2P) << "Failed iPositionDirectOut->setPositions()";
         return;
     }
 }
-
-}  // namespace roboticslab
