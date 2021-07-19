@@ -4,9 +4,13 @@
 
 #include <yarp/os/LogStream.h>
 
+#include "LogComponent.hpp"
+
+using namespace roboticslab;
+
 // ------------------ IControlMode Related ----------------------------------------
 
-bool roboticslab::RealToSimControlboard::getControlMode(int j, int * mode)
+bool RealToSimControlboard::getControlMode(int j, int * mode)
 {
     if (controlMode == POSITION_MODE)
     {
@@ -22,7 +26,7 @@ bool roboticslab::RealToSimControlboard::getControlMode(int j, int * mode)
     }
     else
     {
-        yError() << "Currently unsupported mode";
+        yCError(R2SCB) << "Currently unsupported mode";
         return false;
     }
 
@@ -31,7 +35,7 @@ bool roboticslab::RealToSimControlboard::getControlMode(int j, int * mode)
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::getControlModes(int * modes)
+bool RealToSimControlboard::getControlModes(int * modes)
 {
     bool ok = true;
 
@@ -45,7 +49,7 @@ bool roboticslab::RealToSimControlboard::getControlModes(int * modes)
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::getControlModes(int n_joint, const int * joints, int * modes)
+bool RealToSimControlboard::getControlModes(int n_joint, const int * joints, int * modes)
 {
     bool ok = true;
 
@@ -59,11 +63,11 @@ bool roboticslab::RealToSimControlboard::getControlModes(int n_joint, const int 
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::setControlMode(int j, const int mode)
+bool RealToSimControlboard::setControlMode(int j, const int mode)
 {
     if ((unsigned int)j > axes)
     {
-        yError() << "Axis index greater than number of than axes";
+        yCError(R2SCB) << "Axis index greater than number of than axes";
         return false;
     }
 
@@ -85,7 +89,7 @@ bool roboticslab::RealToSimControlboard::setControlMode(int j, const int mode)
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::setControlModes(int n_joint, const int * joints, int * modes)
+bool RealToSimControlboard::setControlModes(int n_joint, const int * joints, int * modes)
 {
     bool ok = true;
 
@@ -99,7 +103,7 @@ bool roboticslab::RealToSimControlboard::setControlModes(int n_joint, const int 
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::setControlModes(int * modes)
+bool RealToSimControlboard::setControlModes(int * modes)
 {
     return true;
 }

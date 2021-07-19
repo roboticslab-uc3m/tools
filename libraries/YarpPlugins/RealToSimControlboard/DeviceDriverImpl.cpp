@@ -7,16 +7,17 @@
 
 #include <yarp/os/LogStream.h>
 
-#define DEFAULT_MODE_POS_VEL 0  // 0=Position, 1=Velocity.
+#include "LogComponent.hpp"
 
-namespace roboticslab
-{
+constexpr auto DEFAULT_MODE_POS_VEL = 0; // 0=Position, 1=Velocity.
+
+using namespace roboticslab;
 
 // ------------------- DeviceDriver Related ------------------------------------
 
 bool RealToSimControlboard::open(yarp::os::Searchable& config)
 {
-    yDebug() << "RealToSimControlboard config:" << config.toString();
+    yCDebug(R2SCB) << "Config:" << config.toString();
 
     int modePosVelInt = config.check("modePosVel", yarp::os::Value(DEFAULT_MODE_POS_VEL), "0:pos, 1:vel").asInt32();
 
@@ -29,22 +30,22 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
         controlMode = VELOCITY_MODE;
         break;
     default:
-        yError() << "Unrecognized mode identifier:" << modePosVelInt << "(0:pos, 1:vel)";
+        yCError(R2SCB) << "Unrecognized mode identifier:" << modePosVelInt << "(0:pos, 1:vel)";
         return false;
     }
 
     if(!config.check("remotes", "list of remotes to which this device connects"))
     {
-        yError() << "Required \"remotes\" list";
+        yCError(R2SCB) << "Required \"remotes\" list";
         return false;
     }
     yarp::os::Bottle* controlledDeviceList = config.find("remotes").asList();
     if (!controlledDeviceList)
     {
-        yError() << "Error parsing parameters: \"remotes\" should be followed by a list";
+        yCError(R2SCB) << "Error parsing parameters: \"remotes\" should be followed by a list";
         return false;
     }
-    yDebug() << controlledDeviceList->toString();
+    yCDebug(R2SCB) << controlledDeviceList->toString();
 
     std::string remotePrefix;
     if(config.check("remotePrefix", "global prefix to remote ports"))
@@ -58,12 +59,12 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
         std::string controlledDeviceName = controlledDeviceList->get(controlledDeviceIdx).asString();
         if(!config.check(controlledDeviceName))
         {
-            yError("\"%s\" group not found!", controlledDeviceName.c_str());
+            yCError(R2SCB, "\"%s\" group not found!", controlledDeviceName.c_str());
             return false;
         }
-        yInfo("\"%s\" group found!", controlledDeviceName.c_str());
+        yCInfo(R2SCB, "\"%s\" group found!", controlledDeviceName.c_str());
         yarp::os::Bottle controlledDeviceGroup = config.findGroup(controlledDeviceName);
-        yInfo() << controlledDeviceGroup.toString();
+        yCInfo(R2SCB) << controlledDeviceGroup.toString();
         yarp::os::Property controlledDeviceOptions;
         controlledDeviceOptions.fromString(controlledDeviceGroup.toString());
 
@@ -83,10 +84,10 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
         yarp::dev::PolyDriver* controlledDevice = new yarp::dev::PolyDriver(controlledDeviceOptions);
         if( ! controlledDevice->isValid() )
         {
-            yError("\"%s\" group did not create a valid yarp device!", controlledDeviceName.c_str());
+            yCError(R2SCB, "\"%s\" group did not create a valid yarp device!", controlledDeviceName.c_str());
             return false;
         }
-        yInfo("\"%s\" group created a valid yarp device!", controlledDeviceName.c_str());
+        yCInfo(R2SCB, "\"%s\" group created a valid yarp device!", controlledDeviceName.c_str());
 
         controlledDeviceNameToIdx[controlledDeviceName] = controlledDeviceIdx;
         controlledDevices.push_back(controlledDevice);
@@ -102,23 +103,23 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
         {
             axes = idx;
             storedPositions.resize(axes);
-            yInfo("Could not find \"%s\" group, setting number of exposed joints to %d",exposedJointName.c_str(), axes);
+            yCInfo(R2SCB, "Could not find \"%s\" group, setting number of exposed joints to %d",exposedJointName.c_str(), axes);
             break;
         }
-        yInfo("* %s group found!", exposedJointName.c_str());
+        yCInfo(R2SCB, "* %s group found!", exposedJointName.c_str());
 
         ExposedJoint* exposedJoint = new ExposedJoint(exposedJointName);
         exposedJoints.push_back(exposedJoint);
 
         yarp::os::Bottle exposedJointGroup = config.findGroup(exposedJointName);
-        yDebug("* %s", exposedJointGroup.toString().c_str());
+        yCDebug(R2SCB, "* %s", exposedJointGroup.toString().c_str());
         for(size_t exposedJointControlledDeviceIdx=1; exposedJointControlledDeviceIdx<exposedJointGroup.size(); exposedJointControlledDeviceIdx++)
         {
             yarp::os::Bottle* exposedJointControlledDeviceGroup = exposedJointGroup.get(exposedJointControlledDeviceIdx).asList();
-            yDebug("** %s", exposedJointControlledDeviceGroup->toString().c_str());
+            yCDebug(R2SCB, "** %s", exposedJointControlledDeviceGroup->toString().c_str());
             std::string exposedJointControlledDeviceName = exposedJointControlledDeviceGroup->get(0).asString();
             int idx = controlledDeviceNameToIdx[exposedJointControlledDeviceName];
-            yDebug("** %s [%d]", exposedJointControlledDeviceName.c_str(), idx);
+            yCDebug(R2SCB, "** %s [%d]", exposedJointControlledDeviceName.c_str(), idx);
 
             ExposedJointControlledDevice* exposedJointControlledDevice =
                 new ExposedJointControlledDevice(exposedJointControlledDeviceName, controlledDevices[idx]);
@@ -127,7 +128,7 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
             for(size_t exposedJointControlledDeviceJointIdx=1; exposedJointControlledDeviceJointIdx<exposedJointControlledDeviceGroup->size(); exposedJointControlledDeviceJointIdx++)
             {
                 yarp::os::Bottle* exposedJointControlledDeviceJointGroup = exposedJointControlledDeviceGroup->get(exposedJointControlledDeviceJointIdx).asList();
-                yDebug("*** %s", exposedJointControlledDeviceJointGroup->toString().c_str());
+                yCDebug(R2SCB, "*** %s", exposedJointControlledDeviceJointGroup->toString().c_str());
 
                 if(!exposedJointControlledDevice->addControlledDeviceJoint(exposedJointControlledDeviceJointGroup))
                     return false;
@@ -159,5 +160,3 @@ bool RealToSimControlboard::close()
 }
 
 // -----------------------------------------------------------------------------
-
-}  // namespace roboticslab

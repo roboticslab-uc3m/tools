@@ -5,9 +5,11 @@
 #include <fstream>
 
 #include <yarp/os/LogStream.h>
+#include <yarp/os/ResourceFinder.h>
 
-namespace roboticslab
-{
+#include "LogComponent.hpp"
+
+using namespace roboticslab;
 
 // -----------------------------------------------------------------------------
 
@@ -15,19 +17,19 @@ LinearTransformation::LinearTransformation(yarp::os::Searchable* parameters)
 {
     if(!parameters->check("m"))
     {
-        yError() << "**** \"m\" parameter for LinearTransformation NOT found";
+        yCError(R2SCB) << "**** \"m\" parameter for LinearTransformation NOT found";
         return;
     }
-    yDebug() << "**** \"m\" parameter for LinearTransformation found";
-    m = parameters->find("m").asDouble();
+    yCDebug(R2SCB) << "**** \"m\" parameter for LinearTransformation found";
+    m = parameters->find("m").asFloat64();
 
     if(!parameters->check("b"))
     {
-        yError() << "**** \"b\" parameter for LinearTransformation NOT found";
+        yCError(R2SCB) << "**** \"b\" parameter for LinearTransformation NOT found";
         return;
     }
-    yDebug() << "**** \"b\" parameter for LinearTransformation found";
-    b = parameters->find("b").asDouble();
+    yCDebug(R2SCB) << "**** \"b\" parameter for LinearTransformation found";
+    b = parameters->find("b").asFloat64();
 
     valid = true;
 }
@@ -49,35 +51,35 @@ PiecewiseLinearTransformation::PiecewiseLinearTransformation(yarp::os::Searchabl
 {
     if(!parameters->check("csvFile"))
     {
-        yError() << "**** \"csvFile\" parameter for PiecewiseLinearTransformation NOT found";
+        yCError(R2SCB) << "**** \"csvFile\" parameter for PiecewiseLinearTransformation NOT found";
         return;
     }
     std::string csvFileName = parameters->find("csvFile").asString();
-    yDebug("**** \"csvFile\" parameter for PiecewiseLinearTransformation found: \"%s\"", csvFileName.c_str());
+    yCDebug(R2SCB, "**** \"csvFile\" parameter for PiecewiseLinearTransformation found: \"%s\"", csvFileName.c_str());
 
     if(!parameters->check("context"))
     {
-        yError() << "**** \"context\" parameter for PiecewiseLinearTransformation NOT found";
+        yCError(R2SCB) << "**** \"context\" parameter for PiecewiseLinearTransformation NOT found";
         return;
     }
     std::string context = parameters->find("context").asString();
-    yDebug("**** \"context\" parameter for PiecewiseLinearTransformation found: \"%s\"", context.c_str());
+    yCDebug(R2SCB, "**** \"context\" parameter for PiecewiseLinearTransformation found: \"%s\"", context.c_str());
 
     if(!parameters->check("inColumn"))
     {
-        yError() << "**** \"inColumn\" parameter for PiecewiseLinearTransformation NOT found";
+        yCError(R2SCB) << "**** \"inColumn\" parameter for PiecewiseLinearTransformation NOT found";
         return;
     }
-    const int inColumn = parameters->find("inColumn").asInt();
-    yDebug("**** \"inColumn\" parameter for PiecewiseLinearTransformation found: \"%d\"", inColumn);
+    const int inColumn = parameters->find("inColumn").asInt32();
+    yCDebug(R2SCB, "**** \"inColumn\" parameter for PiecewiseLinearTransformation found: \"%d\"", inColumn);
 
     if(!parameters->check("outColumn"))
     {
-        yError() << "**** \"outColumn\" parameter for PiecewiseLinearTransformation NOT found";
+        yCError(R2SCB) << "**** \"outColumn\" parameter for PiecewiseLinearTransformation NOT found";
         return;
     }
-    const int outColumn = parameters->find("outColumn").asInt();
-    yDebug("**** \"outColumn\" parameter for PiecewiseLinearTransformation found: \"%d\"", outColumn);
+    const int outColumn = parameters->find("outColumn").asInt32();
+    yCDebug(R2SCB, "**** \"outColumn\" parameter for PiecewiseLinearTransformation found: \"%d\"", outColumn);
 
     yarp::os::ResourceFinder rf;
     rf.setVerbose(false);
@@ -85,18 +87,18 @@ PiecewiseLinearTransformation::PiecewiseLinearTransformation(yarp::os::Searchabl
     std::string csvFileFullName = rf.findFileByName(csvFileName);
     if(csvFileFullName.empty())
     {
-        yError() << "**** full path for file NOT found";
+        yCError(R2SCB) << "**** full path for file NOT found";
         return;
     }
-    yDebug("**** full path for file found: \"%s\"", csvFileFullName.c_str());
+    yCDebug(R2SCB, "**** full path for file found: \"%s\"", csvFileFullName.c_str());
 
     std::ifstream csvFile(csvFileFullName);
     if(!csvFile.is_open())
     {
-        yError("**** \"%s\" csvFile for PiecewiseLinearTransformation NOT open", csvFileName.c_str());
+        yCError(R2SCB, "**** \"%s\" csvFile for PiecewiseLinearTransformation NOT open", csvFileName.c_str());
         return;
     }
-    yDebug("**** \"%s\" csvFile for PiecewiseLinearTransformation open", csvFileName.c_str());
+    yCDebug(R2SCB, "**** \"%s\" csvFile for PiecewiseLinearTransformation open", csvFileName.c_str());
 
     std::string line;
     while (std::getline(csvFile, line))
@@ -115,7 +117,7 @@ PiecewiseLinearTransformation::PiecewiseLinearTransformation(yarp::os::Searchabl
                 outData.push_back(d);
             idx++;
         }
-        yDebug("***** [%f, %f] from %s", inData[inData.size()-1], outData[outData.size()-1], line.c_str());
+        yCDebug(R2SCB, "***** [%f, %f] from %s", inData[inData.size()-1], outData[outData.size()-1], line.c_str());
     }
 
     csvFile.close();
@@ -150,10 +152,8 @@ double PiecewiseLinearTransformation::transform(const double value)
 
     double dydx = ( yR - yL ) / ( xR - xL ); // gradient
 
-    yDebug() << "Ret:" << yL + dydx * ( value - xL );
+    yCDebug(R2SCB) << "Ret:" << yL + dydx * ( value - xL );
     return yL + dydx * ( value - xL ); // linear interpolation
 }
 
 // -----------------------------------------------------------------------------
-
-}  // namespace roboticslab

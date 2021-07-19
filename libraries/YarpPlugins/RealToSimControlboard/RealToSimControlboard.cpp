@@ -6,21 +6,22 @@
 
 #include <yarp/os/LogStream.h>
 
-namespace roboticslab
-{
+#include "LogComponent.hpp"
+
+using namespace roboticslab;
 
 // -----------------------------------------------------------------------------
 
 ExposedJointControlledDevice::ExposedJointControlledDevice(std::string name, yarp::dev::PolyDriver *device) : name(name)
 {
-    yDebug("** %s", name.c_str());
+    yCDebug(R2SCB, "** %s", name.c_str());
     if(! device->view(iPositionControl) )
     {
-        yDebug() << "** NO view IPositionControl";
+        yCDebug(R2SCB) << "** NO view IPositionControl";
         iPositionControl = nullptr;
     }
     else
-        yDebug() << "** view IPositionControl";
+        yCDebug(R2SCB) << "** view IPositionControl";
 }
 
 // -----------------------------------------------------------------------------
@@ -40,25 +41,25 @@ bool ExposedJointControlledDevice::addControlledDeviceJoint(yarp::os::Searchable
 {
     if(!parameters->check("joint"))
     {
-        yError() << "*** \"joint\" (index) for joint NOT found";
+        yCError(R2SCB) << "*** \"joint\" (index) for joint NOT found";
         return false;
     }
-    yDebug() << "*** \"joint\" (index) for joint found";
-    int jointIdx = parameters->find("joint").asInt();
+    yCDebug(R2SCB) << "*** \"joint\" (index) for joint found";
+    int jointIdx = parameters->find("joint").asInt32();
     controlledDeviceJoints.push_back(jointIdx);
     axes = controlledDeviceJoints.size();
 
     if(!parameters->check("transformation"))
     {
-        yError() << "*** \"transformation\" for joint NOT found";
+        yCError(R2SCB) << "*** \"transformation\" for joint NOT found";
         return false;
     }
-    yDebug() << "*** \"transformation\" for joint found";
+    yCDebug(R2SCB) << "*** \"transformation\" for joint found";
     std::string transformation = parameters->find("transformation").asString();
 
     if(transformation == "linear")
     {
-        yDebug("*** transformation of type \"%s\" set", transformation.c_str());
+        yCDebug(R2SCB, "*** transformation of type \"%s\" set", transformation.c_str());
         Transformation* transformation = new LinearTransformation(parameters);
         if(!transformation->isValid())
             return false;
@@ -67,14 +68,14 @@ bool ExposedJointControlledDevice::addControlledDeviceJoint(yarp::os::Searchable
     }
     else if(transformation == "piecewiseLinear")
     {
-        yDebug("*** transformation of type \"%s\" set", transformation.c_str());
+        yCDebug(R2SCB, "*** transformation of type \"%s\" set", transformation.c_str());
         Transformation* transformation = new PiecewiseLinearTransformation(parameters);
         if(!transformation->isValid())
             return false;
         transformations.push_back(transformation);
         return true;
     }
-    yError("*** transformation of type \"%s\" NOT implemented",transformation.c_str());
+    yCError(R2SCB, "*** transformation of type \"%s\" NOT implemented",transformation.c_str());
     return false;
 }
 
@@ -82,10 +83,10 @@ bool ExposedJointControlledDevice::addControlledDeviceJoint(yarp::os::Searchable
 
 bool ExposedJointControlledDevice::positionMove(double ref)
 {
-    yInfo("* %s: %f",name.c_str(), ref);
+    yCInfo(R2SCB, "* %s: %f",name.c_str(), ref);
     if(iPositionControl == nullptr)
     {
-        yDebug("%s: NO view IPositionControl", name.c_str());
+        yCDebug(R2SCB, "%s: NO view IPositionControl", name.c_str());
         return true;
     }
 
@@ -124,7 +125,7 @@ void ExposedJoint::addExposedJointControlledDevice(ExposedJointControlledDevice*
 
 bool ExposedJoint::positionMove(double ref)
 {
-    yInfo("%s: %f",name.c_str(), ref);
+    yCInfo(R2SCB, "%s: %f",name.c_str(), ref);
     bool ok = true;
     for(size_t i=0; i<exposedJointControlledDevices.size();i++)
         ok &= exposedJointControlledDevices[i]->positionMove(ref);
@@ -132,5 +133,3 @@ bool ExposedJoint::positionMove(double ref)
 }
 
 // -----------------------------------------------------------------------------
-
-}  // namespace roboticslab

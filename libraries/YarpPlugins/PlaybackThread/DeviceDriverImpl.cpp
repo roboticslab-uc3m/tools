@@ -4,7 +4,13 @@
 
 #include <yarp/os/LogStream.h>
 
-namespace roboticslab {
+#include "LogComponent.hpp"
+
+using namespace roboticslab;
+
+constexpr auto DEFAULT_FILE_NAME = "test.txt";
+constexpr auto DEFAULT_TIME_IDX = 0;
+constexpr auto DEFAULT_TIME_SCALE = 1.0;
 
 // -----------------------------------------------------------------------------
 
@@ -15,10 +21,10 @@ bool PlaybackThread::open(yarp::os::Searchable& config)
     timeScale = config.check("timeScale",yarp::os::Value(DEFAULT_TIME_SCALE),"time scaling of timestamp").asFloat64();
     mask = config.findGroup("mask","filter to apply to each item in a row ('1': process, '0': ignore)").tail();
 
-    yInfo("file: %s [%s]", fileName.c_str(), DEFAULT_FILE_NAME);
-    yInfo("timeIdx: %d [%d]", timeIdx, DEFAULT_TIME_IDX);
-    yInfo("timeScale: %f [%f]", timeScale, DEFAULT_TIME_SCALE);
-    yInfo("mask: %s (%zu)", mask.toString().c_str(), mask.size());
+    yCInfo(PBT, "file: %s [%s]", fileName.c_str(), DEFAULT_FILE_NAME);
+    yCInfo(PBT, "timeIdx: %d [%d]", timeIdx, DEFAULT_TIME_IDX);
+    yCInfo(PBT, "timeScale: %f [%f]", timeScale, DEFAULT_TIME_SCALE);
+    yCInfo(PBT, "mask: %s (%zu)", mask.toString().c_str(), mask.size());
 
     _iRunnable = NULL;
 
@@ -40,5 +46,3 @@ bool PlaybackThread::close()
 }
 
 // -----------------------------------------------------------------------------
-
-}  // namespace roboticslab

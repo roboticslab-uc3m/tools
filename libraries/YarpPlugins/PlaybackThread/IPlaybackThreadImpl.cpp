@@ -2,7 +2,7 @@
 
 #include "PlaybackThread.hpp"
 
-namespace roboticslab {
+using namespace roboticslab;
 
 // -----------------------------------------------------------------------------
 
@@ -52,5 +52,3 @@ bool PlaybackThread::setTimeScale(double timeScale)
     this->timeScale = timeScale;
     return true;
 }
-
-}  // namespace roboticslab

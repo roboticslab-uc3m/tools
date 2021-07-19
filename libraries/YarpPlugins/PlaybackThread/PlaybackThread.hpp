@@ -1,7 +1,7 @@
 // -*- mode:C++; tab-width:4; c-basic-offset:4; indent-tabs-mode:nil -*-
 
-#ifndef __PLAYBACK_THREAD__
-#define __PLAYBACK_THREAD__
+#ifndef __PLAYBACK_THREAD_HPP__
+#define __PLAYBACK_THREAD_HPP__
 
 #include <yarp/os/all.h>
 #include <yarp/dev/all.h>
@@ -12,10 +12,6 @@
 #include "Playback.hpp"
 
 #include "IPlaybackThread.h"
-
-#define DEFAULT_FILE_NAME "test.txt"
-#define DEFAULT_TIME_IDX 0
-#define DEFAULT_TIME_SCALE 1.0
 
 namespace roboticslab
 {
@@ -31,49 +27,47 @@ namespace roboticslab
  * @brief Implementation for the PlaybackThread.
  *
  */
-class PlaybackThread : public yarp::dev::DeviceDriver, public IPlaybackThread, public yarp::os::Thread, public Playback
+class PlaybackThread : public yarp::dev::DeviceDriver,
+                       public IPlaybackThread,
+                       public yarp::os::Thread,
+                       public Playback
 {
+public:
+    //  --------- DeviceDriver Declarations. Implementation in DeviceDriverImpl.cpp ---------
+    bool open(yarp::os::Searchable& config) override;
+    bool close() override;
 
-    public:
+    //  --------- IPlaybackThread Declarations. Implementation in IPlaybackThreadImpl.cpp ---------
+    bool play() override;
+    bool pause() override;
+    bool stopPlay() override;
+    bool isPlaying() override;
+    bool setTimeScale(double timeScale) override;
+    void setIRunnable(IRunnable* iRunnable) override;
 
-        PlaybackThread() { }
+    // --------- Thread Declarations. Implementation in ThreadImpl.cpp ---------
+    void run() override;
+    void onStop() override;
 
-        //  --------- DeviceDriver Declarations. Implementation in DeviceDriverImpl.cpp ---------
-        virtual bool open(yarp::os::Searchable& config);
-        virtual bool close();
+private:
+    int timeIdx;
+    double timeScale;
+    double initTime;
+    double initRow;
 
-        //  --------- IPlaybackThread Declarations. Implementation in IPlaybackThreadImpl.cpp ---------
-        virtual bool play();
-        virtual bool pause();
-        virtual bool stopPlay();
-        virtual bool isPlaying();
-        virtual bool setTimeScale(double timeScale);
-        virtual void setIRunnable(IRunnable* iRunnable);
+    yarp::os::Bottle mask;
 
-        // --------- Thread Declarations. Implementation in ThreadImpl.cpp ---------
-        virtual void run();
-        virtual void onStop();
+    IRunnable* _iRunnable;
 
-    private:
-        int timeIdx;
-        double timeScale;
-        double initTime;
-        double initRow;
+    int _state;
+    yarp::os::Semaphore _stateSemaphore;
+    int getState();
+    void setState(const int& state);
 
-        yarp::os::Bottle mask;
-
-        IRunnable* _iRunnable;
-
-        int _state;
-        yarp::os::Semaphore _stateSemaphore;
-        int getState();
-        void setState( const int& state);
-
-        static const int NOT_PLAYING;
-        static const int PLAYING;
-
+    static const int NOT_PLAYING;
+    static const int PLAYING;
 };
 
-}  // namespace roboticslab
+} // namespace roboticslab
 
-#endif  // __PLAYBACK_THREAD__
+#endif // __PLAYBACK_THREAD_HPP__

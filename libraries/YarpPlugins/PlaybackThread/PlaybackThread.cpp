@@ -2,10 +2,10 @@
 
 #include "PlaybackThread.hpp"
 
-const int roboticslab::PlaybackThread::NOT_PLAYING = 0;
-const int roboticslab::PlaybackThread::PLAYING = 1;
+using namespace roboticslab;
 
-namespace roboticslab {
+const int PlaybackThread::NOT_PLAYING = 0;
+const int PlaybackThread::PLAYING = 1;
 
 // -----------------------------------------------------------------------------
 
@@ -28,5 +28,3 @@ void PlaybackThread::setState( const int& state)
 }
 
 // -----------------------------------------------------------------------------
-
-}  // namespace roboticslab

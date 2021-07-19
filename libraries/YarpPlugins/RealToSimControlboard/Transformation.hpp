@@ -3,7 +3,7 @@
 #ifndef __TRANSFORMATION_HPP__
 #define __TRANSFORMATION_HPP__
 
-#include <yarp/os/all.h>
+#include <yarp/os/Searchable.h>
 
 #include <vector>
 
@@ -14,7 +14,7 @@ class Transformation
 {
 public:
     Transformation() : valid(false) {}
-    virtual ~Transformation() {}
+    virtual ~Transformation() = default;
     bool isValid() const { return valid; }
     virtual double transform(double value) = 0;
 protected:
@@ -40,6 +40,6 @@ private:
     std::vector<double> outData;
 };
 
-}  // namespace roboticslab
+} // namespace roboticslab
 
-#endif  // __TRANSFORMATION_HPP__
+#endif // __TRANSFORMATION_HPP__

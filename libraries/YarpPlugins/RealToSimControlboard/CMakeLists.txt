@@ -10,10 +10,6 @@ yarp_prepare_plugin(RealToSimControlboard
 
 if(NOT SKIP_RealToSimControlboard)
 
-    if(NOT YARP_VERSION VERSION_GREATER_EQUAL 3.4)
-        set(CMAKE_INCLUDE_CURRENT_DIR TRUE) # yarp plugin builder needs this
-    endif()
-
     yarp_add_plugin(RealToSimControlboard RealToSimControlboard.hpp
                                           RealToSimControlboard.cpp
                                           DeviceDriverImpl.cpp
@@ -22,7 +18,9 @@ if(NOT SKIP_RealToSimControlboard)
                                           IPositionControlImpl.cpp
                                           IVelocityControlImpl.cpp
                                           Transformation.cpp
-                                          Transformation.hpp)
+                                          Transformation.hpp
+                                          LogComponent.hpp
+                                          LogComponent.cpp)
 
     target_link_libraries(RealToSimControlboard YARP::YARP_os
                                                 YARP::YARP_dev)

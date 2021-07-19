@@ -23,31 +23,29 @@ namespace roboticslab
  */
 class Playback
 {
+public:
 
-    public:
+    Playback() : doublesOnFileIter(0)
+    {}
 
-        Playback() {
-            doublesOnFileIter = 0;
-        }
+    bool fromFile(const std::string& fileName);
 
-        bool fromFile(const std::string& fileName);
+    int getNumRows();
+    int getIter();
+    bool getNext(std::vector<double>& row);
+    bool reset();
 
-        int getNumRows();
-        int getIter();
-        bool getNext(std::vector<double>& row);
-        bool reset();
+private:
 
-    private:
+    std::ifstream file;
 
-        std::ifstream file;
+    bool parseFileLine(std::vector<double>& doublesOnFileLine);
 
-        bool parseFileLine(std::vector<double>& doublesOnFileLine);
-
-        std::vector< std::vector<double> > doublesOnFile;
-        int doublesOnFileIter;
+    std::vector< std::vector<double> > doublesOnFile;
+    int doublesOnFileIter;
 
 };
 
-}  // namespace roboticslab
+} // namespace roboticslab
 
-#endif  // __PLAYBACK__
+#endif // __PLAYBACK__

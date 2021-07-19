@@ -1,11 +1,11 @@
-cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.12)
 
 # Start a project.
 project(examplePlaybackThread LANGUAGES CXX)
 
 # Find YARP. Point the YARP_DIR environment variable at your build.
 if(NOT YARP_FOUND)
-    find_package(YARP 3.3 REQUIRED COMPONENTS os dev)
+    find_package(YARP 3.4 REQUIRED COMPONENTS os dev)
 endif()
 
 # Find ROBOTICSLAB_TOOLS.

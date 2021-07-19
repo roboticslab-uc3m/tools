@@ -4,19 +4,23 @@
 
 #include <yarp/os/LogStream.h>
 
+#include "LogComponent.hpp"
+
+using namespace roboticslab;
+
 // ------------------ IVelocityControl Related ----------------------------------------
 
-bool roboticslab::RealToSimControlboard::velocityMove(int j, double sp)
+bool RealToSimControlboard::velocityMove(int j, double sp)
 {
-    yTrace();
+    yCTrace(R2SCB);
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::velocityMove(const double *sp)
+bool RealToSimControlboard::velocityMove(const double *sp)
 {
-    yTrace();
+    yCTrace(R2SCB);
     bool ok = true;
     for(unsigned int i=0;i<axes;i++)
         ok &= velocityMove(i,sp[i]);
@@ -25,9 +29,9 @@ bool roboticslab::RealToSimControlboard::velocityMove(const double *sp)
 
 // ----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::velocityMove(const int n_joint, const int *joints, const double *spds)
+bool RealToSimControlboard::velocityMove(const int n_joint, const int *joints, const double *spds)
 {
-    yTrace();
+    yCTrace(R2SCB);
     bool ok = true;
     for(int i=0;i<n_joint;i++)
         ok &= velocityMove(joints[i],spds[i]);
@@ -36,25 +40,25 @@ bool roboticslab::RealToSimControlboard::velocityMove(const int n_joint, const i
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::getRefVelocity(const int joint, double *vel)
+bool RealToSimControlboard::getRefVelocity(const int joint, double *vel)
 {
-    yError() << "getRefVelocity() not implemented yet";
+    yCError(R2SCB) << "getRefVelocity() not implemented yet";
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::getRefVelocities(double *vels)
+bool RealToSimControlboard::getRefVelocities(double *vels)
 {
-    yError() << "getRefVelocities() not implemented yet";
+    yCError(R2SCB) << "getRefVelocities() not implemented yet";
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::getRefVelocities(const int n_joint, const int *joints, double *vels)
+bool RealToSimControlboard::getRefVelocities(const int n_joint, const int *joints, double *vels)
 {
-    yError() << "getRefVelocities() not implemented yet";
+    yCError(R2SCB) << "getRefVelocities() not implemented yet";
     return true;
 }
 

@@ -4,9 +4,13 @@
 
 #include <yarp/os/LogStream.h>
 
+#include "LogComponent.hpp"
+
+using namespace roboticslab;
+
 // ------------------- IPositionControl Related --------------------------------
 
-bool roboticslab::RealToSimControlboard::getAxes(int *ax)
+bool RealToSimControlboard::getAxes(int *ax)
 {
     *ax = axes;
     return true;
@@ -14,7 +18,7 @@ bool roboticslab::RealToSimControlboard::getAxes(int *ax)
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::positionMove(int j, double ref)
+bool RealToSimControlboard::positionMove(int j, double ref)
 {
     storedPositions[j] = ref;
     return exposedJoints[j]->positionMove(ref);
@@ -22,7 +26,7 @@ bool roboticslab::RealToSimControlboard::positionMove(int j, double ref)
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::positionMove(const double *refs)
+bool RealToSimControlboard::positionMove(const double *refs)
 {
     bool ok = true;
     for(unsigned int i=0; i < axes; i++)
@@ -32,121 +36,121 @@ bool roboticslab::RealToSimControlboard::positionMove(const double *refs)
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::relativeMove(int j, double delta)
+bool RealToSimControlboard::relativeMove(int j, double delta)
 {
-    yError() << "relativeMove() not implemented yet";
+    yCError(R2SCB) << "relativeMove() not implemented yet";
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::relativeMove(const double *deltas)
+bool RealToSimControlboard::relativeMove(const double *deltas)
 {
-    yError() << "relativeMove() not implemented yet";
+    yCError(R2SCB) << "relativeMove() not implemented yet";
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::checkMotionDone(int j, bool *flag)
+bool RealToSimControlboard::checkMotionDone(int j, bool *flag)
 {
-    yError() << "checkMotionDone() not implemented yet";
+    yCError(R2SCB) << "checkMotionDone() not implemented yet";
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::checkMotionDone(bool *flag)
+bool RealToSimControlboard::checkMotionDone(bool *flag)
 {
-    yError() << "checkMotionDone() not implemented yet";
+    yCError(R2SCB) << "checkMotionDone() not implemented yet";
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::setRefSpeed(int j, double sp)
+bool RealToSimControlboard::setRefSpeed(int j, double sp)
 {
-    yError() << "setRefSpeed() not implemented yet";
+    yCError(R2SCB) << "setRefSpeed() not implemented yet";
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::setRefSpeeds(const double *spds)
+bool RealToSimControlboard::setRefSpeeds(const double *spds)
 {
-    yError() << "setRefSpeeds() not implemented yet";
+    yCError(R2SCB) << "setRefSpeeds() not implemented yet";
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::setRefAcceleration(int j, double acc)
+bool RealToSimControlboard::setRefAcceleration(int j, double acc)
 {
-    yError() << "setRefAcceleration() not implemented yet";
+    yCError(R2SCB) << "setRefAcceleration() not implemented yet";
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::setRefAccelerations(const double *accs)
+bool RealToSimControlboard::setRefAccelerations(const double *accs)
 {
-    yError() << "setRefAccelerations() not implemented yet";
+    yCError(R2SCB) << "setRefAccelerations() not implemented yet";
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::getRefSpeed(int j, double *ref)
+bool RealToSimControlboard::getRefSpeed(int j, double *ref)
 {
-    yError() << "getRefSpeed() not implemented yet";
+    yCError(R2SCB) << "getRefSpeed() not implemented yet";
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::getRefSpeeds(double *spds)
+bool RealToSimControlboard::getRefSpeeds(double *spds)
 {
-    yError() << "getRefSpeeds() not implemented yet";
+    yCError(R2SCB) << "getRefSpeeds() not implemented yet";
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::getRefAcceleration(int j, double *acc)
+bool RealToSimControlboard::getRefAcceleration(int j, double *acc)
 {
-    yError() << "getRefAcceleration() not implemented yet";
+    yCError(R2SCB) << "getRefAcceleration() not implemented yet";
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::getRefAccelerations(double *accs)
+bool RealToSimControlboard::getRefAccelerations(double *accs)
 {
-    yError() << "getRefAccelerations() not implemented yet";
+    yCError(R2SCB) << "getRefAccelerations() not implemented yet";
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::stop(int j)
+bool RealToSimControlboard::stop(int j)
 {
-    yError() << "stop() not implemented yet";
+    yCError(R2SCB) << "stop() not implemented yet";
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::stop()
+bool RealToSimControlboard::stop()
 {
-    yError() << "stop() not implemented yet";
+    yCError(R2SCB) << "stop() not implemented yet";
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::positionMove(const int n_joint, const int *joints, const double *refs)
+bool RealToSimControlboard::positionMove(const int n_joint, const int *joints, const double *refs)
 {
-    yTrace();
+    yCTrace(R2SCB);
     bool ok = true;
     for(int i=0;i<n_joint;i++)
     {
@@ -157,9 +161,9 @@ bool roboticslab::RealToSimControlboard::positionMove(const int n_joint, const i
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::relativeMove(const int n_joint, const int *joints, const double *deltas)
+bool RealToSimControlboard::relativeMove(const int n_joint, const int *joints, const double *deltas)
 {
-    yTrace();
+    yCTrace(R2SCB);
     bool ok = true;
     for(int i=0;i<n_joint;i++)
     {
@@ -170,17 +174,17 @@ bool roboticslab::RealToSimControlboard::relativeMove(const int n_joint, const i
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::checkMotionDone(const int n_joint, const int *joints, bool *flags)
+bool RealToSimControlboard::checkMotionDone(const int n_joint, const int *joints, bool *flags)
 {
-    yError() << "checkMotionDone() not implemented yet";
+    yCError(R2SCB) << "checkMotionDone() not implemented yet";
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::setRefSpeeds(const int n_joint, const int *joints, const double *spds)
+bool RealToSimControlboard::setRefSpeeds(const int n_joint, const int *joints, const double *spds)
 {
-    yTrace();
+    yCTrace(R2SCB);
     bool ok = true;
     for(int i=0;i<n_joint;i++)
     {
@@ -191,9 +195,9 @@ bool roboticslab::RealToSimControlboard::setRefSpeeds(const int n_joint, const i
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::setRefAccelerations(const int n_joint, const int *joints, const double *accs)
+bool RealToSimControlboard::setRefAccelerations(const int n_joint, const int *joints, const double *accs)
 {
-    yTrace();
+    yCTrace(R2SCB);
     bool ok = true;
     for(int i=0;i<n_joint;i++)
     {
@@ -204,49 +208,49 @@ bool roboticslab::RealToSimControlboard::setRefAccelerations(const int n_joint, 
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::getRefSpeeds(const int n_joint, const int *joints, double *spds)
+bool RealToSimControlboard::getRefSpeeds(const int n_joint, const int *joints, double *spds)
 {
-    yError() << "getRefSpeeds() not implemented yet";
+    yCError(R2SCB) << "getRefSpeeds() not implemented yet";
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::getRefAccelerations(const int n_joint, const int *joints, double *accs)
+bool RealToSimControlboard::getRefAccelerations(const int n_joint, const int *joints, double *accs)
 {
-    yError() << "getRefAccelerations() not implemented yet";
+    yCError(R2SCB) << "getRefAccelerations() not implemented yet";
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::stop(const int n_joint, const int *joints)
+bool RealToSimControlboard::stop(const int n_joint, const int *joints)
 {
-    yError() << "stop() not implemented yet";
+    yCError(R2SCB) << "stop() not implemented yet";
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::getTargetPosition(const int joint, double *ref)
+bool RealToSimControlboard::getTargetPosition(const int joint, double *ref)
 {
-    yError() << "getTargetPosition() not implemented yet";
+    yCError(R2SCB) << "getTargetPosition() not implemented yet";
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::getTargetPositions(double *refs)
+bool RealToSimControlboard::getTargetPositions(double *refs)
 {
-    yError() << "getTargetPositions() not implemented yet";
+    yCError(R2SCB) << "getTargetPositions() not implemented yet";
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool roboticslab::RealToSimControlboard::getTargetPositions(const int n_joint, const int *joints, double *refs)
+bool RealToSimControlboard::getTargetPositions(const int n_joint, const int *joints, double *refs)
 {
-    yError() << "getTargetPositions() not implemented yet";
+    yCError(R2SCB) << "getTargetPositions() not implemented yet";
     return true;
 }
 
