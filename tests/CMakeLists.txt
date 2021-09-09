@@ -5,9 +5,7 @@ if(NOT GTestSources_FOUND AND (NOT DEFINED ENABLE_tests OR ENABLE_tests))
 endif()
 
 if(ENABLE_tests)
-    enable_testing()
-
-    add_subdirectory(${GTestSources_SOURCE_DIR} ${CMAKE_BINARY_DIR}/gtest)
+    add_subdirectory(${GTestSources_SOURCE_DIR} ${CMAKE_BINARY_DIR}/googletest)
     include_directories(${GTestSources_INCLUDE_DIR})
 
     # testPlayback

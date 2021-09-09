@@ -17,7 +17,7 @@ find_package(YARP 3.4 REQUIRED COMPONENTS os dev)
 
 # Soft dependencies.
 find_package(Doxygen QUIET)
-find_package(GTestSources 1.6.0 QUIET)
+find_package(GTestSources 1.8 QUIET)
 
 # Retrieve current ROBOTICSLAB_TOOLS version.
 include(ROBOTICSLAB_TOOLSVersion)
@@ -27,6 +27,9 @@ include(ROBOTICSLAB_TOOLSSystem)
 
 # Setup build options.
 include(ROBOTICSLAB_TOOLSOptions)
+
+# Acknowledge this is a CTest-friendly project.
+enable_testing()
 
 # Define and enter subdirectories.
 add_subdirectory(libraries)
