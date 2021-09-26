@@ -32,6 +32,13 @@ int main(int argc, char * argv[])
     yarp::os::ResourceFinder rf;
     rf.configure(argc, argv);
 
+    yarp::os::Property options(rf.toString().c_str());
+
+#ifdef SAMPLE_CONFIG
+    std::string sampleConfigFile = SAMPLE_CONFIG;
+    options.fromConfigFile(sampleConfigFile, false);
+#endif
+
     yarp::os::Network yarp;
 
     if (!yarp::os::Network::checkNetwork())
@@ -47,21 +54,9 @@ int main(int argc, char * argv[])
     Runnable runnable;
 
     //-- playbackThreadDevice and interface
-    std::string fileName("..");
-    fileName += yarp::conf::filesystem::preferred_separator;
-    fileName += "resources";
-    fileName += yarp::conf::filesystem::preferred_separator;
-    fileName += "yarpdatadumper-teo-rightArm.txt";
+    yarp::os::Property playbackThreadOptions(options.findGroup("PLAYBACK").toString().c_str());
 
-    yarp::os::Property playbackThreadOptions("(mask 0 0 1 1 1 1 1 1 1)");
-    playbackThreadOptions.fromString(rf.toString(), false);
-    playbackThreadOptions.put("device", "PlaybackThread");
-    playbackThreadOptions.put("file", rf.check("file", yarp::os::Value(fileName)));
-    playbackThreadOptions.put("timeIdx", rf.check("timeIdx", yarp::os::Value(1)));
-    playbackThreadOptions.put("timeScale", rf.check("timeScale", yarp::os::Value(0.000001)));
-    playbackThreadDevice.open(playbackThreadOptions);
-
-    if (!playbackThreadDevice.isValid())
+    if (!playbackThreadDevice.open(playbackThreadOptions))
     {
         yError() << "playbackThreadDevice not available";
         return 1;
@@ -74,13 +69,9 @@ int main(int argc, char * argv[])
     }
 
     //-- robotDevice
-    yarp::os::Property robotOptions;
-    robotOptions.put("device", "remote_controlboard");
-    robotOptions.put("local", "/playback");
-    robotOptions.put("remote", rf.check("remote", yarp::os::Value("/teoSim/rightArm")));
-    robotDevice.open(robotOptions);
+    yarp::os::Property robotOptions(options.findGroup("ROBOT").toString().c_str());
 
-    if (!robotDevice.isValid())
+    if (!robotDevice.open(robotOptions))
     {
         yError() << "robotDevice not available";
         return 1;

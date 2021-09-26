@@ -21,3 +21,9 @@ target_link_libraries(examplePlaybackThread YARP::YARP_os
                                             YARP::YARP_init
                                             YARP::YARP_dev
                                             ROBOTICSLAB::ToolsInterfaces)
+
+# Hardcode path to resource file.
+configure_file(examplePlaybackThread.ini.template ${CMAKE_CURRENT_BINARY_DIR}/examplePlaybackThread.ini)
+
+# Use sample config.
+target_compile_definitions(examplePlaybackThread PRIVATE SAMPLE_CONFIG="${CMAKE_CURRENT_BINARY_DIR}/examplePlaybackThread.ini")
