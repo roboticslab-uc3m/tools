@@ -8,6 +8,7 @@
 #include <yarp/os/Network.h>
 #include <yarp/os/Property.h>
 #include <yarp/os/ResourceFinder.h>
+#include <yarp/os/SystemClock.h>
 
 #include <yarp/dev/IControlMode.h>
 #include <yarp/dev/IPositionDirect.h>
@@ -32,12 +33,14 @@ int main(int argc, char * argv[])
     yarp::os::ResourceFinder rf;
     rf.configure(argc, argv);
 
-    yarp::os::Property options(rf.toString().c_str());
+    yarp::os::Property options;
 
 #ifdef SAMPLE_CONFIG
     std::string sampleConfigFile = SAMPLE_CONFIG;
-    options.fromConfigFile(sampleConfigFile, false);
+    options.fromConfigFile(sampleConfigFile);
 #endif
+
+    options.fromString(rf.toString(), false);
 
     yarp::os::Network yarp;
 
@@ -85,16 +88,22 @@ int main(int argc, char * argv[])
         return 1;
     }
 
-    if (!mode->setControlModes(std::vector<int>(6, VOCAB_CM_POSITION_DIRECT).data()))
+    int axes;
+    runnable.iPositionDirect->getAxes(&axes);
+
+    if (!mode->setControlModes(std::vector<int>(axes, VOCAB_CM_POSITION_DIRECT).data()))
     {
         yError() << "Unable to switch to position direct mode";
         return 1;
     }
 
     iPlaybackThread->setIRunnable(&runnable);
-
     iPlaybackThread->play();
-    while (iPlaybackThread->isPlaying()) {}
+
+    while (iPlaybackThread->isPlaying())
+    {
+        yarp::os::SystemClock::delaySystem(0.1);
+    }
 
     return 0;
 }
