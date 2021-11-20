@@ -5,6 +5,8 @@
 #include <map>
 #include <sstream>
 
+#include <yarp/conf/version.h>
+
 #include <yarp/os/LogStream.h>
 
 #include "LogComponent.hpp"
@@ -17,7 +19,9 @@ using namespace roboticslab;
 
 bool RealToSimControlboard::open(yarp::os::Searchable& config)
 {
+#if !defined(YARP_VERSION_COMPARE) // < 3.6.0
     yCDebug(R2SCB) << "Config:" << config.toString();
+#endif
 
     int modePosVelInt = config.check("modePosVel", yarp::os::Value(DEFAULT_MODE_POS_VEL), "0:pos, 1:vel").asInt32();
 
