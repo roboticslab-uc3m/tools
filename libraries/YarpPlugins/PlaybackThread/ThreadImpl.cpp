@@ -2,8 +2,6 @@
 
 #include "PlaybackThread.hpp"
 
-#include <iostream>
-
 #include <yarp/os/LogStream.h>
 #include <yarp/os/SystemClock.h>
 
@@ -15,7 +13,7 @@ using namespace roboticslab;
 
 void PlaybackThread::run()
 {
-    std::vector<double> row, maskedRow;
+    std::vector<double> maskedRow;
     double initTime = 0.0;
     double initRow = 0.0;
 
@@ -28,12 +26,14 @@ void PlaybackThread::run()
             continue;
         }
 
-        if (!getNext(row))
+        if (!hasNextRow())
         {
             stopPlay();
             yCInfo(PBT) << "End of rows, auto stopPlay()";
             continue;
         }
+
+        const auto & row = getNextRow();
 
         if (initTime == 0.0)
         {
@@ -63,14 +63,7 @@ void PlaybackThread::run()
             }
         }
 
-        std::cout << "Row[" << getIter() << "]: ";
-
-        for (auto column : row)
-        {
-            std::cout << column << " ";
-        }
-
-        std::cout << std::endl;
+        yCInfo(PBT) << "Row" << getCurrentRowIndex() << row;
 
         if (_iRunnable)
         {

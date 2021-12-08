@@ -2,6 +2,10 @@
 
 #include "Playback.hpp"
 
+#include <sstream>
+#include <string>
+#include <utility>
+
 #include <yarp/os/LogComponent.h>
 #include <yarp/os/LogStream.h>
 
@@ -14,85 +18,84 @@ namespace
 
 // -----------------------------------------------------------------------------
 
-bool Playback::fromFile(const std::string& fileName)
+bool Playback::fromFile(const std::string & fileName)
 {
-    file.open(fileName.c_str());
-    if( ! file.is_open() )
+    std::ifstream file(fileName);
+
+    if (!file.is_open())
     {
         yCError(PLAY) << "Not able to open file:" << fileName;
         return false;
     }
+
     yCInfo(PLAY) << "Opened file:" << fileName;
 
-    std::vector<double> doublesOnFileLine;
+    std::vector<double> row;
 
-    while( this->parseFileLine(doublesOnFileLine) )
+    while (!file.eof())
     {
-        if ( doublesOnFileLine.size() == 0 ) continue;
+        parseFileLine(file, row);
 
-        doublesOnFile.push_back( doublesOnFileLine );
+        if (!row.empty())
+        {
+            storage.push_back(std::move(row));
+        }
     }
 
     file.close();
-
+    reset(); // sets our iterator to the first row
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-int Playback::getNumRows()
+std::size_t Playback::getNumRows() const
 {
-    return doublesOnFile.size();
+    return storage.size();
 }
 
 // -----------------------------------------------------------------------------
 
-int Playback::getIter()
+std::size_t Playback::getCurrentRowIndex() const
 {
-    return doublesOnFileIter;
+    return std::distance(storage.cbegin(), iter);
 }
 
 // -----------------------------------------------------------------------------
 
-bool Playback::reset()
+bool Playback::hasNextRow() const
 {
-    doublesOnFileIter = 0;
-
-    return true;
+    return iter != storage.cend();
 }
 
 // -----------------------------------------------------------------------------
 
-bool Playback::getNext(std::vector<double>& row)
+const Playback::row_t::value_type & Playback::getNextRow()
 {
-    if( doublesOnFileIter >= doublesOnFile.size() )
-        return false;
-
-    row = doublesOnFile[doublesOnFileIter];
-
-    doublesOnFileIter++;
-
-    return true;
+    return *iter++; // dereference, then increment
 }
 
 // -----------------------------------------------------------------------------
 
-bool Playback::parseFileLine(std::vector<double>& doublesOnFileLine)
+void Playback::reset()
 {
-    doublesOnFileLine.clear();
+    iter = storage.cbegin();
+}
 
-    if( file.eof() )
-        return false;
+// -----------------------------------------------------------------------------
 
+void Playback::parseFileLine(std::ifstream & file, std::vector<double> & row)
+{
     std::string s;
-    getline(file, s);
+    std::getline(file, s);
     std::stringstream ss(s);
 
     double d;
-    while (ss >> d)
-        doublesOnFileLine.push_back(d);
 
-    return true;
+    while (ss >> d)
+    {
+        row.push_back(d);
+    }
 }
 
 // -----------------------------------------------------------------------------

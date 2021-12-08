@@ -54,11 +54,10 @@ TEST_F( PlaybackTest, PlaybackTestGetNumRows )
 
 TEST_F( PlaybackTest, PlaybackTestGetNext )
 {
-    std::vector<double> row;
-
-    while( playback.getNext(row) )
+    while( playback.hasNextRow() )
     {
-        std::cout << "Row[" << playback.getIter() << "]: ";
+        const auto & row = playback.getNextRow();
+        std::cout << "Row[" << playback.getCurrentRowIndex() << "]: ";
         for(int i=0;i<row.size();i++)
         {
             std::cout << row[i] << " ";
