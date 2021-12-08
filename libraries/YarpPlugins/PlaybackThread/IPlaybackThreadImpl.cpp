@@ -6,18 +6,16 @@ using namespace roboticslab;
 
 // -----------------------------------------------------------------------------
 
-void PlaybackThread::setIRunnable(IRunnable* iRunnable)
+void PlaybackThread::setIRunnable(IRunnable * iRunnable)
 {
     _iRunnable = iRunnable;
-    return;
 }
 
 // -----------------------------------------------------------------------------
 
 bool PlaybackThread::play()
 {
-    initTime = std::numeric_limits<double>::quiet_NaN();
-    setState(PLAYING);
+    _state = state::PLAYING;
     return true;
 }
 
@@ -25,7 +23,7 @@ bool PlaybackThread::play()
 
 bool PlaybackThread::pause()
 {
-    setState(NOT_PLAYING);
+    _state = state::NOT_PLAYING;
     return true;
 }
 
@@ -33,8 +31,8 @@ bool PlaybackThread::pause()
 
 bool PlaybackThread::stopPlay()
 {
-    setState(NOT_PLAYING);
-    this->reset();
+    _state = state::NOT_PLAYING;
+    reset();
     return true;
 }
 
@@ -42,7 +40,7 @@ bool PlaybackThread::stopPlay()
 
 bool PlaybackThread::isPlaying()
 {
-    return getState() == PLAYING;
+    return _state == state::PLAYING;
 }
 
 // -----------------------------------------------------------------------------
@@ -52,3 +50,5 @@ bool PlaybackThread::setTimeScale(double timeScale)
     this->timeScale = timeScale;
     return true;
 }
+
+// -----------------------------------------------------------------------------

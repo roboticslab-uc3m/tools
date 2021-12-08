@@ -10,7 +10,6 @@ yarp_prepare_plugin(PlaybackThread
 if(NOT SKIP_PlaybackThread)
 
     yarp_add_plugin(PlaybackThread PlaybackThread.hpp
-                                   PlaybackThread.cpp
                                    DeviceDriverImpl.cpp
                                    IPlaybackThreadImpl.cpp
                                    ThreadImpl.cpp

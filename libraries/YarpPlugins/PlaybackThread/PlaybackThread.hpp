@@ -3,14 +3,13 @@
 #ifndef __PLAYBACK_THREAD_HPP__
 #define __PLAYBACK_THREAD_HPP__
 
-#include <yarp/os/all.h>
-#include <yarp/dev/all.h>
-#include <sstream>
+#include <atomic>
 
-#include <limits>  // NAN
+#include <yarp/os/Bottle.h>
+#include <yarp/os/Thread.h>
+#include <yarp/dev/DeviceDriver.h>
 
 #include "Playback.hpp"
-
 #include "IPlaybackThread.h"
 
 namespace roboticslab
@@ -18,23 +17,22 @@ namespace roboticslab
 
 /**
  * @ingroup YarpPlugins
- * \defgroup PlaybackThread
+ * @defgroup PlaybackThread
  * @brief Contains roboticslab::PlaybackThread.
  */
 
  /**
  * @ingroup PlaybackThread
  * @brief Implementation for the PlaybackThread.
- *
  */
 class PlaybackThread : public yarp::dev::DeviceDriver,
                        public IPlaybackThread,
                        public yarp::os::Thread,
-                       public Playback
+                       private Playback
 {
 public:
     //  --------- DeviceDriver Declarations. Implementation in DeviceDriverImpl.cpp ---------
-    bool open(yarp::os::Searchable& config) override;
+    bool open(yarp::os::Searchable & config) override;
     bool close() override;
 
     //  --------- IPlaybackThread Declarations. Implementation in IPlaybackThreadImpl.cpp ---------
@@ -43,29 +41,21 @@ public:
     bool stopPlay() override;
     bool isPlaying() override;
     bool setTimeScale(double timeScale) override;
-    void setIRunnable(IRunnable* iRunnable) override;
+    void setIRunnable(IRunnable * iRunnable) override;
 
     // --------- Thread Declarations. Implementation in ThreadImpl.cpp ---------
     void run() override;
     void onStop() override;
 
 private:
-    int timeIdx;
-    double timeScale;
-    double initTime;
-    double initRow;
+    enum class state { NOT_PLAYING, PLAYING };
+
+    int timeIdx {0};
+    double timeScale {0.0};
 
     yarp::os::Bottle mask;
-
-    IRunnable* _iRunnable;
-
-    int _state;
-    yarp::os::Semaphore _stateSemaphore;
-    int getState();
-    void setState(const int& state);
-
-    static const int NOT_PLAYING;
-    static const int PLAYING;
+    IRunnable * _iRunnable {nullptr};
+    std::atomic<state> _state {state::NOT_PLAYING};
 };
 
 } // namespace roboticslab

@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include <yarp/os/LogStream.h>
+#include <yarp/os/SystemClock.h>
 
 #include "LogComponent.hpp"
 
@@ -14,60 +15,75 @@ using namespace roboticslab;
 
 void PlaybackThread::run()
 {
-    while ( ! this->isStopping() )
+    std::vector<double> row, maskedRow;
+    double initTime = 0.0;
+    double initRow = 0.0;
+
+    while (!yarp::os::Thread::isStopping())
     {
-        if ( getState() == PLAYING )
+        if (_state != state::PLAYING)
         {
-            std::vector<double> row, maskedRow;
+            yarp::os::SystemClock::delaySystem(0.1);
+            initTime = 0.0;
+            continue;
+        }
 
-            if( ! this->getNext(row) )
-            {
-                stopPlay();
-                yCInfo(PBT) << "End of rows, auto stopPlay()";
-                continue;
-            }
+        if (!getNext(row))
+        {
+            stopPlay();
+            yCInfo(PBT) << "End of rows, auto stopPlay()";
+            continue;
+        }
 
-            if( initTime != initTime )
-            {
-                initTime = yarp::os::Time::now();
-                initRow = row[timeIdx];
-            }
-            else
-            {
-                yarp::os::Time::delay( initTime + (row[timeIdx] - initRow)*timeScale - yarp::os::Time::now() );
-            }
+        if (initTime == 0.0)
+        {
+            initTime = yarp::os::SystemClock::nowSystem();
+            initRow = row[timeIdx];
+        }
+        else
+        {
+            yarp::os::SystemClock::delaySystem(initTime + (row[timeIdx] - initRow) * timeScale - yarp::os::SystemClock::nowSystem());
+        }
 
-            if( mask.size() == 0 )
-            {
-                maskedRow = row;
-            }
-            else
-            {
-                for(int i=0; i<mask.size(); i++)
-                    if( mask.get(i).asInt32() == 1 )
-                        maskedRow.push_back( row[i] );
-            }
+        if (mask.size() == 0)
+        {
+            maskedRow = row;
+        }
+        else
+        {
+            maskedRow.clear();
+            maskedRow.reserve(mask.size());
 
-            std::cout << "Row[" << this->getIter() << "]: ";
-            for(int i=0;i<row.size();i++)
+            for (int i = 0; i < mask.size(); i++)
             {
-                std::cout << row[i] << " ";
+                if (mask.get(i).asInt32() == 1)
+                {
+                    maskedRow.push_back(row[i]);
+                }
             }
-            std::cout << std::endl;
+        }
 
-            if( _iRunnable != NULL )
-            {
-                _iRunnable->run( maskedRow );
-            }
-        }  // if ( getState() == PLAYING )
-    }  // while ( ! this->isStopping() )
+        std::cout << "Row[" << getIter() << "]: ";
+
+        for (auto column : row)
+        {
+            std::cout << column << " ";
+        }
+
+        std::cout << std::endl;
+
+        if (_iRunnable)
+        {
+            _iRunnable->run(maskedRow);
+        }
+    }
 }
 
 // -----------------------------------------------------------------------------
 
 void PlaybackThread::onStop()
 {
-    setState( NOT_PLAYING );
+    _state = state::NOT_PLAYING;
 }
 
 // -----------------------------------------------------------------------------
