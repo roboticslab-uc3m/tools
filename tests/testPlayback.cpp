@@ -9,61 +9,49 @@
 
 namespace roboticslab
 {
+namespace test
+{
 
 /**
  * @ingroup roboticslab-tools-tests
  * @brief Tests \ref Playback
  */
-class PlaybackTest : public testing::Test // -- inherit the Test class (gtest.h)
+class PlaybackTest : public testing::Test
 {
-
 public:
-
-    virtual void SetUp()
+    void SetUp() override
     {
-        // -- code here will execute just before the test ensues
         std::string fileName("resources");
         fileName += yarp::conf::filesystem::preferred_separator;
         fileName += "testPlayback.txt";
 
-        if(!playback.fromFile(fileName))
+        if (!playback.fromFile(fileName))
         {
-            yError() << "Bad Configuration";
-            ::exit(1);
+            yFatal() << "Bad Configuration";
         }
+
         yInfo() << "Configuration successful";
     }
 
-    virtual void TearDown()
-    {
-        // -- code here will be called just after the test completes
-        // -- ok to through exceptions from here if need be
-    }
+    void TearDown() override
+    {}
 
 protected:
-
-    /** Playback. */
     Playback playback;
-
 };
 
-TEST_F( PlaybackTest, PlaybackTestGetNumRows )
+TEST_F(PlaybackTest, PlaybackTestGetNumRows)
 {
-    std::cout << "Num rows: " << playback.getNumRows() << std::endl;
+    yInfo() << "Num rows:" << playback.getNumRows();
 }
 
-TEST_F( PlaybackTest, PlaybackTestGetNext )
+TEST_F(PlaybackTest, PlaybackTestGetNext)
 {
-    while( playback.hasNextRow() )
+    while (playback.hasNextRow())
     {
-        const auto & row = playback.getNextRow();
-        std::cout << "Row[" << playback.getCurrentRowIndex() << "]: ";
-        for(int i=0;i<row.size();i++)
-        {
-            std::cout << row[i] << " ";
-        }
-        std::cout << std::endl;
+        yInfo() << "Row" << playback.getCurrentRowIndex() << playback.getNextRow();
     }
 }
 
+}
 }
