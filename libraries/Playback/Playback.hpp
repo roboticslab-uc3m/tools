@@ -3,7 +3,7 @@
 #ifndef __PLAYBACK_HPP__
 #define __PLAYBACK_HPP__
 
-#include <fstream>
+#include <string>
 #include <vector>
 
 namespace roboticslab
@@ -32,8 +32,6 @@ public:
     void reset();
 
 private:
-    static void parseFileLine(std::ifstream & file, std::vector<double> & row);
-
     row_t storage;
     row_t::const_iterator iter;
 };

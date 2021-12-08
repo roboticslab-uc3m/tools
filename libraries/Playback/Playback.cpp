@@ -2,6 +2,7 @@
 
 #include "Playback.hpp"
 
+#include <fstream>
 #include <sstream>
 #include <string>
 #include <utility>
@@ -14,6 +15,20 @@ using namespace roboticslab;
 namespace
 {
     YARP_LOG_COMPONENT(PLAY, "rl.Playback")
+
+    void parseFileLine(std::ifstream & file, std::vector<double> & row)
+    {
+        std::string s;
+        std::getline(file, s);
+        std::stringstream ss(s);
+
+        double d;
+
+        while (ss >> d)
+        {
+            row.push_back(d);
+        }
+    }
 }
 
 // -----------------------------------------------------------------------------
@@ -80,22 +95,6 @@ const Playback::row_t::value_type & Playback::getNextRow()
 void Playback::reset()
 {
     iter = storage.cbegin();
-}
-
-// -----------------------------------------------------------------------------
-
-void Playback::parseFileLine(std::ifstream & file, std::vector<double> & row)
-{
-    std::string s;
-    std::getline(file, s);
-    std::stringstream ss(s);
-
-    double d;
-
-    while (ss >> d)
-    {
-        row.push_back(d);
-    }
 }
 
 // -----------------------------------------------------------------------------
