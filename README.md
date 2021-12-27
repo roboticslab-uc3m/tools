@@ -1,8 +1,8 @@
-[![Tools Homepage](https://img.shields.io/badge/roboticslab-tools-orange.svg)](http://robots.uc3m.es/dox-tools) [![Latest Release](https://img.shields.io/github/tag/roboticslab-uc3m/tools.svg?label=Latest%20Release)](https://github.com/roboticslab-uc3m/tools/tags)
+[![Tools Homepage](https://img.shields.io/badge/roboticslab-tools-orange.svg)](https://robots.uc3m.es/tools/) [![Latest Release](https://img.shields.io/github/tag/roboticslab-uc3m/tools.svg?label=Latest%20Release)](https://github.com/roboticslab-uc3m/tools/tags)
 
 Additional software tools.
 
-Link to Doxygen generated documentation: https://roboticslab-uc3m.github.io/tools
+Link to Doxygen generated documentation: https://robots.uc3m.es/tools/
 
 ## Installation
 
