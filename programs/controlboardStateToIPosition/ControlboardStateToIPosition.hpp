@@ -3,8 +3,6 @@
 
 #include <vector>
 
-#include <yarp/conf/version.h>
-
 #include <yarp/os/PeriodicThread.h>
 #include <yarp/os/RFModule.h>
 
@@ -25,11 +23,7 @@ class ControlboardStateToIPosition : public yarp::os::RFModule,
 public:
 
     ControlboardStateToIPosition()
-#if YARP_VERSION_MINOR >= 5
         : yarp::os::PeriodicThread(1.0, yarp::os::PeriodicThreadClock::Absolute)
-#else
-        : yarp::os::PeriodicThread(1.0)
-#endif
     {}
 
     /**

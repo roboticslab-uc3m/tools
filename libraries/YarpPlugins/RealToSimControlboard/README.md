@@ -6,7 +6,7 @@ yarp server
 
 ## Example with Left Dextra
 ```bash
-openrave --module OpenraveYarpPluginLoader "env openrave/dextra/leftDextra.robot.xml open --device controlboardwrapper2 --subdevice YarpOpenraveControlboard --robotIndex 0 --allManipulators" --viewer qtcoin --collision ode
+openrave --module OpenraveYarpPluginLoader "env openrave/dextra/leftDextra.robot.xml open --device controlBoard_nws_yarp --subdevice YarpOpenraveControlboard --robotIndex 0 --allManipulators" --viewer qtcoin --collision ode
 ```
 
 ```bash
@@ -24,7 +24,7 @@ yarpdev --device RealToSimControlboard --context RealToSimControlboard --from le
 
 ## Example with Lacquey Fetch
 ```bash
-openrave --module OpenraveYarpPluginLoader "env openrave/lacqueyFetch/lacqueyFetch.robot.xml open --device controlboardwrapper2 --subdevice YarpOpenraveControlboard --robotIndex 0 --allManipulators" --viewer qtcoin --collision ode
+openrave --module OpenraveYarpPluginLoader "env openrave/lacqueyFetch/lacqueyFetch.robot.xml open --device controlBoard_nws_yarp --subdevice YarpOpenraveControlboard --robotIndex 0 --allManipulators" --viewer qtcoin --collision ode
 ```
 
 ```bash
