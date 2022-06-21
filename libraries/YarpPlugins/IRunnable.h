@@ -17,11 +17,11 @@ public:
     /**
      * Destructor.
      */
-    virtual ~IRunnable() {}
+    virtual ~IRunnable() = default;
 
     virtual bool run(const std::vector<double>& v) = 0;
 };
 
-}  // namespace roboticslab
+} // namespace roboticslab
 
-#endif  //  __I_RUNNABLE__
+#endif // __I_RUNNABLE__

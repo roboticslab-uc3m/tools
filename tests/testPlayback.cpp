@@ -7,9 +7,7 @@
 
 #include "Playback.hpp"
 
-namespace roboticslab
-{
-namespace test
+namespace roboticslab::test
 {
 
 /**
@@ -53,5 +51,4 @@ TEST_F(PlaybackTest, PlaybackTestGetNext)
     }
 }
 
-}
-}
+} // namespace roboticslab::test

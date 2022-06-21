@@ -22,26 +22,27 @@ constexpr auto DEFAULT_RATE_MS = 20.0;
 
 bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
 {
-    std::string inStr = rf.check("in",yarp::os::Value(DEFAULT_IN),"in").asString();
-    std::string outStr = rf.check("out",yarp::os::Value(DEFAULT_OUT),"out").asString();
+    std::string inStr = rf.check("in", yarp::os::Value(DEFAULT_IN), "in").asString();
+    std::string outStr = rf.check("out", yarp::os::Value(DEFAULT_OUT), "out").asString();
 
     //-- inRobotDevice
     std::string localInStr("/ControlboardStateToIPosition");
     localInStr += inStr;
 
-    yarp::os::Property inOptions;
-    inOptions.put("device","remote_controlboard");
-    inOptions.put("remote",inStr);
-    inOptions.put("local",localInStr);
+    yarp::os::Property inOptions {
+        {"device", yarp::os::Value("remote_controlboard")},
+        {"remote", yarp::os::Value(inStr)},
+        {"local", yarp::os::Value(localInStr)}
+    };
 
-    if( ! inRobotDevice.open(inOptions) )
+    if (!inRobotDevice.open(inOptions))
     {
         yCError(CBS2P) << "Could not open() inRobotDevice:" << inStr;
         yCError(CBS2P) << "Please review or set --in";
         return false;
     }
 
-    if( ! inRobotDevice.view(iEncodersIn) )
+    if (!inRobotDevice.view(iEncodersIn))
     {
         yCError(CBS2P) << "Could not view iEncodersIn in:" << inStr;
         return false;
@@ -51,24 +52,26 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
     std::string localOutStr("/ControlboardStateToIPosition");
     localOutStr += outStr;
 
-    yarp::os::Property options;
-    options.put("device","remote_controlboard");
-    options.put("remote",outStr);
-    options.put("local",localOutStr);
+    yarp::os::Property options {
+        {"device", yarp::os::Value("remote_controlboard")},
+        {"remote", yarp::os::Value(outStr)},
+        {"local", yarp::os::Value(localOutStr)}
+    };
 
-    if( ! outRobotDevice.open(options) )
+    if (!outRobotDevice.open(options))
     {
         yCError(CBS2P) << "Could not open() outRobotDevice:" << outStr;
         yCError(CBS2P) << "Please review or set --out";
         return false;
     }
 
-    if( ! outRobotDevice.view(iControlModeOut) )
+    if (!outRobotDevice.view(iControlModeOut))
     {
         yCError(CBS2P) << "Could not view iControlModeOut in:" << outStr;
         return false;
     }
-    if( ! outRobotDevice.view(iPositionDirectOut) )
+
+    if (!outRobotDevice.view(iPositionDirectOut))
     {
         yCError(CBS2P) << "Could not view iPositionDirectOut in:" << outStr;
         return false;
@@ -77,36 +80,38 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
     //-- Resize encPoss
     int axes;
 
-    if( ! iEncodersIn->getAxes(&axes) )
+    if (!iEncodersIn->getAxes(&axes))
     {
         yCError(CBS2P) << "Failed to iEncodersIn->getAxes()";
     }
+
     yCInfo(CBS2P) << "iEncodersIn->getAxes() got" << axes << "axes";
 
     encPoss.resize(axes);
 
     //-- Set PositionDirect
-    std::vector<int> modes(axes,VOCAB_CM_POSITION_DIRECT);
-    if( ! iControlModeOut->setControlModes( modes.data() ) )
+    std::vector<int> modes(axes, VOCAB_CM_POSITION_DIRECT);
+
+    if (!iControlModeOut->setControlModes(modes.data()))
     {
         yCError(CBS2P) << "Failed to iControlModeOut->setControlModes()";
     }
 
-    this->setPeriod(DEFAULT_RATE_MS * 0.001);
+    yarp::os::PeriodicThread::setPeriod(DEFAULT_RATE_MS * 0.001);
 
     //-- Start PeriodicThread
-    if( ! this->start() )
+    if (!yarp::os::PeriodicThread::start())
     {
         yCError(CBS2P) << "Could not start thread";
     }
-    yCInfo(CBS2P) << "Started thread";
 
+    yCInfo(CBS2P) << "Started thread";
     return true;
 }
 
 bool ControlboardStateToIPosition::close()
 {
-    this->stop();
+    yarp::os::PeriodicThread::stop();
     inRobotDevice.close();
     outRobotDevice.close();
     return true;
@@ -120,7 +125,7 @@ bool ControlboardStateToIPosition::updateModule()
 
 void ControlboardStateToIPosition::run()
 {
-    if( ! iEncodersIn->getEncoders( encPoss.data() ) )
+    if (!iEncodersIn->getEncoders(encPoss.data()))
     {
         yCWarning(CBS2P) << "Failed iEncodersIn->getEncoders()";
         return;
@@ -128,7 +133,7 @@ void ControlboardStateToIPosition::run()
 
     yCDebug(CBS2P) << "Got in:" << encPoss;
 
-    if( ! iPositionDirectOut->setPositions( encPoss.data() ) )
+    if (!iPositionDirectOut->setPositions(encPoss.data()))
     {
         yCWarning(CBS2P) << "Failed iPositionDirectOut->setPositions()";
         return;

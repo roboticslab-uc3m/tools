@@ -9,9 +9,7 @@
 
 #include "IPlaybackThread.h"
 
-namespace roboticslab
-{
-namespace test
+namespace roboticslab::test
 {
 
 class MockRunnable : public IRunnable
@@ -120,5 +118,4 @@ TEST_F(PlaybackThreadTest, PlaybackThreadTestRunnable)
     while (iPlaybackThread->isPlaying()) {}
 }
 
-}
-}
+} // namespace roboticslab::test

@@ -14,11 +14,7 @@ target_link_libraries(Playback PRIVATE YARP::YARP_os)
 
 # Create installation rule.
 install(TARGETS Playback
-        EXPORT ROBOTICSLAB_TOOLS
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT playback_library
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT playback_library
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT playback_library
-        PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR} COMPONENT playback_library)
+        EXPORT ROBOTICSLAB_TOOLS)
 
 # Create alias target.
 add_library(ROBOTICSLAB::Playback ALIAS Playback)

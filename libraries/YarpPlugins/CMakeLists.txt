@@ -1,7 +1,3 @@
-# Copyright: (C) 2017 Universidad Carlos III de Madrid
-# Authors: Juan G. Victores & Raul de Santos Rico
-# CopyPolicy: Released under the terms of the LGPLv2.1 or later, see LGPL.TXT
-
 # Create device interface target.
 add_library(ToolsInterfaces INTERFACE)
 
@@ -9,11 +5,9 @@ add_library(ToolsInterfaces INTERFACE)
 target_include_directories(ToolsInterfaces INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
                                                      $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
-# Install interface headers.
-install(FILES IPlaybackThread.h
-              IRunnable.h
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-        COMPONENT tools_yarp_plugins)
+# Register interface headers.
+set_property(TARGET ToolsInterfaces PROPERTY PUBLIC_HEADER IPlaybackThread.h
+                                                           IRunnable.h)
 
 # Register export set.
 install(TARGETS ToolsInterfaces

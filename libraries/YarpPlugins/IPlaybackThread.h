@@ -21,7 +21,7 @@ public:
     /**
      * Destructor.
      */
-    virtual ~IPlaybackThread() {}
+    virtual ~IPlaybackThread() = default;
 
     virtual bool play() = 0;
     virtual bool pause() = 0;
@@ -31,6 +31,6 @@ public:
     virtual void setIRunnable(IRunnable* iRunnable) = 0;
 };
 
-}  // namespace roboticslab
+} // namespace roboticslab
 
-#endif  //  __I_PLAYBACK_THREAD__
+#endif // __I_PLAYBACK_THREAD__

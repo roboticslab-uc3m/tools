@@ -1,8 +1,4 @@
-# Copyright: Universidad Carlos III de Madrid (C) 2017
-# Authors: Juan G Victores
-# CopyPolicy: Released under the terms of the LGPLv2.1 or later
-
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.16)
 
 # Start a project.
 project(ROBOTICSLAB_TOOLS LANGUAGES CXX)
@@ -13,7 +9,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake
 
 # Hard dependencies
 find_package(YCM 0.11 REQUIRED)
-find_package(YARP 3.5 REQUIRED COMPONENTS os dev)
+find_package(YARP 3.6 REQUIRED COMPONENTS os dev)
 
 # Soft dependencies.
 find_package(Doxygen QUIET)

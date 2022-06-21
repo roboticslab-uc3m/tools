@@ -1,7 +1,3 @@
-# Copyright: Universidad Carlos III de Madrid (C) 2017
-# Authors: Juan G Victores
-# CopyPolicy: Released under the terms of the LGPLv2.1 or later
-
 # Configure executable build target.
 add_executable(controlboardStateToIPosition main.cpp
                                             ControlboardStateToIPosition.cpp
@@ -13,6 +9,4 @@ target_link_libraries(controlboardStateToIPosition YARP::YARP_os
                                                    YARP::YARP_dev)
 
 # Create installation rule.
-install(TARGETS controlboardStateToIPosition
-        DESTINATION ${CMAKE_INSTALL_BINDIR}
-        COMPONENT controlboard_state_to_i_position)
+install(TARGETS controlboardStateToIPosition)
