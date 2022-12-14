@@ -1,10 +1,10 @@
-import argparse
+from argparse import ArgumentParser
 import time
 import yarp
 
 import matplotlib.pyplot as plt
 
-parser = argparse.ArgumentParser(description='Visualize step response and manually tune a PID.')
+parser = ArgumentParser(description='Visualize step response and manually tune a PID.')
 parser.add_argument('--prefix', required=True, type=str, help='robot port prefix')
 parser.add_argument('--carrier', default='unix_stream', type=str, help='carrier used for reading robot state')
 parser.add_argument('--joint', required=True, type=int, help='joint id')
@@ -14,13 +14,20 @@ parser.add_argument('--ki', type=float, help='integral gain')
 parser.add_argument('--kd', type=float, help='derivative gain')
 parser.add_argument('--initial', type=float, help='joint value to be achieved on start [deg]')
 parser.add_argument('--step', type=float, default=1.0, help='step size [deg]')
-parser.add_argument('--duration', type=float, default=5.0, help='step duration [s]')
-parser.add_argument('--period', type=float, default=1.0, help='acquisition period [ms]')
+parser.add_argument('--duration', type=float, default=5.0, help='command duration [s]')
+parser.add_argument('--sampling', type=float, default=1e-3, help='sampling period [s]')
+parser.add_argument('--period', type=float, help='command period [s] (enables staircase reference)')
 parser.add_argument('--store', action='store_true', help='preserve new PID coefficients')
 args = parser.parse_args()
 
 if args.duration <= 0.0:
     raise ValueError('Duration must be positive')
+
+if args.sampling <= 0.0:
+    raise ValueError('Sampling period must be positive')
+
+if args.period is not None and args.period <= 0.0:
+    raise ValueError('Command period must be positive')
 
 yarp.Network.init()
 
@@ -94,37 +101,57 @@ if args.kp is not None or args.ki is not None or args.kd is not None:
     print('New PID: kp=%f, ki=%f, kd=%f' % (new_pid.kp, new_pid.ki, new_pid.kd))
     using_new_pid = True
 
-print('Starting... step=%f [deg], duration=%f [s], period=%f [ms]' % (args.step, args.duration, args.period))
+print('Starting... step=%f [deg], duration=%f [s], sampling=%f [ms]' % (args.step, args.duration, args.sampling * 1000))
 
-x = []
-y = []
+t = []
+y_enc = []
+y_ref = []
 start = time.time()
 
-if not posd.setPosition(args.joint, initial + args.step):
-    raise RuntimeError('Unable to move joint')
+def doStep(target, samples):
+    if not posd.setPosition(args.joint, target):
+        raise RuntimeError('Unable to move joint')
 
-iterations = int(args.duration / (args.period * 0.001))
+    for i in range(samples):
+        now = time.time()
+        t.append(now - start)
+        y_enc.append(abs(enc.getEncoder(args.joint) - initial))
+        y_ref.append(abs(target - initial))
 
-for i in range(iterations):
-    now = time.time()
-    x.append(now - start)
-    y.append(abs(enc.getEncoder(args.joint) - initial))
+        # https://stackoverflow.com/a/25251804/10404307
+        time.sleep(args.sampling - ((now - start) % args.sampling))
 
-    # https://stackoverflow.com/a/25251804/10404307
-    time.sleep(args.period * 0.001 - ((now - start) % (args.period * 0.001)))
+if args.period is not None:
+    target = initial
+    samples = int(args.period / args.sampling)
+    n_steps = int(args.duration / args.period)
+
+    print('Staircase reference: period=%f [s], n_steps=%d, distance=%f [deg], speed=%f [deg/s]' % (
+        args.period, n_steps, abs(n_steps * args.step), abs(args.step) / args.period
+    ))
+
+    for i in range(n_steps):
+        target += args.step
+        doStep(target, samples)
+else:
+    target = initial + args.step
+    samples = int(args.duration / args.sampling)
+    doStep(target, samples)
 
 print('Done')
-
-plt.plot(x, y)
+plt.plot(t, y_enc, 'b')
+plt.plot(t, y_ref, 'r')
 plt.xlabel('time (s)')
 plt.ylabel('position (deg)')
 plt.title('Step response')
-plt.axhline(y=abs(args.step), color='r')
 
 plt.show()
 
-if using_new_pid and not args.store:
-    if not pid.setPid(pidType, args.joint, v_pid[0]):
-        raise RuntimeError('Unable to restore old PID')
+if using_new_pid:
+    if args.store:
+        print('Preserving new PID coefficients')
+    else:
+        if not pid.setPid(pidType, args.joint, v_pid[0]):
+            raise RuntimeError('Unable to restore old PID')
 
-    print('Restored old PID')
+        print('Restored old PID')
