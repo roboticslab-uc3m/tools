@@ -47,6 +47,7 @@ if not dd.isValid():
 
 time.sleep(0.5) # wait for first data to arrive
 
+limits = dd.viewIControlLimits()
 mode = dd.viewIControlMode()
 enc = dd.viewIEncoders()
 pid = dd.viewIPidControl()
@@ -55,6 +56,14 @@ posd = dd.viewIPositionDirect()
 
 if not 0 <= args.joint < enc.getAxes():
     raise ValueError('Joint id %d out of range' % args.joint)
+
+min = yarp.DVector(1)
+max = yarp.DVector(1)
+
+if not limits.getLimits(args.joint, min, max):
+    raise RuntimeError('Unable to get joint limits')
+
+print('Joint limits: %f [deg], %f [deg]' % (min[0], max[0]))
 
 pidType = yarp.encode(args.type)
 v_pid = yarp.PidVector(1)
