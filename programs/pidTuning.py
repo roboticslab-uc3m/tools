@@ -12,6 +12,7 @@ parser.add_argument('--type', default='pos', type=str, help='PID type (pos, vel)
 parser.add_argument('--kp', type=float, help='proportional gain')
 parser.add_argument('--ki', type=float, help='integral gain')
 parser.add_argument('--kd', type=float, help='derivative gain')
+parser.add_argument('--kff', type=float, help='feed-forward gain')
 parser.add_argument('--initial', type=float, help='joint value to be achieved on start [deg]')
 parser.add_argument('--step', type=float, default=1.0, help='step size [deg]')
 parser.add_argument('--duration', type=float, default=5.0, help='command duration [s]')
@@ -71,7 +72,7 @@ v_pid = yarp.PidVector(1)
 if not pid.getPid(pidType, args.joint, v_pid):
     raise RuntimeError('Unable to get PID')
 
-print('Current PID: kp=%f, ki=%f, kd=%f' % (v_pid[0].kp, v_pid[0].ki, v_pid[0].kd))
+print('Current PID: kp=%f, ki=%f, kd=%f, kff=%f' % (v_pid[0].kp, v_pid[0].ki, v_pid[0].kd, v_pid[0].kff))
 
 if args.initial is not None:
     print('Moving joint q%d to %f [deg]' % (args.joint, args.initial))
@@ -96,18 +97,20 @@ if not mode.setControlMode(args.joint, yarp.VOCAB_CM_POSITION_DIRECT):
 
 using_new_pid = False
 
-if args.kp is not None or args.ki is not None or args.kd is not None:
+if args.kp is not None or args.ki is not None or args.kd is not None or args.kff is not None:
     new_pid = yarp.Pid(v_pid[0].kp, v_pid[0].kd, v_pid[0].ki,
-                       v_pid[0].max_int, v_pid[0].scale, v_pid[0].max_output)
+                       v_pid[0].max_int, v_pid[0].scale, v_pid[0].max_output,
+                       v_pid[0].stiction_up_val, v_pid[0].stiction_down_val, v_pid[0].kff)
 
     if args.kp is not None: new_pid.kp = args.kp
     if args.ki is not None: new_pid.ki = args.ki
     if args.kd is not None: new_pid.kd = args.kd
+    if args.kff is not None: new_pid.kff = args.kff
 
     if not pid.setPid(pidType, args.joint, new_pid):
         raise RuntimeError('Unable to set new PID')
 
-    print('New PID: kp=%f, ki=%f, kd=%f' % (new_pid.kp, new_pid.ki, new_pid.kd))
+    print('New PID: kp=%f, ki=%f, kd=%f, kff=%f' % (new_pid.kp, new_pid.ki, new_pid.kd, new_pid.kff))
     using_new_pid = True
 
 print('Starting... step=%f [deg], duration=%f [s], sampling=%f [ms]' % (args.step, args.duration, args.sampling * 1000))
