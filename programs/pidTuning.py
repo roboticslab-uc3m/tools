@@ -121,14 +121,16 @@ y_ref = []
 start = time.time()
 
 def doStep(target, samples):
-    if not posd.setPosition(args.joint, target):
-        raise RuntimeError('Unable to move joint')
+    reference = abs(target - initial)
 
     for i in range(samples):
+        if not posd.setPosition(args.joint, target):
+            raise RuntimeError('Unable to move joint')
+
         now = time.time()
         t.append(now - start)
         y_enc.append(abs(enc.getEncoder(args.joint) - initial))
-        y_ref.append(abs(target - initial))
+        y_ref.append(reference)
 
         # https://stackoverflow.com/a/25251804/10404307
         time.sleep(args.sampling - ((now - start) % args.sampling))
