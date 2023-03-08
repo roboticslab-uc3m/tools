@@ -33,6 +33,8 @@ CMakeLists.txt.user
 **/build*/
 /.project
 /.cproject
+/.vs/
+/.vscode/
 
 # Other
 /external/
