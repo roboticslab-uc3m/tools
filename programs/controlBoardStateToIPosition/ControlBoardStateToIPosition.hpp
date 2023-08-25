@@ -1,5 +1,5 @@
-#ifndef __CONTROL_STATE_TO_I_POSITION_HPP__
-#define __CONTROL_STATE_TO_I_POSITION_HPP__
+#ifndef __CONTROL_BOARD_STATE_TO_I_POSITION_HPP__
+#define __CONTROL_BOARD_STATE_TO_I_POSITION_HPP__
 
 #include <vector>
 
@@ -15,14 +15,14 @@ namespace roboticslab
 {
 
 /**
- * @brief Reads joint positions from an input controlboard, sends to an output controlboard.
+ * @brief Reads joint positions from an input control board, sends to an output control board.
  */
-class ControlboardStateToIPosition : public yarp::os::RFModule,
+class ControlBoardStateToIPosition : public yarp::os::RFModule,
                                      public yarp::os::PeriodicThread
 {
 public:
 
-    ControlboardStateToIPosition()
+    ControlBoardStateToIPosition()
         : yarp::os::PeriodicThread(1.0, yarp::os::PeriodicThreadClock::Absolute)
     {}
 
@@ -91,4 +91,4 @@ private:
 
 }
 
-#endif // __CONTROL_STATE_TO_I_POSITION_HPP__
+#endif // __CONTROL_BOARD_STATE_TO_I_POSITION_HPP__

@@ -2,15 +2,15 @@
 #include <yarp/os/Network.h>
 #include <yarp/os/ResourceFinder.h>
 
-#include "ControlboardStateToIPosition.hpp"
+#include "ControlBoardStateToIPosition.hpp"
 
 /**
  *
  * @ingroup roboticslab-tools-programs
  *
- * \defgroup controlboardStateToIPosition controlboardStateToIPosition
+ * \defgroup controlBoardStateToIPosition controlBoardStateToIPosition
  *
- * @brief Creates an instance of roboticslab::ControlboardStateToIPosition.
+ * @brief Creates an instance of roboticslab::ControlBoardStateToIPosition.
  *
  */
 
@@ -18,20 +18,22 @@ int main(int argc, char *argv[])
 {
     yarp::os::ResourceFinder rf;
     rf.setVerbose(true);
-    rf.setDefaultContext("controlboardStateToIPosition");
-    rf.setDefaultConfigFile("controlboardStateToIPosition.ini");
+    rf.setDefaultContext("controlBoardStateToIPosition");
+    rf.setDefaultConfigFile("controlBoardStateToIPosition.ini");
     rf.configure(argc,argv);
 
-    roboticslab::ControlboardStateToIPosition mod;
-    if(rf.check("help")) {
+    roboticslab::ControlBoardStateToIPosition mod;
+    if (rf.check("help"))
+    {
         return mod.runModule(rf);
     }
 
-    yInfo() << "Run \"controlboardStateToIPosition --help\" for options";
+    yInfo() << "Run \"controlBoardStateToIPosition --help\" for options";
     yInfo() << "Checking for yarp network...";
     yarp::os::Network yarp;
 
-    if (!yarp::os::Network::checkNetwork()) {
+    if (!yarp::os::Network::checkNetwork())
+    {
         yError() << "Found no yarp network (try running \"yarpserver &\"), bye!";
         return 1;
     }

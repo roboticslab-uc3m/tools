@@ -1,6 +1,6 @@
 // -*- mode:C++; tab-width:4; c-basic-offset:4; indent-tabs-mode:nil -*-
 
-#include "RealToSimControlboard.hpp"
+#include "RealToSimControlBoard.hpp"
 
 #include <yarp/os/LogStream.h>
 
@@ -10,7 +10,7 @@ using namespace roboticslab;
 
 // ------------------ IVelocityControl Related ----------------------------------------
 
-bool RealToSimControlboard::velocityMove(int j, double sp)
+bool RealToSimControlBoard::velocityMove(int j, double sp)
 {
     yCTrace(R2SCB);
     return true;
@@ -18,7 +18,7 @@ bool RealToSimControlboard::velocityMove(int j, double sp)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::velocityMove(const double *sp)
+bool RealToSimControlBoard::velocityMove(const double *sp)
 {
     yCTrace(R2SCB);
     bool ok = true;
@@ -29,7 +29,7 @@ bool RealToSimControlboard::velocityMove(const double *sp)
 
 // ----------------------------------------------------------------------------
 
-bool RealToSimControlboard::velocityMove(const int n_joint, const int *joints, const double *spds)
+bool RealToSimControlBoard::velocityMove(const int n_joint, const int *joints, const double *spds)
 {
     yCTrace(R2SCB);
     bool ok = true;
@@ -40,7 +40,7 @@ bool RealToSimControlboard::velocityMove(const int n_joint, const int *joints, c
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::getRefVelocity(const int joint, double *vel)
+bool RealToSimControlBoard::getRefVelocity(const int joint, double *vel)
 {
     yCError(R2SCB) << "getRefVelocity() not implemented yet";
     return true;
@@ -48,7 +48,7 @@ bool RealToSimControlboard::getRefVelocity(const int joint, double *vel)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::getRefVelocities(double *vels)
+bool RealToSimControlBoard::getRefVelocities(double *vels)
 {
     yCError(R2SCB) << "getRefVelocities() not implemented yet";
     return true;
@@ -56,7 +56,7 @@ bool RealToSimControlboard::getRefVelocities(double *vels)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::getRefVelocities(const int n_joint, const int *joints, double *vels)
+bool RealToSimControlBoard::getRefVelocities(const int n_joint, const int *joints, double *vels)
 {
     yCError(R2SCB) << "getRefVelocities() not implemented yet";
     return true;

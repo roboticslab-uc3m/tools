@@ -1,7 +1,7 @@
 // -*- mode:C++; tab-width:4; c-basic-offset:4; indent-tabs-mode:nil -*-
 
-#ifndef __REAL_TO_SIM_CONTROLBOARD_HPP__
-#define __REAL_TO_SIM_CONTROLBOARD_HPP__
+#ifndef __REAL_TO_SIM_CONTROL_BOARD_HPP__
+#define __REAL_TO_SIM_CONTROL_BOARD_HPP__
 
 #include <vector>
 
@@ -42,17 +42,17 @@ private:
 
 /**
  * @ingroup YarpPlugins
- * \defgroup RealToSimControlboard
+ * \defgroup RealToSimControlBoard
  *
- * @brief Contains roboticslab::RealToSimControlboard.
+ * @brief Contains roboticslab::RealToSimControlBoard.
  */
 
 /**
- * @ingroup RealToSimControlboard
+ * @ingroup RealToSimControlBoard
  * @brief Implements the YARP_dev IPositionControl, etc.
  * interface class member functions.
  */
-class RealToSimControlboard :
+class RealToSimControlBoard :
         public yarp::dev::DeviceDriver,
         public yarp::dev::IControlMode,
         public yarp::dev::IEncodersTimed,
@@ -148,4 +148,4 @@ private:
 
 } // namespace roboticslab
 
-#endif // __REAL_TO_SIM_CONTROLBOARD_HPP__
+#endif // __REAL_TO_SIM_CONTROL_BOARD_HPP__

@@ -1,6 +1,6 @@
 // -*- mode:C++; tab-width:4; c-basic-offset:4; indent-tabs-mode:nil -*-
 
-#include "RealToSimControlboard.hpp"
+#include "RealToSimControlBoard.hpp"
 
 #include <yarp/os/LogStream.h>
 
@@ -10,7 +10,7 @@ using namespace roboticslab;
 
 // ------------------- IPositionControl Related --------------------------------
 
-bool RealToSimControlboard::getAxes(int *ax)
+bool RealToSimControlBoard::getAxes(int *ax)
 {
     *ax = axes;
     return true;
@@ -18,7 +18,7 @@ bool RealToSimControlboard::getAxes(int *ax)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::positionMove(int j, double ref)
+bool RealToSimControlBoard::positionMove(int j, double ref)
 {
     storedPositions[j] = ref;
     return exposedJoints[j]->positionMove(ref);
@@ -26,7 +26,7 @@ bool RealToSimControlboard::positionMove(int j, double ref)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::positionMove(const double *refs)
+bool RealToSimControlBoard::positionMove(const double *refs)
 {
     bool ok = true;
     for(unsigned int i=0; i < axes; i++)
@@ -36,7 +36,7 @@ bool RealToSimControlboard::positionMove(const double *refs)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::relativeMove(int j, double delta)
+bool RealToSimControlBoard::relativeMove(int j, double delta)
 {
     yCError(R2SCB) << "relativeMove() not implemented yet";
     return true;
@@ -44,7 +44,7 @@ bool RealToSimControlboard::relativeMove(int j, double delta)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::relativeMove(const double *deltas)
+bool RealToSimControlBoard::relativeMove(const double *deltas)
 {
     yCError(R2SCB) << "relativeMove() not implemented yet";
     return true;
@@ -52,7 +52,7 @@ bool RealToSimControlboard::relativeMove(const double *deltas)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::checkMotionDone(int j, bool *flag)
+bool RealToSimControlBoard::checkMotionDone(int j, bool *flag)
 {
     yCError(R2SCB) << "checkMotionDone() not implemented yet";
     return true;
@@ -60,7 +60,7 @@ bool RealToSimControlboard::checkMotionDone(int j, bool *flag)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::checkMotionDone(bool *flag)
+bool RealToSimControlBoard::checkMotionDone(bool *flag)
 {
     yCError(R2SCB) << "checkMotionDone() not implemented yet";
     return true;
@@ -68,7 +68,7 @@ bool RealToSimControlboard::checkMotionDone(bool *flag)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::setRefSpeed(int j, double sp)
+bool RealToSimControlBoard::setRefSpeed(int j, double sp)
 {
     yCError(R2SCB) << "setRefSpeed() not implemented yet";
     return true;
@@ -76,7 +76,7 @@ bool RealToSimControlboard::setRefSpeed(int j, double sp)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::setRefSpeeds(const double *spds)
+bool RealToSimControlBoard::setRefSpeeds(const double *spds)
 {
     yCError(R2SCB) << "setRefSpeeds() not implemented yet";
     return true;
@@ -84,7 +84,7 @@ bool RealToSimControlboard::setRefSpeeds(const double *spds)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::setRefAcceleration(int j, double acc)
+bool RealToSimControlBoard::setRefAcceleration(int j, double acc)
 {
     yCError(R2SCB) << "setRefAcceleration() not implemented yet";
     return true;
@@ -92,7 +92,7 @@ bool RealToSimControlboard::setRefAcceleration(int j, double acc)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::setRefAccelerations(const double *accs)
+bool RealToSimControlBoard::setRefAccelerations(const double *accs)
 {
     yCError(R2SCB) << "setRefAccelerations() not implemented yet";
     return true;
@@ -100,7 +100,7 @@ bool RealToSimControlboard::setRefAccelerations(const double *accs)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::getRefSpeed(int j, double *ref)
+bool RealToSimControlBoard::getRefSpeed(int j, double *ref)
 {
     yCError(R2SCB) << "getRefSpeed() not implemented yet";
     return true;
@@ -108,7 +108,7 @@ bool RealToSimControlboard::getRefSpeed(int j, double *ref)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::getRefSpeeds(double *spds)
+bool RealToSimControlBoard::getRefSpeeds(double *spds)
 {
     yCError(R2SCB) << "getRefSpeeds() not implemented yet";
     return true;
@@ -116,7 +116,7 @@ bool RealToSimControlboard::getRefSpeeds(double *spds)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::getRefAcceleration(int j, double *acc)
+bool RealToSimControlBoard::getRefAcceleration(int j, double *acc)
 {
     yCError(R2SCB) << "getRefAcceleration() not implemented yet";
     return true;
@@ -124,7 +124,7 @@ bool RealToSimControlboard::getRefAcceleration(int j, double *acc)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::getRefAccelerations(double *accs)
+bool RealToSimControlBoard::getRefAccelerations(double *accs)
 {
     yCError(R2SCB) << "getRefAccelerations() not implemented yet";
     return true;
@@ -132,7 +132,7 @@ bool RealToSimControlboard::getRefAccelerations(double *accs)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::stop(int j)
+bool RealToSimControlBoard::stop(int j)
 {
     yCError(R2SCB) << "stop() not implemented yet";
     return true;
@@ -140,7 +140,7 @@ bool RealToSimControlboard::stop(int j)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::stop()
+bool RealToSimControlBoard::stop()
 {
     yCError(R2SCB) << "stop() not implemented yet";
     return true;
@@ -148,7 +148,7 @@ bool RealToSimControlboard::stop()
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::positionMove(const int n_joint, const int *joints, const double *refs)
+bool RealToSimControlBoard::positionMove(const int n_joint, const int *joints, const double *refs)
 {
     yCTrace(R2SCB);
     bool ok = true;
@@ -161,7 +161,7 @@ bool RealToSimControlboard::positionMove(const int n_joint, const int *joints, c
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::relativeMove(const int n_joint, const int *joints, const double *deltas)
+bool RealToSimControlBoard::relativeMove(const int n_joint, const int *joints, const double *deltas)
 {
     yCTrace(R2SCB);
     bool ok = true;
@@ -174,7 +174,7 @@ bool RealToSimControlboard::relativeMove(const int n_joint, const int *joints, c
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::checkMotionDone(const int n_joint, const int *joints, bool *flags)
+bool RealToSimControlBoard::checkMotionDone(const int n_joint, const int *joints, bool *flags)
 {
     yCError(R2SCB) << "checkMotionDone() not implemented yet";
     return true;
@@ -182,7 +182,7 @@ bool RealToSimControlboard::checkMotionDone(const int n_joint, const int *joints
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::setRefSpeeds(const int n_joint, const int *joints, const double *spds)
+bool RealToSimControlBoard::setRefSpeeds(const int n_joint, const int *joints, const double *spds)
 {
     yCTrace(R2SCB);
     bool ok = true;
@@ -195,7 +195,7 @@ bool RealToSimControlboard::setRefSpeeds(const int n_joint, const int *joints, c
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::setRefAccelerations(const int n_joint, const int *joints, const double *accs)
+bool RealToSimControlBoard::setRefAccelerations(const int n_joint, const int *joints, const double *accs)
 {
     yCTrace(R2SCB);
     bool ok = true;
@@ -208,7 +208,7 @@ bool RealToSimControlboard::setRefAccelerations(const int n_joint, const int *jo
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::getRefSpeeds(const int n_joint, const int *joints, double *spds)
+bool RealToSimControlBoard::getRefSpeeds(const int n_joint, const int *joints, double *spds)
 {
     yCError(R2SCB) << "getRefSpeeds() not implemented yet";
     return true;
@@ -216,7 +216,7 @@ bool RealToSimControlboard::getRefSpeeds(const int n_joint, const int *joints, d
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::getRefAccelerations(const int n_joint, const int *joints, double *accs)
+bool RealToSimControlBoard::getRefAccelerations(const int n_joint, const int *joints, double *accs)
 {
     yCError(R2SCB) << "getRefAccelerations() not implemented yet";
     return true;
@@ -224,7 +224,7 @@ bool RealToSimControlboard::getRefAccelerations(const int n_joint, const int *jo
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::stop(const int n_joint, const int *joints)
+bool RealToSimControlBoard::stop(const int n_joint, const int *joints)
 {
     yCError(R2SCB) << "stop() not implemented yet";
     return true;
@@ -232,7 +232,7 @@ bool RealToSimControlboard::stop(const int n_joint, const int *joints)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::getTargetPosition(const int joint, double *ref)
+bool RealToSimControlBoard::getTargetPosition(const int joint, double *ref)
 {
     yCError(R2SCB) << "getTargetPosition() not implemented yet";
     return true;
@@ -240,7 +240,7 @@ bool RealToSimControlboard::getTargetPosition(const int joint, double *ref)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::getTargetPositions(double *refs)
+bool RealToSimControlBoard::getTargetPositions(double *refs)
 {
     yCError(R2SCB) << "getTargetPositions() not implemented yet";
     return true;
@@ -248,7 +248,7 @@ bool RealToSimControlboard::getTargetPositions(double *refs)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::getTargetPositions(const int n_joint, const int *joints, double *refs)
+bool RealToSimControlBoard::getTargetPositions(const int n_joint, const int *joints, double *refs)
 {
     yCError(R2SCB) << "getTargetPositions() not implemented yet";
     return true;

@@ -18,4 +18,4 @@ add_library(ROBOTICSLAB::ToolsInterfaces ALIAS ToolsInterfaces)
 
 # YARP devices.
 add_subdirectory(PlaybackThread)
-add_subdirectory(RealToSimControlboard)
+add_subdirectory(RealToSimControlBoard)

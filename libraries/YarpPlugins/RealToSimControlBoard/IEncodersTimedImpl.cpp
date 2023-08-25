@@ -1,12 +1,12 @@
 // -*- mode:C++; tab-width:4; c-basic-offset:4; indent-tabs-mode:nil -*-
 
-#include "RealToSimControlboard.hpp"
+#include "RealToSimControlBoard.hpp"
 
 using namespace roboticslab;
 
 // ------------------ IEncodersTimed Related -----------------------------------------
 
-bool RealToSimControlboard::getEncodersTimed(double *encs, double *time)
+bool RealToSimControlBoard::getEncodersTimed(double *encs, double *time)
 {
     bool ok = true;
     for(unsigned int i=0; i < axes; i++)
@@ -16,7 +16,7 @@ bool RealToSimControlboard::getEncodersTimed(double *encs, double *time)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::getEncoderTimed(int j, double *encs, double *time)
+bool RealToSimControlBoard::getEncoderTimed(int j, double *encs, double *time)
 {
     getEncoder(j, encs);
     *time = yarp::os::Time::now();
@@ -25,7 +25,7 @@ bool RealToSimControlboard::getEncoderTimed(int j, double *encs, double *time)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::resetEncoder(int j)
+bool RealToSimControlBoard::resetEncoder(int j)
 {
     if ((unsigned int)j>axes) return false;
     return setEncoder(j,0.0);
@@ -33,7 +33,7 @@ bool RealToSimControlboard::resetEncoder(int j)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::resetEncoders()
+bool RealToSimControlBoard::resetEncoders()
 {
     bool ok = true;
     for(unsigned int i=0;i<axes;i++)
@@ -43,14 +43,14 @@ bool RealToSimControlboard::resetEncoders()
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::setEncoder(int j, double val)
+bool RealToSimControlBoard::setEncoder(int j, double val)
 {
     return true;
 }
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::setEncoders(const double *vals)
+bool RealToSimControlBoard::setEncoders(const double *vals)
 {
     bool ok = true;
     for(unsigned int i=0;i<axes;i++)
@@ -60,7 +60,7 @@ bool RealToSimControlboard::setEncoders(const double *vals)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::getEncoder(int j, double *v)
+bool RealToSimControlBoard::getEncoder(int j, double *v)
 {
     *v = storedPositions[j];
     return true;
@@ -68,7 +68,7 @@ bool RealToSimControlboard::getEncoder(int j, double *v)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::getEncoders(double *encs)
+bool RealToSimControlBoard::getEncoders(double *encs)
 {
     bool ok = true;
     for(unsigned int i=0;i<axes;i++)
@@ -78,7 +78,7 @@ bool RealToSimControlboard::getEncoders(double *encs)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::getEncoderSpeed(int j, double *sp)
+bool RealToSimControlBoard::getEncoderSpeed(int j, double *sp)
 {
     // Make it easy, give the current reference speed.
     *sp = 0;  // begins to look like we should use semaphores.
@@ -87,7 +87,7 @@ bool RealToSimControlboard::getEncoderSpeed(int j, double *sp)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::getEncoderSpeeds(double *spds)
+bool RealToSimControlBoard::getEncoderSpeeds(double *spds)
 {
     bool ok = true;
     //for(unsigned int i=0;i<axes;i++)
@@ -97,14 +97,14 @@ bool RealToSimControlboard::getEncoderSpeeds(double *spds)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::getEncoderAcceleration(int j, double *spds)
+bool RealToSimControlBoard::getEncoderAcceleration(int j, double *spds)
 {
     return false;
 }
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::getEncoderAccelerations(double *accs)
+bool RealToSimControlBoard::getEncoderAccelerations(double *accs)
 {
     return false;
 }

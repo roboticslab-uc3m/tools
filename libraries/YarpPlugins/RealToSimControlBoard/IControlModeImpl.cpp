@@ -1,6 +1,6 @@
 // -*- mode:C++; tab-width:4; c-basic-offset:4; indent-tabs-mode:nil -*-
 
-#include "RealToSimControlboard.hpp"
+#include "RealToSimControlBoard.hpp"
 
 #include <yarp/os/LogStream.h>
 
@@ -10,7 +10,7 @@ using namespace roboticslab;
 
 // ------------------ IControlMode Related ----------------------------------------
 
-bool RealToSimControlboard::getControlMode(int j, int * mode)
+bool RealToSimControlBoard::getControlMode(int j, int * mode)
 {
     if (controlMode == POSITION_MODE)
     {
@@ -35,7 +35,7 @@ bool RealToSimControlboard::getControlMode(int j, int * mode)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::getControlModes(int * modes)
+bool RealToSimControlBoard::getControlModes(int * modes)
 {
     bool ok = true;
 
@@ -49,7 +49,7 @@ bool RealToSimControlboard::getControlModes(int * modes)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::getControlModes(int n_joint, const int * joints, int * modes)
+bool RealToSimControlBoard::getControlModes(int n_joint, const int * joints, int * modes)
 {
     bool ok = true;
 
@@ -63,7 +63,7 @@ bool RealToSimControlboard::getControlModes(int n_joint, const int * joints, int
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::setControlMode(int j, const int mode)
+bool RealToSimControlBoard::setControlMode(int j, const int mode)
 {
     if ((unsigned int)j > axes)
     {
@@ -89,7 +89,7 @@ bool RealToSimControlboard::setControlMode(int j, const int mode)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::setControlModes(int n_joint, const int * joints, int * modes)
+bool RealToSimControlBoard::setControlModes(int n_joint, const int * joints, int * modes)
 {
     bool ok = true;
 
@@ -103,7 +103,7 @@ bool RealToSimControlboard::setControlModes(int n_joint, const int * joints, int
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::setControlModes(int * modes)
+bool RealToSimControlBoard::setControlModes(int * modes)
 {
     return true;
 }

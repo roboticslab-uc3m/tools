@@ -3,8 +3,8 @@
 
 set(contexts)
 
-if(ENABLE_RealToSimControlboard)
-    list(APPEND contexts contexts/RealToSimControlboard)
+if(ENABLE_RealToSimControlBoard)
+    list(APPEND contexts contexts/RealToSimControlBoard)
 endif()
 
 yarp_install(DIRECTORY ${contexts}

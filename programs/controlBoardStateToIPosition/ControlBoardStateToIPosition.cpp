@@ -1,4 +1,4 @@
-#include "ControlboardStateToIPosition.hpp"
+#include "ControlBoardStateToIPosition.hpp"
 
 #include <string>
 #include <vector>
@@ -13,20 +13,20 @@ using namespace roboticslab;
 
 namespace
 {
-    YARP_LOG_COMPONENT(CBS2P, "rl.ControlboardStateToIPosition")
+    YARP_LOG_COMPONENT(CBS2P, "rl.ControlBoardStateToIPosition")
 }
 
 constexpr auto DEFAULT_IN = "/teo/rightArm";
 constexpr auto DEFAULT_OUT = "/teoSim/rightArm";
 constexpr auto DEFAULT_RATE_MS = 20.0;
 
-bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
+bool ControlBoardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
 {
     std::string inStr = rf.check("in", yarp::os::Value(DEFAULT_IN), "in").asString();
     std::string outStr = rf.check("out", yarp::os::Value(DEFAULT_OUT), "out").asString();
 
     //-- inRobotDevice
-    std::string localInStr("/ControlboardStateToIPosition");
+    std::string localInStr("/ControlBoardStateToIPosition");
     localInStr += inStr;
 
     yarp::os::Property inOptions {
@@ -49,7 +49,7 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
     }
 
     //-- outRobotDevice
-    std::string localOutStr("/ControlboardStateToIPosition");
+    std::string localOutStr("/ControlBoardStateToIPosition");
     localOutStr += outStr;
 
     yarp::os::Property options {
@@ -109,7 +109,7 @@ bool ControlboardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
     return true;
 }
 
-bool ControlboardStateToIPosition::close()
+bool ControlBoardStateToIPosition::close()
 {
     yarp::os::PeriodicThread::stop();
     inRobotDevice.close();
@@ -117,13 +117,13 @@ bool ControlboardStateToIPosition::close()
     return true;
 }
 
-bool ControlboardStateToIPosition::updateModule()
+bool ControlBoardStateToIPosition::updateModule()
 {
     yCInfo(CBS2P) << "Alive...";
     return true;
 }
 
-void ControlboardStateToIPosition::run()
+void ControlBoardStateToIPosition::run()
 {
     if (!iEncodersIn->getEncoders(encPoss.data()))
     {

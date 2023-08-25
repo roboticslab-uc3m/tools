@@ -1,6 +1,6 @@
 // -*- mode:C++; tab-width:4; c-basic-offset:4; indent-tabs-mode:nil -*-
 
-#include "RealToSimControlboard.hpp"
+#include "RealToSimControlBoard.hpp"
 
 #include <map>
 #include <sstream>
@@ -15,7 +15,7 @@ using namespace roboticslab;
 
 // ------------------- DeviceDriver Related ------------------------------------
 
-bool RealToSimControlboard::open(yarp::os::Searchable& config)
+bool RealToSimControlBoard::open(yarp::os::Searchable& config)
 {
     int modePosVelInt = config.check("modePosVel", yarp::os::Value(DEFAULT_MODE_POS_VEL), "0:pos, 1:vel").asInt32();
 
@@ -141,7 +141,7 @@ bool RealToSimControlboard::open(yarp::os::Searchable& config)
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlboard::close()
+bool RealToSimControlBoard::close()
 {
     for(size_t i=0;i<controlledDevices.size();i++)
     {

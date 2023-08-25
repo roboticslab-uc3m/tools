@@ -5,7 +5,7 @@ option(ENABLE_Playback "Enable/disable compilation of Playback" ON)
 option(ENABLE_PlaybackThread "Enable/disable compilation of PlaybackThread" ON)
 
 # options: cpp programs
-option(ENABLE_controlboardStateToIPosition "Enable/disable compilation of controlboardStateToIPosition" ON)
+option(ENABLE_controlBoardStateToIPosition "Enable/disable compilation of controlBoardStateToIPosition" ON)
 
 # options: unit testing
 cmake_dependent_option(ENABLE_tests "Enable/disable unit tests" ON
@@ -17,7 +17,7 @@ option(ENABLE_coverage "Choose if you want to enable coverage collection" OFF)
 # Register features.
 add_feature_info(Playback ENABLE_Playback "Playback library.")
 add_feature_info(PlayBackThread ENABLE_PlaybackThread "PlaybackThread YARP plugin.")
-add_feature_info(controlboardStateToIPosition ENABLE_controlboardStateToIPosition "controlboardStateToIPosition program.")
+add_feature_info(controlBoardStateToIPosition ENABLE_controlBoardStateToIPosition "controlBoardStateToIPosition program.")
 
 # Let the user specify a configuration (only single-config generators).
 if(NOT CMAKE_CONFIGURATION_TYPES)
