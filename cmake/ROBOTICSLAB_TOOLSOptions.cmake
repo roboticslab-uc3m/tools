@@ -11,9 +11,6 @@ option(ENABLE_controlBoardStateToIPosition "Enable/disable compilation of contro
 cmake_dependent_option(ENABLE_tests "Enable/disable unit tests" ON
                        GTestSources_FOUND OFF)
 
-# options: code coverage
-option(ENABLE_coverage "Choose if you want to enable coverage collection" OFF)
-
 # Register features.
 add_feature_info(Playback ENABLE_Playback "Playback library.")
 add_feature_info(PlayBackThread ENABLE_PlaybackThread "PlaybackThread YARP plugin.")

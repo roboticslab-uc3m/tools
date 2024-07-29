@@ -25,8 +25,6 @@ Installation instructions for installing from source can be found [here](doc/too
 
 ## Status
 
-[![CI (Linux)](https://github.com/roboticslab-uc3m/tools/workflows/Continuous%20Integration/badge.svg)](https://github.com/roboticslab-uc3m/tools/actions)
-
-[![Coverage Status](https://coveralls.io/repos/roboticslab-uc3m/tools/badge.svg)](https://coveralls.io/r/roboticslab-uc3m/tools)
+[![Continuous Integration](https://github.com/roboticslab-uc3m/tools/actions/workflows/ci.yml/badge.svg)](https://github.com/roboticslab-uc3m/tools/actions/workflows/ci.yml)
 
 [![Issues](https://img.shields.io/github/issues/roboticslab-uc3m/tools.svg?label=Issues)](https://github.com/roboticslab-uc3m/tools/issues)

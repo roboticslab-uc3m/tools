@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.16..3.28)
 
 # Start a project.
 project(ROBOTICSLAB_TOOLS LANGUAGES CXX)
