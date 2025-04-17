@@ -56,7 +56,7 @@ void PlaybackThread::run()
 
             for (int i = 0; i < m_mask.size(); i++)
             {
-                if (m_mask[i] == 1)
+                if (m_mask[i] != 0)
                 {
                     maskedRow.push_back(row[i]);
                 }

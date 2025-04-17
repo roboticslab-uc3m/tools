@@ -18,6 +18,12 @@ bool PlaybackThread::open(yarp::os::Searchable & config)
         return false;
     }
 
+    if (m_mask.empty())
+    {
+        yCError(PBT) << "Mask is empty";
+        return false;
+    }
+
     return fromFile(m_file) && yarp::os::Thread::start();
 }
 
