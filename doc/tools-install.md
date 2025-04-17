@@ -1,9 +1,9 @@
 ## tools: Installation from Source Code
 
 First install the dependencies:
-- [Install CMake 3.16+](https://github.com/roboticslab-uc3m/installation-guides/blob/master/docs/install-cmake.md/)
+- [Install CMake 3.19+](https://github.com/roboticslab-uc3m/installation-guides/blob/master/docs/install-cmake.md/)
 - [Install YCM 0.11+](https://github.com/roboticslab-uc3m/installation-guides/blob/master/docs/install-ycm.md/)
-- [Install YARP 3.8+](https://github.com/roboticslab-uc3m/installation-guides/blob/master/docs/install-yarp.md/)
+- [Install YARP 3.10+](https://github.com/roboticslab-uc3m/installation-guides/blob/master/docs/install-yarp.md/)
 
 For unit testing, you'll need the googletest source package. Refer to [Install googletest](https://github.com/roboticslab-uc3m/installation-guides/blob/master/docs/install-googletest.md/).
 
@@ -20,9 +20,4 @@ make -j$(nproc) # Compile
 sudo make install # Install :-)
 ```
 
-For CMake `find_package(ROBOTICSLAB_TOOLS REQUIRED)`, you may also be interested in adding the following to your `~/.bashrc` or `~/.profile`:
-```bash
-export ROBOTICSLAB_TOOLS_DIR=$HOME/repos/tools/build  # Points to where TEOConfig.cmake is generated upon running CMake
-```
-
-For additional options use `ccmake` instead of `cmake`.
+For additional options, use `ccmake` instead of `cmake`.

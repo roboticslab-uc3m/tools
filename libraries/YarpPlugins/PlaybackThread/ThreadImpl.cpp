@@ -38,25 +38,25 @@ void PlaybackThread::run()
         if (initTime == 0.0)
         {
             initTime = yarp::os::SystemClock::nowSystem();
-            initRow = row[timeIdx];
+            initRow = row[m_timeIdx];
         }
         else
         {
-            yarp::os::SystemClock::delaySystem(initTime + (row[timeIdx] - initRow) * timeScale - yarp::os::SystemClock::nowSystem());
+            yarp::os::SystemClock::delaySystem(initTime + (row[m_timeIdx] - initRow) * m_timeScale - yarp::os::SystemClock::nowSystem());
         }
 
-        if (mask.size() == 0)
+        if (m_mask.empty())
         {
             maskedRow = row;
         }
         else
         {
             maskedRow.clear();
-            maskedRow.reserve(mask.size());
+            maskedRow.reserve(m_mask.size());
 
-            for (int i = 0; i < mask.size(); i++)
+            for (int i = 0; i < m_mask.size(); i++)
             {
-                if (mask.get(i).asInt32() == 1)
+                if (m_mask[i] == 1)
                 {
                     maskedRow.push_back(row[i]);
                 }

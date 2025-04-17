@@ -9,6 +9,7 @@
 #include <yarp/dev/ControlBoardInterfaces.h>
 
 #include "Transformation.hpp"
+#include "RealToSimControlBoard_ParamsParser.h"
 
 namespace roboticslab
 {
@@ -40,11 +41,13 @@ private:
     std::string name;
 };
 
+} // namespace roboticslab
+
 /**
  * @ingroup YarpPlugins
- * \defgroup RealToSimControlBoard
+ * @defgroup RealToSimControlBoard
  *
- * @brief Contains roboticslab::RealToSimControlBoard.
+ * @brief Contains RealToSimControlBoard.
  */
 
 /**
@@ -52,15 +55,14 @@ private:
  * @brief Implements the YARP_dev IPositionControl, etc.
  * interface class member functions.
  */
-class RealToSimControlBoard :
-        public yarp::dev::DeviceDriver,
-        public yarp::dev::IControlMode,
-        public yarp::dev::IEncodersTimed,
-        public yarp::dev::IPositionControl,
-        public yarp::dev::IVelocityControl
+class RealToSimControlBoard : public yarp::dev::DeviceDriver,
+                              public yarp::dev::IControlMode,
+                              public yarp::dev::IEncodersTimed,
+                              public yarp::dev::IPositionControl,
+                              public yarp::dev::IVelocityControl,
+                              private RealToSimControlBoard_ParamsParser
 {
 public:
-
     // -------- DeviceDriver declarations. Implementation in IDeviceImpl.cpp --------
 
     bool open(yarp::os::Searchable& config) override;
@@ -131,7 +133,6 @@ public:
     bool getRefVelocities(const int n_joint, const int *joints, double *vels) override;
 
 private:
-
     enum jmc_mode { POSITION_MODE, VELOCITY_MODE, POSITION_DIRECT_MODE };
 
     // General Joint Motion Controller parameters //
@@ -139,13 +140,8 @@ private:
     jmc_mode controlMode;
 
     std::vector<double> storedPositions;
-
-    //yarp::os::Network yarp; // Uncomment if required
-    std::vector<yarp::dev::PolyDriver*> controlledDevices;
-
-    std::vector<ExposedJoint*> exposedJoints;
+    std::vector<yarp::dev::PolyDriver *> controlledDevices;
+    std::vector<roboticslab::ExposedJoint *> exposedJoints;
 };
-
-} // namespace roboticslab
 
 #endif // __REAL_TO_SIM_CONTROL_BOARD_HPP__

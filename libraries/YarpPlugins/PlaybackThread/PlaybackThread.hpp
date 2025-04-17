@@ -5,20 +5,17 @@
 
 #include <atomic>
 
-#include <yarp/os/Bottle.h>
 #include <yarp/os/Thread.h>
 #include <yarp/dev/DeviceDriver.h>
 
 #include "Playback.hpp"
 #include "IPlaybackThread.h"
-
-namespace roboticslab
-{
+#include "PlaybackThread_ParamsParser.h"
 
 /**
  * @ingroup YarpPlugins
  * @defgroup PlaybackThread
- * @brief Contains roboticslab::PlaybackThread.
+ * @brief Contains PlaybackThread.
  */
 
  /**
@@ -26,9 +23,10 @@ namespace roboticslab
  * @brief Implementation for the PlaybackThread.
  */
 class PlaybackThread : public yarp::dev::DeviceDriver,
-                       public IPlaybackThread,
+                       public roboticslab::IPlaybackThread,
                        public yarp::os::Thread,
-                       private Playback
+                       private roboticslab::Playback,
+                       private PlaybackThread_ParamsParser
 {
 public:
     //  --------- DeviceDriver Declarations. Implementation in DeviceDriverImpl.cpp ---------
@@ -41,7 +39,7 @@ public:
     bool stopPlay() override;
     bool isPlaying() override;
     bool setTimeScale(double timeScale) override;
-    void setIRunnable(IRunnable * iRunnable) override;
+    void setIRunnable(roboticslab::IRunnable * iRunnable) override;
 
     // --------- Thread Declarations. Implementation in ThreadImpl.cpp ---------
     void run() override;
@@ -50,14 +48,8 @@ public:
 private:
     enum class state { NOT_PLAYING, PLAYING };
 
-    int timeIdx {0};
-    double timeScale {0.0};
-
-    yarp::os::Bottle mask;
-    IRunnable * _iRunnable {nullptr};
+    roboticslab::IRunnable * _iRunnable {nullptr};
     std::atomic<state> _state {state::NOT_PLAYING};
 };
-
-} // namespace roboticslab
 
 #endif // __PLAYBACK_THREAD_HPP__

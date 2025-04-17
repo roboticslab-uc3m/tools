@@ -23,7 +23,7 @@ class MockRunnable : public IRunnable
 
 /**
  * @ingroup roboticslab-tools-tests
- * @brief Tests \ref Playback
+ * @brief Tests @ref PlaybackThread
  */
 class PlaybackThreadTest : public testing::Test
 {
@@ -41,7 +41,7 @@ public:
             {"timeIdx", yarp::os::Value(0)}
         };
 
-        playbackThreadConf.fromString("(mask 0 1 0 1)", false);
+        playbackThreadConf.put("mask", yarp::os::Value::makeList("0 1 0 1"));
 
         if (!playbackDevice.open(playbackThreadConf) || !playbackDevice.view(iPlaybackThread))
         {

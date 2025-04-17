@@ -45,9 +45,9 @@ bool PlaybackThread::isPlaying()
 
 // -----------------------------------------------------------------------------
 
-bool PlaybackThread::setTimeScale(double timeScale)
+bool PlaybackThread::setTimeScale(double m_timeScale)
 {
-    this->timeScale = timeScale;
+    this->m_timeScale = m_timeScale;
     return true;
 }
 

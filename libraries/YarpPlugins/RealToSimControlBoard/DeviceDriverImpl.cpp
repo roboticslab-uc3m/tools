@@ -5,11 +5,11 @@
 #include <map>
 #include <sstream>
 
+#include <yarp/os/Bottle.h>
 #include <yarp/os/LogStream.h>
+#include <yarp/os/Property.h>
 
 #include "LogComponent.hpp"
-
-constexpr auto DEFAULT_MODE_POS_VEL = 0; // 0=Position, 1=Velocity.
 
 using namespace roboticslab;
 
@@ -17,9 +17,13 @@ using namespace roboticslab;
 
 bool RealToSimControlBoard::open(yarp::os::Searchable& config)
 {
-    int modePosVelInt = config.check("modePosVel", yarp::os::Value(DEFAULT_MODE_POS_VEL), "0:pos, 1:vel").asInt32();
+    if (!parseParams(config))
+    {
+        yCError(R2SCB) << "Failed to parse parameters";
+        return false;
+    }
 
-    switch (modePosVelInt)
+    switch (m_modePosVel)
     {
     case 0:
         controlMode = POSITION_MODE;
@@ -28,108 +32,105 @@ bool RealToSimControlBoard::open(yarp::os::Searchable& config)
         controlMode = VELOCITY_MODE;
         break;
     default:
-        yCError(R2SCB) << "Unrecognized mode identifier:" << modePosVelInt << "(0:pos, 1:vel)";
+        yCError(R2SCB) << "Unrecognized mode identifier:" << m_modePosVel;
         return false;
     }
 
-    if(!config.check("remotes", "list of remotes to which this device connects"))
-    {
-        yCError(R2SCB) << "Required \"remotes\" list";
-        return false;
-    }
-    yarp::os::Bottle* controlledDeviceList = config.find("remotes").asList();
-    if (!controlledDeviceList)
-    {
-        yCError(R2SCB) << "Error parsing parameters: \"remotes\" should be followed by a list";
-        return false;
-    }
-    yCDebug(R2SCB) << controlledDeviceList->toString();
+    std::map<std::string, int> controlledDeviceNameToIdx;
 
-    std::string remotePrefix;
-    if(config.check("remotePrefix", "global prefix to remote ports"))
+    for (auto controlledDeviceIdx = 0; controlledDeviceIdx < m_remotes.size(); controlledDeviceIdx++)
     {
-        remotePrefix = config.find("remotePrefix").asString();
-    }
+        std::string controlledDeviceName = m_remotes[controlledDeviceIdx];
 
-    std::map<std::string,int> controlledDeviceNameToIdx;
-    for(size_t controlledDeviceIdx=0; controlledDeviceIdx< controlledDeviceList->size(); controlledDeviceIdx++)
-    {
-        std::string controlledDeviceName = controlledDeviceList->get(controlledDeviceIdx).asString();
-        if(!config.check(controlledDeviceName))
+        if (!config.check(controlledDeviceName))
         {
-            yCError(R2SCB, "\"%s\" group not found!", controlledDeviceName.c_str());
+            yCError(R2SCB) << "Group" << controlledDeviceName << "not found";
             return false;
         }
-        yCInfo(R2SCB, "\"%s\" group found!", controlledDeviceName.c_str());
+
+        yCInfo(R2SCB) << "Group" << controlledDeviceName << "found";
+
         yarp::os::Bottle controlledDeviceGroup = config.findGroup(controlledDeviceName);
         yCInfo(R2SCB) << controlledDeviceGroup.toString();
+
         yarp::os::Property controlledDeviceOptions;
         controlledDeviceOptions.fromString(controlledDeviceGroup.toString());
 
-        if(controlledDeviceOptions.check("remoteSuffix", "suffix used for local and remote of each remote_controlboard"))
+        if (!m_remoteSuffix.empty())
         {
-            std::string remote(remotePrefix);
-            remote += controlledDeviceOptions.find("remoteSuffix").asString();
+            std::string remote = m_remotePrefix + controlledDeviceOptions.find("remoteSuffix").asString();
             controlledDeviceOptions.unput("remoteSuffix");
-            controlledDeviceOptions.put("remote",remote);
-
-            std::string local(remotePrefix);
-            local += controlledDeviceOptions.find("localSuffix").asString();
-            controlledDeviceOptions.unput("localSuffix");
-            controlledDeviceOptions.put("local",local);
+            controlledDeviceOptions.put("remote", remote);
         }
 
-        yarp::dev::PolyDriver* controlledDevice = new yarp::dev::PolyDriver(controlledDeviceOptions);
-        if( ! controlledDevice->isValid() )
+        if (!m_localSuffix.empty())
         {
-            yCError(R2SCB, "\"%s\" group did not create a valid yarp device!", controlledDeviceName.c_str());
+            std::string local = m_remotePrefix + controlledDeviceOptions.find("localSuffix").asString();
+            controlledDeviceOptions.unput("localSuffix");
+            controlledDeviceOptions.put("local", local);
+        }
+
+        auto * controlledDevice = new yarp::dev::PolyDriver(controlledDeviceOptions);
+
+        if (!controlledDevice->isValid())
+        {
+            yCError(R2SCB) << "Group" << controlledDeviceName << "did not create a valid yarp device";
+            delete controlledDevice;
             return false;
         }
-        yCInfo(R2SCB, "\"%s\" group created a valid yarp device!", controlledDeviceName.c_str());
+
+        yCInfo(R2SCB) << "Group" << controlledDeviceName << "created a valid yarp device";
 
         controlledDeviceNameToIdx[controlledDeviceName] = controlledDeviceIdx;
         controlledDevices.push_back(controlledDevice);
     }
 
     int idx = 0;
-    while(true)
+
+    while (true)
     {
         std::ostringstream exposedJointNameStream("exposed_joint_", std::ios_base::app);
         exposedJointNameStream << idx;
-        std::string exposedJointName(exposedJointNameStream.str());
-        if(!config.check(exposedJointName))
+
+        std::string exposedJointName = exposedJointNameStream.str();
+
+        if (!config.check(exposedJointName))
         {
             axes = idx;
             storedPositions.resize(axes);
-            yCInfo(R2SCB, "Could not find \"%s\" group, setting number of exposed joints to %d",exposedJointName.c_str(), axes);
+            yCInfo(R2SCB, "Could not find group %s, setting number of exposed joints to %d", exposedJointName.c_str(), axes);
             break;
         }
-        yCInfo(R2SCB, "* %s group found!", exposedJointName.c_str());
 
-        ExposedJoint* exposedJoint = new ExposedJoint(exposedJointName);
+        yCInfo(R2SCB) << "* Group" << exposedJointName << "found";
+
+        auto * exposedJoint = new ExposedJoint(exposedJointName);
         exposedJoints.push_back(exposedJoint);
 
         yarp::os::Bottle exposedJointGroup = config.findGroup(exposedJointName);
-        yCDebug(R2SCB, "* %s", exposedJointGroup.toString().c_str());
-        for(size_t exposedJointControlledDeviceIdx=1; exposedJointControlledDeviceIdx<exposedJointGroup.size(); exposedJointControlledDeviceIdx++)
+        yCDebug(R2SCB) << "*" << exposedJointGroup.toString();
+
+        for (size_t exposedJointControlledDeviceIdx = 1; exposedJointControlledDeviceIdx < exposedJointGroup.size(); exposedJointControlledDeviceIdx++)
         {
-            yarp::os::Bottle* exposedJointControlledDeviceGroup = exposedJointGroup.get(exposedJointControlledDeviceIdx).asList();
-            yCDebug(R2SCB, "** %s", exposedJointControlledDeviceGroup->toString().c_str());
+            yarp::os::Bottle * exposedJointControlledDeviceGroup = exposedJointGroup.get(exposedJointControlledDeviceIdx).asList();
+            yCDebug(R2SCB) << "**" << exposedJointControlledDeviceGroup->toString();
+
             std::string exposedJointControlledDeviceName = exposedJointControlledDeviceGroup->get(0).asString();
             int idx = controlledDeviceNameToIdx[exposedJointControlledDeviceName];
             yCDebug(R2SCB, "** %s [%d]", exposedJointControlledDeviceName.c_str(), idx);
 
-            ExposedJointControlledDevice* exposedJointControlledDevice =
-                new ExposedJointControlledDevice(exposedJointControlledDeviceName, controlledDevices[idx]);
+            auto * exposedJointControlledDevice = new ExposedJointControlledDevice(exposedJointControlledDeviceName, controlledDevices[idx]);
             exposedJoint->addExposedJointControlledDevice(exposedJointControlledDevice);
 
-            for(size_t exposedJointControlledDeviceJointIdx=1; exposedJointControlledDeviceJointIdx<exposedJointControlledDeviceGroup->size(); exposedJointControlledDeviceJointIdx++)
+            for (size_t exposedJointControlledDeviceJointIdx = 1; exposedJointControlledDeviceJointIdx < exposedJointControlledDeviceGroup->size(); exposedJointControlledDeviceJointIdx++)
             {
-                yarp::os::Bottle* exposedJointControlledDeviceJointGroup = exposedJointControlledDeviceGroup->get(exposedJointControlledDeviceJointIdx).asList();
-                yCDebug(R2SCB, "*** %s", exposedJointControlledDeviceJointGroup->toString().c_str());
+                yarp::os::Bottle * exposedJointControlledDeviceJointGroup = exposedJointControlledDeviceGroup->get(exposedJointControlledDeviceJointIdx).asList();
+                yCDebug(R2SCB) << "***" << exposedJointControlledDeviceJointGroup->toString();
 
-                if(!exposedJointControlledDevice->addControlledDeviceJoint(exposedJointControlledDeviceJointGroup))
+                if (!exposedJointControlledDevice->addControlledDeviceJoint(exposedJointControlledDeviceJointGroup))
+                {
                     return false;
+                }
             }
         }
 
@@ -143,17 +144,21 @@ bool RealToSimControlBoard::open(yarp::os::Searchable& config)
 
 bool RealToSimControlBoard::close()
 {
-    for(size_t i=0;i<controlledDevices.size();i++)
+    for (auto * device : controlledDevices)
     {
-        controlledDevices[i]->close();
-        delete controlledDevices[i];
-        controlledDevices[i] = 0;
+        device->close();
+        delete device;
     }
-    for(size_t i=0;i<exposedJoints.size();i++)
+
+    controlledDevices.clear();
+
+    for (auto * joint : exposedJoints)
     {
-        delete exposedJoints[i];
-        exposedJoints[i] = 0;
+        delete joint;
     }
+
+    exposedJoints.clear();
+
     return true;
 }
 
