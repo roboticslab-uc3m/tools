@@ -60,7 +60,7 @@ class RealToSimControlBoard : public yarp::dev::DeviceDriver,
                               public yarp::dev::IEncodersTimed,
                               public yarp::dev::IPositionControl,
                               public yarp::dev::IVelocityControl,
-                              private RealToSimControlBoard_ParamsParser
+                              public RealToSimControlBoard_ParamsParser
 {
 public:
     // -------- DeviceDriver declarations. Implementation in IDeviceImpl.cpp --------

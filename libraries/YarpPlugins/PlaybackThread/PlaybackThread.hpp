@@ -26,7 +26,7 @@ class PlaybackThread : public yarp::dev::DeviceDriver,
                        public roboticslab::IPlaybackThread,
                        public yarp::os::Thread,
                        private roboticslab::Playback,
-                       private PlaybackThread_ParamsParser
+                       public PlaybackThread_ParamsParser
 {
 public:
     //  --------- DeviceDriver Declarations. Implementation in DeviceDriverImpl.cpp ---------
