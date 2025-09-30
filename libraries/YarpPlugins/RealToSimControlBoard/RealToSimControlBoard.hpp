@@ -6,7 +6,10 @@
 #include <vector>
 
 #include <yarp/dev/PolyDriver.h>
-#include <yarp/dev/ControlBoardInterfaces.h>
+#include <yarp/dev/IControlMode.h>
+#include <yarp/dev/IEncodersTimed.h>
+#include <yarp/dev/IPositionControl.h>
+#include <yarp/dev/IVelocityControl.h>
 
 #include "Transformation.hpp"
 #include "RealToSimControlBoard_ParamsParser.h"
@@ -17,27 +20,27 @@ namespace roboticslab
 class ExposedJointControlledDevice
 {
 public:
-    ExposedJointControlledDevice(std::string name, yarp::dev::PolyDriver* device);
+    ExposedJointControlledDevice(const std::string & name, yarp::dev::PolyDriver * device);
     ~ExposedJointControlledDevice();
-    bool addControlledDeviceJoint(yarp::os::Searchable* parameters);
+    bool addControlledDeviceJoint(yarp::os::Searchable * parameters);
     bool positionMove(double ref);
 private:
     std::string name;
-    size_t axes; // same as controlledDeviceJoints.size()
+    size_t axes {0}; // same as controlledDeviceJoints.size()
     std::vector<int> controlledDeviceJoints;
-    std::vector<Transformation*> transformations;
-    yarp::dev::IPositionControl* iPositionControl;
+    std::vector<Transformation *> transformations;
+    yarp::dev::IPositionControl * iPositionControl {nullptr};
 };
 
 class ExposedJoint
 {
 public:
-    ExposedJoint(std::string name);
+    ExposedJoint(const std::string & name);
     ~ExposedJoint();
-    void addExposedJointControlledDevice(ExposedJointControlledDevice* exposedJointControlledDevice);
+    void addExposedJointControlledDevice(ExposedJointControlledDevice * exposedJointControlledDevice);
     bool positionMove(double ref);
 private:
-    std::vector<ExposedJointControlledDevice*> exposedJointControlledDevices;
+    std::vector<ExposedJointControlledDevice *> exposedJointControlledDevices;
     std::string name;
 };
 
@@ -65,7 +68,7 @@ class RealToSimControlBoard : public yarp::dev::DeviceDriver,
 public:
     // -------- DeviceDriver declarations. Implementation in IDeviceImpl.cpp --------
 
-    bool open(yarp::os::Searchable& config) override;
+    bool open(yarp::os::Searchable & config) override;
     bool close() override;
 
     //  --------- IControlMode declarations. Implementation in IControlModeImpl.cpp ---------
@@ -73,71 +76,71 @@ public:
     bool getControlMode(int j, int * mode) override;
     bool getControlModes(int * modes) override;
     bool getControlModes(int n_joint, const int * joints, int * modes) override;
-    bool setControlMode(int j, const int mode) override;
+    bool setControlMode(int j, int mode) override;
     bool setControlModes(int n_joint, const int * joints, int * modes) override;
     bool setControlModes(int * modes) override;
 
     //  ---------- IEncodersTimed Declarations. Implementation in IEncodersTimedImpl.cpp ----------
 
-    bool getEncodersTimed(double *encs, double *time) override;
-    bool getEncoderTimed(int j, double *encs, double *time) override;
+    bool getEncodersTimed(double * encs, double * time) override;
+    bool getEncoderTimed(int j, double * encs, double * time) override;
     bool resetEncoder(int j) override;
     bool resetEncoders() override;
     bool setEncoder(int j, double val) override;
-    bool setEncoders(const double *vals) override;
-    bool getEncoder(int j, double *v) override;
-    bool getEncoders(double *encs) override;
-    bool getEncoderSpeed(int j, double *sp) override;
-    bool getEncoderSpeeds(double *spds) override;
-    bool getEncoderAcceleration(int j, double *spds) override;
-    bool getEncoderAccelerations(double *accs) override;
+    bool setEncoders(const double * vals) override;
+    bool getEncoder(int j, double * v) override;
+    bool getEncoders(double * encs) override;
+    bool getEncoderSpeed(int j, double * sp) override;
+    bool getEncoderSpeeds(double * spds) override;
+    bool getEncoderAcceleration(int j, double * spds) override;
+    bool getEncoderAccelerations(double * accs) override;
 
     // ------- IPositionControl declarations. Implementation in IPositionControlImpl.cpp -------
 
-    bool getAxes(int *ax) override;
+    bool getAxes(int * ax) override;
     bool positionMove(int j, double ref) override;
-    bool positionMove(const double *refs) override;
+    bool positionMove(const double * refs) override;
     bool relativeMove(int j, double delta) override;
-    bool relativeMove(const double *deltas) override;
-    bool checkMotionDone(int j, bool *flag) override;
-    bool checkMotionDone(bool *flag) override;
+    bool relativeMove(const double * deltas) override;
+    bool checkMotionDone(int j, bool * flag) override;
+    bool checkMotionDone(bool * flag) override;
     bool setRefSpeed(int j, double sp) override;
-    bool setRefSpeeds(const double *spds) override;
+    bool setRefSpeeds(const double * spds) override;
     bool setRefAcceleration(int j, double acc) override;
-    bool setRefAccelerations(const double *accs) override;
-    bool getRefSpeed(int j, double *ref) override;
-    bool getRefSpeeds(double *spds) override;
-    bool getRefAcceleration(int j, double *acc) override;
+    bool setRefAccelerations(const double * accs) override;
+    bool getRefSpeed(int j, double * ref) override;
+    bool getRefSpeeds(double * spds) override;
+    bool getRefAcceleration(int j, double * acc) override;
     bool getRefAccelerations(double *accs) override;
     bool stop(int j) override;
     bool stop() override;
-    bool positionMove(const int n_joint, const int *joints, const double *refs) override;
-    bool relativeMove(const int n_joint, const int *joints, const double *deltas) override;
-    bool checkMotionDone(const int n_joint, const int *joints, bool *flags) override;
-    bool setRefSpeeds(const int n_joint, const int *joints, const double *spds) override;
-    bool setRefAccelerations(const int n_joint, const int *joints, const double *accs) override;
-    bool getRefSpeeds(const int n_joint, const int *joints, double *spds) override;
-    bool getRefAccelerations(const int n_joint, const int *joints, double *accs) override;
-    bool stop(const int n_joint, const int *joints) override;
-    bool getTargetPosition(const int joint, double *ref) override;
-    bool getTargetPositions(double *refs) override;
-    bool getTargetPositions(const int n_joint, const int *joints, double *refs) override;
+    bool positionMove(int n_joint, const int * joints, const double * refs) override;
+    bool relativeMove(int n_joint, const int * joints, const double * deltas) override;
+    bool checkMotionDone(int n_joint, const int * joints, bool * flags) override;
+    bool setRefSpeeds(int n_joint, const int * joints, const double * spds) override;
+    bool setRefAccelerations(int n_joint, const int *joints, const double * accs) override;
+    bool getRefSpeeds(int n_joint, const int * joints, double * spds) override;
+    bool getRefAccelerations(int n_joint, const int * joints, double * accs) override;
+    bool stop(int n_joint, const int * joints) override;
+    bool getTargetPosition(int joint, double * ref) override;
+    bool getTargetPositions(double * refs) override;
+    bool getTargetPositions(int n_joint, const int * joints, double * refs) override;
 
     //  --------- IVelocityControl Declarations. Implementation in IVelocityControlImpl.cpp ---------
 
     bool velocityMove(int j, double sp) override;
-    bool velocityMove(const double *sp) override;
-    bool velocityMove(const int n_joint, const int *joints, const double *spds) override;
-    bool getRefVelocity(const int joint, double *vel) override;
-    bool getRefVelocities(double *vels) override;
-    bool getRefVelocities(const int n_joint, const int *joints, double *vels) override;
+    bool velocityMove(const double * sp) override;
+    bool velocityMove(int n_joint, const int * joints, const double * spds) override;
+    bool getRefVelocity(int joint, double * vel) override;
+    bool getRefVelocities(double * vels) override;
+    bool getRefVelocities(int n_joint, const int *joints, double * vels) override;
 
 private:
     enum jmc_mode { POSITION_MODE, VELOCITY_MODE, POSITION_DIRECT_MODE };
 
     // General Joint Motion Controller parameters //
-    unsigned int axes;
-    jmc_mode controlMode;
+    unsigned int axes {0};
+    jmc_mode controlMode {POSITION_MODE};
 
     std::vector<double> storedPositions;
     std::vector<yarp::dev::PolyDriver *> controlledDevices;

@@ -12,54 +12,84 @@ using namespace roboticslab;
 
 bool RealToSimControlBoard::velocityMove(int j, double sp)
 {
-    yCTrace(R2SCB);
-    return true;
+    if (j < 0 || static_cast<unsigned int>(j) > axes)
+    {
+        yCError(R2SCB) << "Illegal axis index:" << j;
+        return false;
+    }
+
+    yCError(R2SCB) << "velocityMove() not implemented yet";
+    return false;
 }
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlBoard::velocityMove(const double *sp)
+bool RealToSimControlBoard::velocityMove(const double * sp)
 {
-    yCTrace(R2SCB);
     bool ok = true;
-    for(unsigned int i=0;i<axes;i++)
-        ok &= velocityMove(i,sp[i]);
+
+    for (auto i = 0; i < axes; i++)
+    {
+        ok &= velocityMove(i, sp[i]);
+    }
+
     return ok;
 }
 
 // ----------------------------------------------------------------------------
 
-bool RealToSimControlBoard::velocityMove(const int n_joint, const int *joints, const double *spds)
+bool RealToSimControlBoard::velocityMove(int n_joint, const int * joints, const double * spds)
 {
-    yCTrace(R2SCB);
     bool ok = true;
-    for(int i=0;i<n_joint;i++)
-        ok &= velocityMove(joints[i],spds[i]);
+
+    for (auto i = 0; i < n_joint; i++)
+    {
+        ok &= velocityMove(joints[i], spds[i]);
+    }
+
     return ok;
 }
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlBoard::getRefVelocity(const int joint, double *vel)
+bool RealToSimControlBoard::getRefVelocity(int j, double * vel)
 {
+    if (j < 0 || static_cast<unsigned int>(j) > axes)
+    {
+        yCError(R2SCB) << "Illegal axis index:" << j;
+        return false;
+    }
+
     yCError(R2SCB) << "getRefVelocity() not implemented yet";
-    return true;
+    return false;
 }
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlBoard::getRefVelocities(double *vels)
+bool RealToSimControlBoard::getRefVelocities(double * vels)
 {
-    yCError(R2SCB) << "getRefVelocities() not implemented yet";
-    return true;
+    bool ok = true;
+
+    for (auto i = 0; i < axes; i++)
+    {
+        ok &= getRefVelocity(i, &vels[i]);
+    }
+
+    return ok;
 }
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlBoard::getRefVelocities(const int n_joint, const int *joints, double *vels)
+bool RealToSimControlBoard::getRefVelocities(int n_joint, const int * joints, double * vels)
 {
-    yCError(R2SCB) << "getRefVelocities() not implemented yet";
-    return true;
+    bool ok = true;
+
+    for (auto i = 0; i < n_joint; i++)
+    {
+        ok &= getRefVelocity(joints[i], &vels[i]);
+    }
+
+    return ok;
 }
 
 // -----------------------------------------------------------------------------

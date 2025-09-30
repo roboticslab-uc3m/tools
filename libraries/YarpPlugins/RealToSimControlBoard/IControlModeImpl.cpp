@@ -12,20 +12,24 @@ using namespace roboticslab;
 
 bool RealToSimControlBoard::getControlMode(int j, int * mode)
 {
-    if (controlMode == POSITION_MODE)
+    if (j < 0 || static_cast<unsigned int>(j) > axes)
     {
+        yCError(R2SCB) << "Illegal axis index:" << j;
+        return false;
+    }
+
+    switch (controlMode)
+    {
+    case POSITION_MODE:
         *mode = VOCAB_CM_POSITION;
-    }
-    else if (controlMode == VELOCITY_MODE)
-    {
+        break;
+    case VELOCITY_MODE:
         *mode = VOCAB_CM_VELOCITY;
-    }
-    else if (controlMode == POSITION_DIRECT_MODE)
-    {
+        break;
+    case POSITION_DIRECT_MODE:
         *mode = VOCAB_CM_POSITION_DIRECT;
-    }
-    else
-    {
+        break;
+    default:
         yCError(R2SCB) << "Currently unsupported mode";
         return false;
     }
@@ -39,7 +43,7 @@ bool RealToSimControlBoard::getControlModes(int * modes)
 {
     bool ok = true;
 
-    for (unsigned int i = 0; i < axes; i++)
+    for (auto i = 0; i < axes; i++)
     {
         ok &= getControlMode(i, &modes[i]);
     }
@@ -53,7 +57,7 @@ bool RealToSimControlBoard::getControlModes(int n_joint, const int * joints, int
 {
     bool ok = true;
 
-    for (int i = 0; i < n_joint; i++)
+    for (auto i = 0; i < n_joint; i++)
     {
         ok &= getControlMode(joints[i], &modes[i]);
     }
@@ -65,9 +69,9 @@ bool RealToSimControlBoard::getControlModes(int n_joint, const int * joints, int
 
 bool RealToSimControlBoard::setControlMode(int j, const int mode)
 {
-    if ((unsigned int)j > axes)
+    if (j < 0 || static_cast<unsigned int>(j) > axes)
     {
-        yCError(R2SCB) << "Axis index greater than number of than axes";
+        yCError(R2SCB) << "Illegal axis index:" << j;
         return false;
     }
 
@@ -93,9 +97,9 @@ bool RealToSimControlBoard::setControlModes(int n_joint, const int * joints, int
 {
     bool ok = true;
 
-    for (unsigned int i = 0; i < axes; i++)
+    for (auto i = 0; i < n_joint; i++)
     {
-        ok &= setControlMode(i, modes[i]);
+        ok &= setControlMode(joints[i], modes[i]);
     }
 
     return ok;
@@ -105,7 +109,14 @@ bool RealToSimControlBoard::setControlModes(int n_joint, const int * joints, int
 
 bool RealToSimControlBoard::setControlModes(int * modes)
 {
-    return true;
+    bool ok = true;
+
+    for (auto i = 0; i < axes; i++)
+    {
+        ok &= setControlMode(i, modes[i]);
+    }
+
+    return ok;
 }
 
 // -----------------------------------------------------------------------------

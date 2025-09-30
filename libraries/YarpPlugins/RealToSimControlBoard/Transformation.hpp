@@ -18,13 +18,13 @@ public:
     bool isValid() const { return valid; }
     virtual double transform(double value) = 0;
 protected:
-    bool valid;
+    bool valid {false};
 };
 
 class LinearTransformation : public Transformation
 {
 public:
-    LinearTransformation(yarp::os::Searchable* parameters);
+    LinearTransformation(yarp::os::Searchable * parameters);
     double transform(double value) override;
 private:
     double m, b;
@@ -33,7 +33,7 @@ private:
 class PiecewiseLinearTransformation : public Transformation
 {
 public:
-    PiecewiseLinearTransformation(yarp::os::Searchable* parameters);
+    PiecewiseLinearTransformation(yarp::os::Searchable * parameters);
     double transform(double value) override;
 private:
     std::vector<double> inData;

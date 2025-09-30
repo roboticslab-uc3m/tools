@@ -15,7 +15,7 @@ using namespace roboticslab;
 
 // ------------------- DeviceDriver Related ------------------------------------
 
-bool RealToSimControlBoard::open(yarp::os::Searchable& config)
+bool RealToSimControlBoard::open(yarp::os::Searchable & config)
 {
     if (!parseParams(config))
     {
