@@ -8,7 +8,7 @@
 // This is an automatically generated file. Please do not edit it.
 // It will be re-generated if the cmake flag ALLOW_DEVICE_PARAM_PARSER_GERNERATION is ON.
 
-// Generated on: Fri Oct  3 12:02:21 2025
+// Generated on: Fri Oct  3 12:39:47 2025
 
 
 #include "BasicJointCoupling_ParamsParser.h"
@@ -28,8 +28,7 @@ BasicJointCoupling_ParamsParser::BasicJointCoupling_ParamsParser()
 std::vector<std::string> BasicJointCoupling_ParamsParser::getListOfParams() const
 {
     std::vector<std::string> params;
-    params.push_back("actuatedAxes");
-    params.push_back("physicalJoints");
+    params.push_back("configFile");
     return params;
 }
 
@@ -44,66 +43,20 @@ bool      BasicJointCoupling_ParamsParser::parseParams(const yarp::os::Searchabl
 
     std::string config_string = config.toString();
     yarp::os::Property prop_check(config_string.c_str());
-    //Parser of parameter actuatedAxes
+    //Parser of parameter configFile
     {
-        if (config.check("actuatedAxes"))
+        if (config.check("configFile"))
         {
-            {
-                m_actuatedAxes.clear();
-                yarp::os::Bottle* tempBot = config.find("actuatedAxes").asList();
-                if (tempBot)
-                {
-                    std::string tempBots = tempBot->toString();
-                    for (size_t i=0; i<tempBot->size(); i++)
-                    {
-                        m_actuatedAxes.push_back(tempBot->get(i).asString());
-                    }
-                }
-                else
-                {
-                     yCError(BasicJointCouplingParamsCOMPONENT) <<"parameter 'actuatedAxes' is not a properly formatted bottle";
-                }
-            }
-            yCInfo(BasicJointCouplingParamsCOMPONENT) << "Parameter 'actuatedAxes' using value:" << m_actuatedAxes;
+            m_configFile = config.find("configFile").asString();
+            yCInfo(BasicJointCouplingParamsCOMPONENT) << "Parameter 'configFile' using value:" << m_configFile;
         }
         else
         {
-            yCError(BasicJointCouplingParamsCOMPONENT) << "Mandatory parameter 'actuatedAxes' not found!";
-            yCError(BasicJointCouplingParamsCOMPONENT) << "Description of the parameter: list of actuated axes names";
+            yCError(BasicJointCouplingParamsCOMPONENT) << "Mandatory parameter 'configFile' not found!";
+            yCError(BasicJointCouplingParamsCOMPONENT) << "Description of the parameter: .ini configuration file";
             return false;
         }
-        prop_check.unput("actuatedAxes");
-    }
-
-    //Parser of parameter physicalJoints
-    {
-        if (config.check("physicalJoints"))
-        {
-            {
-                m_physicalJoints.clear();
-                yarp::os::Bottle* tempBot = config.find("physicalJoints").asList();
-                if (tempBot)
-                {
-                    std::string tempBots = tempBot->toString();
-                    for (size_t i=0; i<tempBot->size(); i++)
-                    {
-                        m_physicalJoints.push_back(tempBot->get(i).asString());
-                    }
-                }
-                else
-                {
-                     yCError(BasicJointCouplingParamsCOMPONENT) <<"parameter 'physicalJoints' is not a properly formatted bottle";
-                }
-            }
-            yCInfo(BasicJointCouplingParamsCOMPONENT) << "Parameter 'physicalJoints' using value:" << m_physicalJoints;
-        }
-        else
-        {
-            yCError(BasicJointCouplingParamsCOMPONENT) << "Mandatory parameter 'physicalJoints' not found!";
-            yCError(BasicJointCouplingParamsCOMPONENT) << "Description of the parameter: list of physical joints names";
-            return false;
-        }
-        prop_check.unput("physicalJoints");
+        prop_check.unput("configFile");
     }
 
     /*
@@ -142,12 +95,11 @@ std::string      BasicJointCoupling_ParamsParser::getDocumentationOfDeviceParams
     doc = doc + std::string("This is the help for device: BasicJointCoupling\n");
     doc = doc + std::string("\n");
     doc = doc + std::string("This is the list of the parameters accepted by the device:\n");
-    doc = doc + std::string("'actuatedAxes': list of actuated axes names\n");
-    doc = doc + std::string("'physicalJoints': list of physical joints names\n");
+    doc = doc + std::string("'configFile': .ini configuration file\n");
     doc = doc + std::string("\n");
     doc = doc + std::string("Here are some examples of invocation command with yarpdev, with all params:\n");
-    doc = doc + " yarpdev --device BasicJointCoupling --actuatedAxes <mandatory_value> --physicalJoints <mandatory_value>\n";
+    doc = doc + " yarpdev --device BasicJointCoupling --configFile <mandatory_value>\n";
     doc = doc + std::string("Using only mandatory params:\n");
-    doc = doc + " yarpdev --device BasicJointCoupling --actuatedAxes <mandatory_value> --physicalJoints <mandatory_value>\n";
+    doc = doc + " yarpdev --device BasicJointCoupling --configFile <mandatory_value>\n";
     doc = doc + std::string("=============================================\n\n");    return doc;
 }
