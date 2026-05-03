@@ -12,6 +12,8 @@ if(NOT SKIP_BasicJointCoupling)
     target_sources(BasicJointCoupling PRIVATE BasicJointCoupling.hpp
                                               DeviceDriverImpl.cpp
                                               IJointCouplingImpl.cpp
+                                              Transformation.hpp
+                                              Transformation.cpp
                                               BasicJointCoupling_ParamsParser.h
                                               BasicJointCoupling_ParamsParser.cpp
                                               LogComponent.hpp

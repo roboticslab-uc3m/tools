@@ -3,6 +3,10 @@
 
 set(contexts)
 
+if(ENABLE_BasicJointCoupling)
+    list(APPEND contexts contexts/BasicJointCoupling)
+endif()
+
 if(ENABLE_RealToSimControlBoard)
     list(APPEND contexts contexts/RealToSimControlBoard)
 endif()
