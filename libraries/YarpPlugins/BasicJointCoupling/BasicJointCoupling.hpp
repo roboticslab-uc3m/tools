@@ -3,6 +3,9 @@
 #ifndef __BASIC_JOINT_COUPLING_HPP__
 #define __BASIC_JOINT_COUPLING_HPP__
 
+#include <string>
+#include <vector>
+
 #include <yarp/dev/DeviceDriver.h>
 #include <yarp/dev/IJointCoupling.h>
 
@@ -24,12 +27,10 @@ class BasicJointCoupling : public yarp::dev::DeviceDriver,
 {
 public:
     // -------- DeviceDriver declarations. Implementation in DeviceDriverImpl.cpp --------
-
     bool open(yarp::os::Searchable & config) override;
     bool close() override;
 
     // -------- IJointCoupling declarations. Implementation in JointCouplingImpl.cpp --------
-
     bool convertFromPhysicalJointsToActuatedAxesPos(const yarp::sig::Vector & physJointsPos, yarp::sig::Vector & actAxesPos) override;
     bool convertFromPhysicalJointsToActuatedAxesVel(const yarp::sig::Vector & physJointsPos, const yarp::sig::Vector & physJointsVel, yarp::sig::Vector & actAxesVel) override;
     bool convertFromPhysicalJointsToActuatedAxesAcc(const yarp::sig::Vector & physJointsPos, const yarp::sig::Vector & physJointsVel, const yarp::sig::Vector & physJointsAcc, yarp::sig::Vector & actAxesAcc) override;
@@ -47,6 +48,14 @@ public:
     bool getPhysicalJointLimits(std::size_t physicalJointIndex, double & min, double & max) override;
 
 private:
+    int numberOfActuatedAxes {0};
+    int numberOfPhysicalJoints {0};
+
+    std::vector<std::string> actuatedAxesNames;
+    std::vector<std::string> physicalJointsNames;
+
+    std::vector<double> physicalJointLimitsMins;
+    std::vector<double> physicalJointLimitsMaxs;
 };
 
 #endif // __BASIC_JOINT_COUPLING_HPP__

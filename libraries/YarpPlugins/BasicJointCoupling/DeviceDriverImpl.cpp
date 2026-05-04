@@ -73,9 +73,14 @@ bool BasicJointCoupling::open(yarp::os::Searchable & config)
     yCInfo(BJC) << "Physical joint limits mins:" << physicalJointLimitsMins->toString();
     yCInfo(BJC) << "Physical joint limits maxs:" << physicalJointLimitsMaxs->toString();
 
-    for (auto i = 0; i < actuatedAxes->size(); i++)
+    numberOfActuatedAxes = actuatedAxes->size();
+    numberOfPhysicalJoints = physicalJoints->size();
+
+    for (auto i = 0; i < numberOfActuatedAxes; i++)
     {
         const auto actuatedAxisName = actuatedAxes->get(i).asString();
+        actuatedAxesNames.push_back(actuatedAxisName);
+
         const auto group = fullConfig.findGroup(actuatedAxisName).tail();
 
         if (group.isNull() || group.size() == 0)
@@ -85,6 +90,13 @@ bool BasicJointCoupling::open(yarp::os::Searchable & config)
         }
 
         yCInfo(BJC) << "Actuated axis" << actuatedAxisName << "is coupled with:" << group.toString();
+    }
+
+    for (auto i = 0; i < numberOfPhysicalJoints; i++)
+    {
+        physicalJointsNames.push_back(physicalJoints->get(i).asString());
+        this->physicalJointLimitsMins.push_back(physicalJointLimitsMins->get(i).asFloat64());
+        this->physicalJointLimitsMaxs.push_back(physicalJointLimitsMaxs->get(i).asFloat64());
     }
 
     return true;
