@@ -138,16 +138,16 @@ bool BasicJointCoupling::getNrOfActuatedAxes(std::size_t & nrOfActuatedAxes)
 
 bool BasicJointCoupling::getCoupledPhysicalJoints(yarp::sig::VectorOf<std::size_t> & coupPhysJointsIndexes)
 {
-    yCError(BJC) << "Method not implemented yet";
-    return false;
+    coupPhysJointsIndexes = yarp::sig::VectorOf<std::size_t>(coupledPhysicalJointsIndexes.size(), coupledPhysicalJointsIndexes.data());
+    return true;
 }
 
 // -----------------------------------------------------------------------------
 
 bool BasicJointCoupling::getCoupledActuatedAxes(yarp::sig::VectorOf<std::size_t> & coupActAxesIndexes)
 {
-    yCError(BJC) << "Method not implemented yet";
-    return false;
+    coupActAxesIndexes = yarp::sig::VectorOf<std::size_t>(coupledActuatedAxesIndexes.size(), coupledActuatedAxesIndexes.data());
+    return true;
 }
 
 // -----------------------------------------------------------------------------

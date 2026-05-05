@@ -13,21 +13,15 @@ namespace roboticslab
 class Transformation
 {
 public:
-    Transformation(int actAxisIndex, int physJointIndex);
     virtual ~Transformation() = default;
     virtual bool configure(const yarp::os::Searchable & parameters) = 0;
     virtual double transform(double value) = 0;
-    int getActuatedAxisIndex() const { return actAxisIndex; }
-    int getPhysicalJointIndex() const { return physJointIndex; }
-private:
-    const int actAxisIndex;
-    const int physJointIndex;
+    virtual Transformation * inverse() { return nullptr; }
 };
 
 class LinearTransformation : public Transformation
 {
 public:
-    using Transformation::Transformation;
     bool configure(const yarp::os::Searchable & parameters) override;
     double transform(double value) override;
 private:
@@ -38,13 +32,14 @@ private:
 class PiecewiseLinearTransformation : public Transformation
 {
 public:
-    using Transformation::Transformation;
     bool configure(const yarp::os::Searchable & parameters) override;
     double transform(double value) override;
 private:
     std::vector<double> inData;
     std::vector<double> outData;
 };
+
+Transformation * createTransformation(const yarp::os::Searchable & parameters);
 
 } // namespace roboticslab
 

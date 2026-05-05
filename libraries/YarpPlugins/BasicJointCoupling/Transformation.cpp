@@ -13,13 +13,6 @@ using namespace roboticslab;
 
 // -----------------------------------------------------------------------------
 
-Transformation::Transformation(int actAxisIndex, int physJointIndex)
-    : actAxisIndex(actAxisIndex),
-      physJointIndex(physJointIndex)
-{}
-
-// -----------------------------------------------------------------------------
-
 bool LinearTransformation::configure(const yarp::os::Searchable & parameters)
 {
     if (!parameters.check("m"))
@@ -183,6 +176,44 @@ double PiecewiseLinearTransformation::transform(const double value)
 
     yCDebug(BJC) << "Ret:" << yL + dydx * (value - xL);
     return yL + dydx * (value - xL); // linear interpolation
+}
+
+// -----------------------------------------------------------------------------
+
+Transformation * roboticslab::createTransformation(const yarp::os::Searchable & parameters)
+{
+    if (!parameters.check("transformation"))
+    {
+        yCError(BJC) << R"("transformation" parameter for transformation not found)";
+        return nullptr;
+    }
+
+    const auto type = parameters.find("transformation").asString();
+
+    Transformation * instance;
+
+    if (type == "linear")
+    {
+        instance = new LinearTransformation();
+    }
+    else if (type == "piecewiseLinear")
+    {
+        instance = new PiecewiseLinearTransformation();
+    }
+    else
+    {
+        yCError(BJC) << "Unknown transformation type:" << type;
+        return nullptr;
+    }
+
+    if (!instance->configure(parameters))
+    {
+        yCError(BJC) << "Failed to configure transformation of type:" << type;
+        delete instance;
+        return nullptr;
+    }
+
+    return instance;
 }
 
 // -----------------------------------------------------------------------------

@@ -4,12 +4,14 @@
 #define __BASIC_JOINT_COUPLING_HPP__
 
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include <yarp/dev/DeviceDriver.h>
 #include <yarp/dev/IJointCoupling.h>
 
 #include "BasicJointCoupling_ParamsParser.h"
+#include "Transformation.hpp"
 
 /**
  * @ingroup YarpPlugins
@@ -20,6 +22,15 @@
 /**
  * @ingroup BasicJointCoupling
  * @brief Implements yarp::dev::IJointCoupling.
+ *
+ * Assumes 1:N subactuated joints with no mixing across actuated axes, i.e.
+ * each physical joint is coupled with exactly one actuated axis, while each
+ * actuated axis can be coupled with one or more physical joints. This device
+ * is best suited for tendon-like couplings supported by springs to restore the
+ * initial position, e.g. the LacqueyFetch gripper or the Dextra hand. In case
+ * of ambiguity in physical-to-actuated mappings, the lowest value for the
+ * actuated axis is chosen across all coupled physical joints during
+ * transformations.
  */
 class BasicJointCoupling : public yarp::dev::DeviceDriver,
                            public yarp::dev::IJointCoupling,
@@ -56,6 +67,12 @@ private:
 
     std::vector<double> physicalJointLimitsMins;
     std::vector<double> physicalJointLimitsMaxs;
+
+    std::unordered_map<int, std::pair<int, roboticslab::Transformation *>> physicalToActuated;
+    std::unordered_multimap<int, std::pair<int, roboticslab::Transformation *>> actuatedToPhysical;
+
+    std::vector<std::size_t> coupledActuatedAxesIndexes;
+    std::vector<std::size_t> coupledPhysicalJointsIndexes;
 };
 
 #endif // __BASIC_JOINT_COUPLING_HPP__
