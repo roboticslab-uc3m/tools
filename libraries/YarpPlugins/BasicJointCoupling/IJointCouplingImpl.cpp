@@ -2,6 +2,8 @@
 
 #include "BasicJointCoupling.hpp"
 
+#include <limits>
+
 #include <yarp/os/LogStream.h>
 
 #include "LogComponent.hpp"
@@ -16,8 +18,28 @@ bool BasicJointCoupling::convertFromPhysicalJointsToActuatedAxesPos(const yarp::
         return false;
     }
 
-    yCError(BJC) << "Method not implemented yet";
-    return false;
+    actAxesPos.resize(numberOfActuatedAxes);
+
+    for (auto actuatedAxisIndex = 0; actuatedAxisIndex < numberOfActuatedAxes; actuatedAxisIndex++)
+    {
+        auto range = actuatedToPhysical.equal_range(actuatedAxisIndex);
+        double minValue = std::numeric_limits<double>::max();
+
+        for (auto it = range.first; it != range.second; ++it)
+        {
+            auto [physicalJointIndex, transformation] = it->second;
+            double value = transformation->transform(physJointsPos[physicalJointIndex]);
+
+            if (value < minValue)
+            {
+                minValue = value;
+            }
+        }
+
+        actAxesPos[actuatedAxisIndex] = minValue;
+    }
+
+    return true;
 }
 
 // -----------------------------------------------------------------------------
@@ -72,8 +94,15 @@ bool BasicJointCoupling::convertFromActuatedAxesToPhysicalJointsPos(const yarp::
         return false;
     }
 
-    yCError(BJC) << "Method not implemented yet";
-    return false;
+    physJointsPos.resize(numberOfPhysicalJoints);
+
+    for (auto physicalJointIndex = 0; physicalJointIndex < numberOfPhysicalJoints; physicalJointIndex++)
+    {
+        auto [actuatedAxisIndex, transformation] = physicalToActuated[physicalJointIndex];
+        physJointsPos[physicalJointIndex] = transformation->transform(actAxesPos[actuatedAxisIndex]);
+    }
+
+    return true;
 }
 
 // -----------------------------------------------------------------------------
