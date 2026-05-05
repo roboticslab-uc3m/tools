@@ -14,7 +14,7 @@ bool BasicJointCoupling::convertFromPhysicalJointsToActuatedAxesPos(const yarp::
 {
     if (physJointsPos.size() != numberOfPhysicalJoints)
     {
-        yCError(BJC) << "Size of vector does not match number of physical joints:" << physJointsPos.size() << "!=" << numberOfPhysicalJoints;
+        yCError(BJC) << "Size of position vector does not match number of physical joints:" << physJointsPos.size() << "!=" << numberOfPhysicalJoints;
         return false;
     }
 
@@ -28,7 +28,7 @@ bool BasicJointCoupling::convertFromPhysicalJointsToActuatedAxesPos(const yarp::
         for (auto it = range.first; it != range.second; ++it)
         {
             auto [physicalJointIndex, transformation] = it->second;
-            double value = transformation->transform(physJointsPos[physicalJointIndex]);
+            double value = transformation->position(physJointsPos[physicalJointIndex]);
 
             if (value < minValue)
             {
@@ -48,12 +48,38 @@ bool BasicJointCoupling::convertFromPhysicalJointsToActuatedAxesVel(const yarp::
 {
     if (physJointsPos.size() != numberOfPhysicalJoints)
     {
-        yCError(BJC) << "Size of vector does not match number of physical joints:" << physJointsPos.size() << "!=" << numberOfPhysicalJoints;
+        yCError(BJC) << "Size of position vector does not match number of physical joints:" << physJointsPos.size() << "!=" << numberOfPhysicalJoints;
         return false;
     }
 
-    yCError(BJC) << "Method not implemented yet";
-    return false;
+    if (physJointsVel.size() != numberOfPhysicalJoints)
+    {
+        yCError(BJC) << "Size of velocity vector does not match number of physical joints:" << physJointsVel.size() << "!=" << numberOfPhysicalJoints;
+        return false;
+    }
+
+    actAxesVel.resize(numberOfActuatedAxes);
+
+    for (auto actuatedAxisIndex = 0; actuatedAxisIndex < numberOfActuatedAxes; actuatedAxisIndex++)
+    {
+        auto range = actuatedToPhysical.equal_range(actuatedAxisIndex);
+        double minValue = std::numeric_limits<double>::max();
+
+        for (auto it = range.first; it != range.second; ++it)
+        {
+            auto [physicalJointIndex, transformation] = it->second;
+            double value = transformation->velocity(physJointsPos[physicalJointIndex], physJointsVel[physicalJointIndex]);
+
+            if (value < minValue)
+            {
+                minValue = value;
+            }
+        }
+
+        actAxesVel[actuatedAxisIndex] = minValue;
+    }
+
+    return true;
 }
 
 // -----------------------------------------------------------------------------
@@ -62,12 +88,44 @@ bool BasicJointCoupling::convertFromPhysicalJointsToActuatedAxesAcc(const yarp::
 {
     if (physJointsPos.size() != numberOfPhysicalJoints)
     {
-        yCError(BJC) << "Size of vector does not match number of physical joints:" << physJointsPos.size() << "!=" << numberOfPhysicalJoints;
+        yCError(BJC) << "Size of position vector does not match number of physical joints:" << physJointsPos.size() << "!=" << numberOfPhysicalJoints;
         return false;
     }
 
-    yCError(BJC) << "Method not implemented yet";
-    return false;
+    if (physJointsVel.size() != numberOfPhysicalJoints)
+    {
+        yCError(BJC) << "Size of velocity vector does not match number of physical joints:" << physJointsVel.size() << "!=" << numberOfPhysicalJoints;
+        return false;
+    }
+
+    if (physJointsAcc.size() != numberOfPhysicalJoints)
+    {
+        yCError(BJC) << "Size of acceleration vector does not match number of physical joints:" << physJointsAcc.size() << "!=" << numberOfPhysicalJoints;
+        return false;
+    }
+
+    actAxesAcc.resize(numberOfActuatedAxes);
+
+    for (auto actuatedAxisIndex = 0; actuatedAxisIndex < numberOfActuatedAxes; actuatedAxisIndex++)
+    {
+        auto range = actuatedToPhysical.equal_range(actuatedAxisIndex);
+        double minValue = std::numeric_limits<double>::max();
+
+        for (auto it = range.first; it != range.second; ++it)
+        {
+            auto [physicalJointIndex, transformation] = it->second;
+            double value = transformation->acceleration(physJointsPos[physicalJointIndex], physJointsVel[physicalJointIndex], physJointsAcc[physicalJointIndex]);
+
+            if (value < minValue)
+            {
+                minValue = value;
+            }
+        }
+
+        actAxesAcc[actuatedAxisIndex] = minValue;
+    }
+
+    return true;
 }
 
 // -----------------------------------------------------------------------------
@@ -76,7 +134,13 @@ bool BasicJointCoupling::convertFromPhysicalJointsToActuatedAxesTrq(const yarp::
 {
     if (physJointsPos.size() != numberOfPhysicalJoints)
     {
-        yCError(BJC) << "Size of vector does not match number of physical joints:" << physJointsPos.size() << "!=" << numberOfPhysicalJoints;
+        yCError(BJC) << "Size of position vector does not match number of physical joints:" << physJointsPos.size() << "!=" << numberOfPhysicalJoints;
+        return false;
+    }
+
+    if (physJointsTrq.size() != numberOfPhysicalJoints)
+    {
+        yCError(BJC) << "Size of torque vector does not match number of physical joints:" << physJointsTrq.size() << "!=" << numberOfPhysicalJoints;
         return false;
     }
 
@@ -90,7 +154,7 @@ bool BasicJointCoupling::convertFromActuatedAxesToPhysicalJointsPos(const yarp::
 {
     if (actAxesPos.size() != numberOfActuatedAxes)
     {
-        yCError(BJC) << "Size of vector does not match number of actuated axes:" << actAxesPos.size() << "!=" << numberOfActuatedAxes;
+        yCError(BJC) << "Size of position vector does not match number of actuated axes:" << actAxesPos.size() << "!=" << numberOfActuatedAxes;
         return false;
     }
 
@@ -99,7 +163,7 @@ bool BasicJointCoupling::convertFromActuatedAxesToPhysicalJointsPos(const yarp::
     for (auto physicalJointIndex = 0; physicalJointIndex < numberOfPhysicalJoints; physicalJointIndex++)
     {
         auto [actuatedAxisIndex, transformation] = physicalToActuated[physicalJointIndex];
-        physJointsPos[physicalJointIndex] = transformation->transform(actAxesPos[actuatedAxisIndex]);
+        physJointsPos[physicalJointIndex] = transformation->position(actAxesPos[actuatedAxisIndex]);
     }
 
     return true;
@@ -111,12 +175,25 @@ bool BasicJointCoupling::convertFromActuatedAxesToPhysicalJointsVel(const yarp::
 {
     if (actAxesPos.size() != numberOfActuatedAxes)
     {
-        yCError(BJC) << "Size of vector does not match number of actuated axes:" << actAxesPos.size() << "!=" << numberOfActuatedAxes;
+        yCError(BJC) << "Size of position vector does not match number of actuated axes:" << actAxesPos.size() << "!=" << numberOfActuatedAxes;
         return false;
     }
 
-    yCError(BJC) << "Method not implemented yet";
-    return false;
+    if (actAxesVel.size() != numberOfActuatedAxes)
+    {
+        yCError(BJC) << "Size of velocity vector does not match number of actuated axes:" << actAxesVel.size() << "!=" << numberOfActuatedAxes;
+        return false;
+    }
+
+    physJointsVel.resize(numberOfPhysicalJoints);
+
+    for (auto physicalJointIndex = 0; physicalJointIndex < numberOfPhysicalJoints; physicalJointIndex++)
+    {
+        auto [actuatedAxisIndex, transformation] = physicalToActuated[physicalJointIndex];
+        physJointsVel[physicalJointIndex] = transformation->velocity(actAxesPos[actuatedAxisIndex], actAxesVel[actuatedAxisIndex]);
+    }
+
+    return true;
 }
 
 // -----------------------------------------------------------------------------
@@ -125,12 +202,31 @@ bool BasicJointCoupling::convertFromActuatedAxesToPhysicalJointsAcc(const yarp::
 {
     if (actAxesPos.size() != numberOfActuatedAxes)
     {
-        yCError(BJC) << "Size of vector does not match number of actuated axes:" << actAxesPos.size() << "!=" << numberOfActuatedAxes;
+        yCError(BJC) << "Size of position vector does not match number of actuated axes:" << actAxesPos.size() << "!=" << numberOfActuatedAxes;
         return false;
     }
 
-    yCError(BJC) << "Method not implemented yet";
-    return false;
+    if (actAxesVel.size() != numberOfActuatedAxes)
+    {
+        yCError(BJC) << "Size of velocity vector does not match number of actuated axes:" << actAxesVel.size() << "!=" << numberOfActuatedAxes;
+        return false;
+    }
+
+    if (actAxesAcc.size() != numberOfActuatedAxes)
+    {
+        yCError(BJC) << "Size of acceleration vector does not match number of actuated axes:" << actAxesAcc.size() << "!=" << numberOfActuatedAxes;
+        return false;
+    }
+
+    physJointsAcc.resize(numberOfPhysicalJoints);
+
+    for (auto physicalJointIndex = 0; physicalJointIndex < numberOfPhysicalJoints; physicalJointIndex++)
+    {
+        auto [actuatedAxisIndex, transformation] = physicalToActuated[physicalJointIndex];
+        physJointsAcc[physicalJointIndex] = transformation->acceleration(actAxesPos[actuatedAxisIndex], actAxesVel[actuatedAxisIndex], actAxesAcc[actuatedAxisIndex]);
+    }
+
+    return true;
 }
 
 // -----------------------------------------------------------------------------
@@ -139,7 +235,13 @@ bool BasicJointCoupling::convertFromActuatedAxesToPhysicalJointsTrq(const yarp::
 {
     if (actAxesPos.size() != numberOfActuatedAxes)
     {
-        yCError(BJC) << "Size of vector does not match number of actuated axes:" << actAxesPos.size() << "!=" << numberOfActuatedAxes;
+        yCError(BJC) << "Size of position vector does not match number of actuated axes:" << actAxesPos.size() << "!=" << numberOfActuatedAxes;
+        return false;
+    }
+
+    if (actAxesTrq.size() != numberOfActuatedAxes)
+    {
+        yCError(BJC) << "Size of torque vector does not match number of actuated axes:" << actAxesTrq.size() << "!=" << numberOfActuatedAxes;
         return false;
     }
 

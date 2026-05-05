@@ -36,9 +36,23 @@ bool LinearTransformation::configure(const yarp::os::Searchable & parameters)
 
 // -----------------------------------------------------------------------------
 
-double LinearTransformation::transform(const double value)
+double LinearTransformation::position(const double q)
 {
-    return value * m + b;
+    return q * m + b;
+}
+
+// -----------------------------------------------------------------------------
+
+double LinearTransformation::velocity(const double q, const double qdot)
+{
+    return m;
+}
+
+// -----------------------------------------------------------------------------
+
+double LinearTransformation::acceleration(const double q, const double qdot, const double qdotdot)
+{
+    return 0.0;
 }
 
 // -----------------------------------------------------------------------------
@@ -133,7 +147,7 @@ bool PiecewiseLinearTransformation::configure(const yarp::os::Searchable & param
 
 // -----------------------------------------------------------------------------
 
-double PiecewiseLinearTransformation::transform(const double value)
+double PiecewiseLinearTransformation::position(const double value)
 {
     // <http://www.cplusplus.com/forum/general/216928/> "lastchance" on May 31, 2017 at 5:55pm
 
@@ -176,6 +190,20 @@ double PiecewiseLinearTransformation::transform(const double value)
 
     yCDebug(BJC) << "Ret:" << yL + dydx * (value - xL);
     return yL + dydx * (value - xL); // linear interpolation
+}
+
+// -----------------------------------------------------------------------------
+
+double PiecewiseLinearTransformation::velocity(const double q, const double qdot)
+{
+    return 0.0; // TODO
+}
+
+// -----------------------------------------------------------------------------
+
+double PiecewiseLinearTransformation::acceleration(const double q, const double qdot, const double qdotdot)
+{
+    return 0.0; // TODO
 }
 
 // -----------------------------------------------------------------------------
