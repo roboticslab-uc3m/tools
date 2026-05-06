@@ -12,22 +12,27 @@ namespace roboticslab
 
 class Transformation
 {
+    friend Transformation * createTransformation(const yarp::os::Searchable & parameters);
 public:
     virtual ~Transformation() = default;
-    virtual bool configure(const yarp::os::Searchable & parameters) = 0;
     virtual double position(double q) = 0;
     virtual double velocity(double q, double qdot) = 0;
     virtual double acceleration(double q, double qdot, double qdotdot) = 0;
     virtual Transformation * inverse() { return nullptr; }
+protected:
+    virtual bool configure(const yarp::os::Searchable & parameters) = 0;
 };
 
 class LinearTransformation : public Transformation
 {
+    friend Transformation * createTransformation(const yarp::os::Searchable & parameters);
 public:
-    bool configure(const yarp::os::Searchable & parameters) override;
     double position(double q) override;
     double velocity(double q, double qdot) override;
     double acceleration(double q, double qdot, double qdotdot) override;
+protected:
+    LinearTransformation() = default;
+    bool configure(const yarp::os::Searchable & parameters) override;
 private:
     double m {0.0};
     double b {0.0};
@@ -35,11 +40,14 @@ private:
 
 class PiecewiseLinearTransformation : public Transformation
 {
+    friend Transformation * createTransformation(const yarp::os::Searchable & parameters);
 public:
-    bool configure(const yarp::os::Searchable & parameters) override;
     double position(double q) override;
     double velocity(double q, double qdot) override;
     double acceleration(double q, double qdot, double qdotdot) override;
+protected:
+    PiecewiseLinearTransformation() = default;
+    bool configure(const yarp::os::Searchable & parameters) override;
 private:
     std::vector<double> inData;
     std::vector<double> outData;
