@@ -18,7 +18,7 @@ public:
     virtual double position(double q) = 0;
     virtual double velocity(double q, double qdot) = 0;
     virtual double acceleration(double q, double qdot, double qdotdot) = 0;
-    virtual Transformation * inverse() { return nullptr; }
+    virtual Transformation * inverse() = 0;
 protected:
     virtual bool configure(const yarp::os::Searchable & parameters) = 0;
 };
@@ -30,6 +30,7 @@ public:
     double position(double q) override;
     double velocity(double q, double qdot) override;
     double acceleration(double q, double qdot, double qdotdot) override;
+    Transformation * inverse() override;
 protected:
     LinearTransformation() = default;
     bool configure(const yarp::os::Searchable & parameters) override;
@@ -45,6 +46,7 @@ public:
     double position(double q) override;
     double velocity(double q, double qdot) override;
     double acceleration(double q, double qdot, double qdotdot) override;
+    Transformation * inverse() override;
 protected:
     PiecewiseLinearTransformation() = default;
     bool configure(const yarp::os::Searchable & parameters) override;

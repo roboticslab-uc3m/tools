@@ -2,7 +2,8 @@
 
 #include "Transformation.hpp"
 
-#include <fstream>
+#include <fstream> // std::ifstream
+#include <sstream> // std::stringstream
 
 #include <yarp/os/LogStream.h>
 #include <yarp/os/ResourceFinder.h>
@@ -22,6 +23,12 @@ bool LinearTransformation::configure(const yarp::os::Searchable & parameters)
     }
 
     m = parameters.find("m").asFloat64();
+
+    if (m == 0.0)
+    {
+        yCError(BJC) << R"("m" parameter for LinearTransformation cannot be zero)";
+        return false;
+    }
 
     if (!parameters.check("b"))
     {
@@ -53,6 +60,16 @@ double LinearTransformation::velocity(const double q, const double qdot)
 double LinearTransformation::acceleration(const double q, const double qdot, const double qdotdot)
 {
     return 0.0;
+}
+
+// -----------------------------------------------------------------------------
+
+Transformation * LinearTransformation::inverse()
+{
+    auto * inverse = new LinearTransformation();
+    inverse->m = 1.0 / m;
+    inverse->b = -b / m;
+    return inverse;
 }
 
 // -----------------------------------------------------------------------------
@@ -141,6 +158,24 @@ bool PiecewiseLinearTransformation::configure(const yarp::os::Searchable & param
     }
 
     csvFile.close();
+
+    for (auto i = 1; i < inData.size(); i++)
+    {
+        if (inData[i] <= inData[i - 1])
+        {
+            yCError(BJC) << "Input data in CSV file is not strictly increasing at line:" << (i + 1);
+            return false;
+        }
+    }
+
+    for (auto i = 1; i < outData.size(); i++)
+    {
+        if (outData[i] <= outData[i - 1])
+        {
+            yCError(BJC) << "Output data in CSV file is not strictly increasing at line:" << (i + 1);
+            return false;
+        }
+    }
 
     return true;
 }
@@ -242,6 +277,16 @@ Transformation * roboticslab::createTransformation(const yarp::os::Searchable & 
     }
 
     return instance;
+}
+
+// -----------------------------------------------------------------------------
+
+Transformation * PiecewiseLinearTransformation::inverse()
+{
+    auto * inverse = new PiecewiseLinearTransformation();
+    inverse->inData = outData;
+    inverse->outData = inData;
+    return inverse;
 }
 
 // -----------------------------------------------------------------------------
