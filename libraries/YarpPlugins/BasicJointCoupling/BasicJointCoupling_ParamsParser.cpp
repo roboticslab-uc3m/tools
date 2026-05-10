@@ -8,7 +8,7 @@
 // This is an automatically generated file. Please do not edit it.
 // It will be re-generated if the cmake flag ALLOW_DEVICE_PARAM_PARSER_GERNERATION is ON.
 
-// Generated on: Sun May  3 12:56:38 2026
+// Generated on: Sun May 10 18:29:16 2026
 
 
 #include "BasicJointCoupling_ParamsParser.h"
@@ -76,9 +76,7 @@ bool      BasicJointCoupling_ParamsParser::parseParams(const yarp::os::Searchabl
         }
         else
         {
-            yCError(BasicJointCouplingParamsCOMPONENT) << "Mandatory parameter 'configFile' not found!";
-            yCError(BasicJointCouplingParamsCOMPONENT) << "Description of the parameter: .ini configuration file";
-            return false;
+            yCInfo(BasicJointCouplingParamsCOMPONENT) << "Parameter 'configFile' using DEFAULT value:" << m_configFile;
         }
         prop_check.unput("configFile");
     }
@@ -122,8 +120,8 @@ std::string      BasicJointCoupling_ParamsParser::getDocumentationOfDeviceParams
     doc = doc + std::string("'configFile': .ini configuration file\n");
     doc = doc + std::string("\n");
     doc = doc + std::string("Here are some examples of invocation command with yarpdev, with all params:\n");
-    doc = doc + " yarpdev --device BasicJointCoupling --configFile <mandatory_value>\n";
+    doc = doc + " yarpdev --device BasicJointCoupling --configFile <optional_value>\n";
     doc = doc + std::string("Using only mandatory params:\n");
-    doc = doc + " yarpdev --device BasicJointCoupling --configFile <mandatory_value>\n";
+    doc = doc + " yarpdev --device BasicJointCoupling\n";
     doc = doc + std::string("=============================================\n\n");    return doc;
 }

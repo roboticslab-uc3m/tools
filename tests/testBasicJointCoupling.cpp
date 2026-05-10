@@ -18,6 +18,15 @@ class BasicJointCouplingTest : public testing::Test
 {
 public:
     void SetUp() override
+    {}
+
+    void TearDown() override
+    {
+        device.close();
+    }
+
+protected:
+    bool loadConfig()
     {
         std::string fileName = "resources";
         fileName += yarp::conf::filesystem::preferred_separator;
@@ -28,39 +37,45 @@ public:
             {"configFile", yarp::os::Value(fileName)}
         };
 
-        if (device.open(options))
-        {
-            device.view(coupling);
-        }
+        return device.open(options) && device.view(coupling);
     }
 
-    void TearDown() override
-    {
-        device.close();
-    }
-
-protected:
-    static constexpr const double EPS = 1e-6;
     yarp::dev::PolyDriver device;
     yarp::dev::IJointCoupling * coupling {nullptr};
+
+    std::size_t numberOfPhysicalJoints {0};
+    std::size_t numberOfActuatedAxes {0};
+
+    yarp::sig::VectorOf<std::size_t> coupPhysJointsIndexes;
+    yarp::sig::VectorOf<std::size_t> coupActAxesIndexes;
+
+    std::string physicalJointName;
+    std::string actuatedAxisName;
+
+    yarp::sig::Vector physJointsPos;
+    yarp::sig::Vector physJointsVel;
+    yarp::sig::Vector physJointsAcc;
+    yarp::sig::Vector physJointsTrq;
+
+    yarp::sig::Vector actAxesPos;
+    yarp::sig::Vector actAxesVel;
+    yarp::sig::Vector actAxesAcc;
+    yarp::sig::Vector actAxesTrq;
+
+    static constexpr const double EPS = 1e-6;
 };
 
 TEST_F(BasicJointCouplingTest, Configure)
 {
+    ASSERT_TRUE(loadConfig());
     ASSERT_TRUE(device.isValid());
     ASSERT_NE(coupling, nullptr);
-
-    std::size_t numberOfPhysicalJoints;
-    std::size_t numberOfActuatedAxes;
 
     ASSERT_TRUE(coupling->getNrOfPhysicalJoints(numberOfPhysicalJoints));
     ASSERT_TRUE(coupling->getNrOfActuatedAxes(numberOfActuatedAxes));
 
     ASSERT_EQ(numberOfPhysicalJoints, 8);
     ASSERT_EQ(numberOfActuatedAxes, 4);
-
-    yarp::sig::VectorOf<std::size_t> coupPhysJointsIndexes;
-    yarp::sig::VectorOf<std::size_t> coupActAxesIndexes;
 
     ASSERT_TRUE(coupling->getCoupledPhysicalJoints(coupPhysJointsIndexes));
     ASSERT_TRUE(coupling->getCoupledActuatedAxes(coupActAxesIndexes));
@@ -70,9 +85,6 @@ TEST_F(BasicJointCouplingTest, Configure)
 
     ASSERT_EQ(coupPhysJointsIndexes, yarp::sig::VectorOf<std::size_t>({0, 1, 3, 4, 5, 6, 7}));
     ASSERT_EQ(coupActAxesIndexes, yarp::sig::VectorOf<std::size_t>({0, 2, 3}));
-
-    std::string physicalJointName;
-    std::string actuatedAxisName;
 
     ASSERT_TRUE(coupling->getPhysicalJointName(0, physicalJointName));
     ASSERT_EQ(physicalJointName, "joint1");
@@ -111,17 +123,98 @@ TEST_F(BasicJointCouplingTest, Configure)
     }
 }
 
+TEST_F(BasicJointCouplingTest, LinearTransformation)
+{
+    yarp::os::Property options {
+        {"device", yarp::os::Value("BasicJointCoupling")},
+    };
+
+    options.put("actuatedAxes", yarp::os::Value::makeList("motor1"));
+    options.put("physicalJoints", yarp::os::Value::makeList("joint1 joint2"));
+    options.put("mins", yarp::os::Value::makeList("0.0 0.0"));
+    options.put("maxs", yarp::os::Value::makeList("30.0 30.0"));
+
+    options.fromString("(motor1 joint1 joint2)", false);
+
+    options.addGroup("joint1") = {
+        {"transformation", yarp::os::Value("linear")},
+        {"m", yarp::os::Value(1.0)},
+        {"b", yarp::os::Value(0.0)}
+    };
+
+    options.addGroup("joint2") = {
+        {"transformation", yarp::os::Value("linear")},
+        {"m", yarp::os::Value(2.0)},
+        {"b", yarp::os::Value(5.0)}
+    };
+
+    ASSERT_TRUE(device.open(options));
+    ASSERT_TRUE(device.view(coupling));
+    ASSERT_NE(coupling, nullptr);
+
+    // operator=(double) interprets its argument as a scalar instead of a vector
+    actAxesPos = yarp::sig::Vector{10.0};
+    actAxesVel = yarp::sig::Vector{10.0};
+    actAxesAcc = yarp::sig::Vector{10.0};
+    actAxesTrq = yarp::sig::Vector{10.0};
+
+    ASSERT_TRUE(coupling->convertFromActuatedAxesToPhysicalJointsPos(actAxesPos, physJointsPos));
+    ASSERT_EQ(physJointsPos.size(), 2);
+    ASSERT_NEAR(physJointsPos[0], actAxesPos[0] * 1.0 + 0.0, EPS);
+    ASSERT_NEAR(physJointsPos[1], actAxesPos[0] * 2.0 + 5.0, EPS);
+
+    ASSERT_TRUE(coupling->convertFromActuatedAxesToPhysicalJointsVel(actAxesPos, actAxesVel, physJointsVel));
+    ASSERT_EQ(physJointsVel.size(), 2);
+    ASSERT_NEAR(physJointsVel[0], 1.0, EPS);
+    ASSERT_NEAR(physJointsVel[1], 2.0, EPS);
+
+    ASSERT_TRUE(coupling->convertFromActuatedAxesToPhysicalJointsAcc(actAxesPos, actAxesVel, actAxesAcc, physJointsAcc));
+    ASSERT_EQ(physJointsAcc.size(), 2);
+    ASSERT_NEAR(physJointsAcc[0], 0.0, EPS);
+    ASSERT_NEAR(physJointsAcc[1], 0.0, EPS);
+
+    ASSERT_TRUE(coupling->convertFromActuatedAxesToPhysicalJointsTrq(actAxesPos, actAxesTrq, physJointsTrq));
+    ASSERT_EQ(physJointsTrq.size(), 2);
+    ASSERT_NEAR(physJointsTrq[0], actAxesTrq[0], EPS);
+    ASSERT_NEAR(physJointsTrq[1], actAxesTrq[0], EPS);
+
+    physJointsPos = {10.0, 20.0};
+    physJointsVel = {10.0, 20.0};
+    physJointsAcc = {10.0, 20.0};
+    physJointsTrq = {10.0, 20.0};
+
+    ASSERT_TRUE(coupling->convertFromPhysicalJointsToActuatedAxesPos(physJointsPos, actAxesPos));
+    ASSERT_EQ(actAxesPos.size(), 1);
+    ASSERT_NEAR(actAxesPos[0], 7.5, EPS);
+
+    ASSERT_TRUE(coupling->convertFromPhysicalJointsToActuatedAxesVel(physJointsPos, physJointsVel, actAxesVel));
+    ASSERT_EQ(actAxesVel.size(), 1);
+    ASSERT_NEAR(actAxesVel[0], 0.5, EPS);
+
+    ASSERT_TRUE(coupling->convertFromPhysicalJointsToActuatedAxesAcc(physJointsPos, physJointsVel, physJointsAcc, actAxesAcc));
+    ASSERT_EQ(actAxesAcc.size(), 1);
+    ASSERT_NEAR(actAxesAcc[0], 0.0, EPS);
+
+    ASSERT_TRUE(coupling->convertFromPhysicalJointsToActuatedAxesTrq(physJointsPos, physJointsTrq, actAxesTrq));
+    ASSERT_EQ(actAxesTrq.size(), 1);
+    ASSERT_NEAR(actAxesTrq[0], 10.0, EPS);
+}
+
+TEST_F(BasicJointCouplingTest, PiecewiseLinearTransformation)
+{
+    ;
+}
+
 TEST_F(BasicJointCouplingTest, ActuatedAxesToPhysicalJoints)
 {
+    ASSERT_TRUE(loadConfig());
     ASSERT_TRUE(device.isValid());
     ASSERT_NE(coupling, nullptr);
 
-    yarp::sig::Vector physJointsPos, physJointsVel, physJointsAcc, physJointsTrq;
-
-    yarp::sig::Vector actAxesPos {1.5, 3.0, 4.5, 5.0};
-    yarp::sig::Vector actAxesVel {1.5, 3.0, 4.5, 5.0};
-    yarp::sig::Vector actAxesAcc {1.5, 3.0, 4.5, 5.0};
-    yarp::sig::Vector actAxesTrq {1.5, 3.0, 4.5, 5.0};
+    actAxesPos = {1.5, 3.0, 4.5, 5.0};
+    actAxesVel = {1.5, 3.0, 4.5, 5.0};
+    actAxesAcc = {1.5, 3.0, 4.5, 5.0};
+    actAxesTrq = {1.5, 3.0, 4.5, 5.0};
 
     ASSERT_TRUE(coupling->convertFromActuatedAxesToPhysicalJointsPos(actAxesPos, physJointsPos));
     ASSERT_EQ(physJointsPos.size(), 8);

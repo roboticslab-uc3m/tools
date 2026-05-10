@@ -22,26 +22,29 @@ bool BasicJointCoupling::open(yarp::os::Searchable & config)
         return false;
     }
 
-    yarp::os::ResourceFinder rf;
-    rf.setDefaultContext("BasicJointCoupling");
-
-    std::string configFileFullPath = rf.findFileByName(m_configFile);
-
-    if (configFileFullPath.empty())
-    {
-        yCError(BJC) << "Configuration file not found:" << m_configFile;
-        return false;
-    }
-
-    yCInfo(BJC) << "Using config file:" << configFileFullPath;
-
     yarp::os::Property fullConfig;
 
-    if (!fullConfig.fromConfigFile(configFileFullPath))
+    if (!m_configFile.empty())
     {
-        yCError(BJC) << "Failed to read configuration file:" << m_configFile;
-        return false;
+        yarp::os::ResourceFinder rf;
+        rf.setDefaultContext("BasicJointCoupling");
+
+        std::string configFileFullPath = rf.findFileByName(m_configFile);
+
+        if (!configFileFullPath.empty() && fullConfig.fromConfigFile(configFileFullPath))
+        {
+            yCInfo(BJC) << "Using config file:" << configFileFullPath;
+        }
+        else
+        {
+            yCWarning(BJC) << "Failed to read configuration file:" << m_configFile;
+        }
     }
+
+    // allow override of config file parameters with command line parameters
+    fullConfig.fromString(config.toString(), false);
+
+    yCInfo(BJC) << "Full configuration:" << fullConfig.toString();
 
     const auto * actuatedAxes = fullConfig.find("actuatedAxes").asList();
     const auto * physicalJoints = fullConfig.find("physicalJoints").asList();
