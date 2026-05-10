@@ -227,7 +227,7 @@ bool PiecewiseLinearTransformation::readCsvFile(const yarp::os::Searchable & par
 
 // -----------------------------------------------------------------------------
 
-double PiecewiseLinearTransformation::position(const double value)
+double PiecewiseLinearTransformation::position(const double q)
 {
     // <http://www.cplusplus.com/forum/general/216928/> "lastchance" on May 31, 2017 at 5:55pm
 
@@ -235,13 +235,13 @@ double PiecewiseLinearTransformation::position(const double value)
     int size = inData.size();
     int i = 0; // find left end of interval for interpolation
 
-    if (value >= inData[size - 2]) // special case: beyond right end
+    if (q >= inData[size - 2]) // special case: beyond right end
     {
         i = size - 2;
     }
     else
     {
-        while (value > inData[i + 1])
+        while (q > inData[i + 1])
         {
             i++;
         }
@@ -255,12 +255,12 @@ double PiecewiseLinearTransformation::position(const double value)
 
     if (!extrapolate) // if beyond ends of array and not extrapolating
     {
-        if (value < xL)
+        if (q < xL)
         {
             yR = yL;
         }
 
-        if (value > xR)
+        if (q > xR)
         {
             yL = yR;
         }
@@ -268,21 +268,47 @@ double PiecewiseLinearTransformation::position(const double value)
 
     double dydx = (yR - yL) / (xR - xL); // gradient
 
-    return yL + dydx * (value - xL); // linear interpolation
+    return yL + dydx * (q - xL); // linear interpolation
 }
 
 // -----------------------------------------------------------------------------
 
 double PiecewiseLinearTransformation::velocity(const double q, const double qdot)
 {
-    return 0.0; // TODO
+    int size = inData.size();
+    int i = 0; // find left end of interval for interpolation
+
+    if (q >= inData[size - 2]) // special case: beyond right end
+    {
+        i = size - 2;
+    }
+    else
+    {
+        while (q > inData[i + 1])
+        {
+            i++;
+        }
+    }
+
+    // points on either side (unless beyond ends)
+    double xL = inData[i];
+    double yL = outData[i];
+    double xR = inData[i + 1];
+    double yR = outData[i + 1];
+
+    if (q < xL || q > xR)
+    {
+        return 0.0;
+    }
+
+    return (yR - yL) / (xR - xL); // gradient
 }
 
 // -----------------------------------------------------------------------------
 
 double PiecewiseLinearTransformation::acceleration(const double q, const double qdot, const double qdotdot)
 {
-    return 0.0; // TODO
+    return 0.0;
 }
 
 // -----------------------------------------------------------------------------

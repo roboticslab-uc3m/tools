@@ -237,8 +237,8 @@ TEST_F(BasicJointCouplingTest, PiecewiseLinearTransformation)
 
     ASSERT_TRUE(coupling->convertFromActuatedAxesToPhysicalJointsVel(actAxesPos, actAxesVel, physJointsVel));
     ASSERT_EQ(physJointsVel.size(), 2);
-    // ASSERT_NEAR(physJointsVel[0], 0.5, EPS);
-    // ASSERT_NEAR(physJointsVel[1], 2.0, EPS);
+    ASSERT_NEAR(physJointsVel[0], 0.5, EPS);
+    ASSERT_NEAR(physJointsVel[1], 2.0, EPS);
 
     ASSERT_TRUE(coupling->convertFromActuatedAxesToPhysicalJointsAcc(actAxesPos, actAxesVel, actAxesAcc, physJointsAcc));
     ASSERT_EQ(physJointsAcc.size(), 2);
