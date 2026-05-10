@@ -163,7 +163,7 @@ bool PiecewiseLinearTransformation::configure(const yarp::os::Searchable & param
     {
         if (inData[i] <= inData[i - 1])
         {
-            yCError(BJC) << "Input data in CSV file is not strictly increasing at line:" << (i + 1);
+            yCError(BJC) << "Input data in CSV file is not strictly increasing at line" << (i + 1) << "->" << inData[i] << "<=" << inData[i - 1];
             return false;
         }
     }
@@ -172,7 +172,7 @@ bool PiecewiseLinearTransformation::configure(const yarp::os::Searchable & param
     {
         if (outData[i] <= outData[i - 1])
         {
-            yCError(BJC) << "Output data in CSV file is not strictly increasing at line:" << (i + 1);
+            yCError(BJC) << "Output data in CSV file is not strictly increasing at line" << (i + 1) << "->" << outData[i] << "<=" << outData[i - 1];
             return false;
         }
     }
@@ -223,7 +223,6 @@ double PiecewiseLinearTransformation::position(const double value)
 
     double dydx = (yR - yL) / (xR - xL); // gradient
 
-    yCDebug(BJC) << "Ret:" << yL + dydx * (value - xL);
     return yL + dydx * (value - xL); // linear interpolation
 }
 

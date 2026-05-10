@@ -17,6 +17,9 @@ if(ENABLE_tests)
 
         configure_file(${CMAKE_CURRENT_SOURCE_DIR}/resources/testBasicJointCoupling.ini
                        ${CMAKE_CURRENT_BINARY_DIR}/resources/testBasicJointCoupling.ini COPYONLY)
+
+        configure_file(${CMAKE_CURRENT_SOURCE_DIR}/resources/testBasicJointCoupling.csv
+                       ${CMAKE_CURRENT_BINARY_DIR}/resources/testBasicJointCoupling.csv COPYONLY)
     endif()
 
     if(TARGET ROBOTICSLAB::Playback)
