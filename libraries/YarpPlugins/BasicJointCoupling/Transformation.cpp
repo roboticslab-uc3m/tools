@@ -76,21 +76,78 @@ Transformation * LinearTransformation::inverse()
 
 bool PiecewiseLinearTransformation::configure(const yarp::os::Searchable & parameters)
 {
-    if (!parameters.check("csvFile"))
+    if (parameters.check("csvFile"))
     {
-        yCError(BJC) << R"("csvFile" parameter for PiecewiseLinearTransformation not found)";
-        return false;
+        if (!readCsvFile(parameters))
+        {
+            yCError(BJC) << "CSV file for PiecewiseLinearTransformation requested, but failed to read it";
+            return false;
+        }
+    }
+    else
+    {
+        yCInfo(BJC) << R"("csvFile" parameter for PiecewiseLinearTransformation not found, reading from local config)";
+
+        const auto * inDataList = parameters.find("inData").asList();
+        const auto * outDataList = parameters.find("outData").asList();
+
+        if (!inDataList || inDataList->isNull())
+        {
+            yCError(BJC) << R"("inData" parameter for PiecewiseLinearTransformation not found or not a list)";
+            return false;
+        }
+
+        if (!outDataList || outDataList->isNull())
+        {
+            yCError(BJC) << R"("outData" parameter for PiecewiseLinearTransformation not found or not a list)";
+            return false;
+        }
+
+        if (inDataList->size() != outDataList->size())
+        {
+            yCError(BJC) << R"("inData" and "outData" parameters for PiecewiseLinearTransformation must have the same size)";
+            return false;
+        }
+
+        for (auto i = 0; i < inDataList->size(); i++)
+        {
+            double inValue = inDataList->get(i).asFloat64();
+            double outValue = outDataList->get(i).asFloat64();
+
+            inData.push_back(inValue);
+            outData.push_back(outValue);
+
+            yCDebug(BJC, "[%f, %f]", inValue, outValue);
+        }
     }
 
-    std::string csvFileName = parameters.find("csvFile").asString();
-
-    if (!parameters.check("context"))
+    for (auto i = 1; i < inData.size(); i++)
     {
-        yCError(BJC) << R"("context" parameter for PiecewiseLinearTransformation not found)";
-        return false;
+        if (inData[i] <= inData[i - 1])
+        {
+            yCError(BJC) << "Input data is not strictly increasing at line" << (i + 1) << "->" << inData[i] << "<=" << inData[i - 1];
+            return false;
+        }
     }
 
-    std::string context = parameters.find("context").asString();
+    for (auto i = 1; i < outData.size(); i++)
+    {
+        if (outData[i] <= outData[i - 1])
+        {
+            yCError(BJC) << "Output data is not strictly increasing at line" << (i + 1) << "->" << outData[i] << "<=" << outData[i - 1];
+            return false;
+        }
+    }
+
+    return true;
+}
+
+// -----------------------------------------------------------------------------
+
+bool PiecewiseLinearTransformation::readCsvFile(const yarp::os::Searchable & parameters)
+{
+    auto csvFileName = parameters.find("csvFile").asString();
+    auto context = parameters.find("context").asString();
 
     if (!parameters.check("inColumn"))
     {
@@ -109,7 +166,11 @@ bool PiecewiseLinearTransformation::configure(const yarp::os::Searchable & param
     int outColumn = parameters.find("outColumn").asInt32();
 
     yarp::os::ResourceFinder rf;
-    rf.setDefaultContext(context);
+
+    if (!context.empty())
+    {
+        rf.setDefaultContext(context);
+    }
 
     std::string csvFileFullName = rf.findFileByName(csvFileName);
 
@@ -126,6 +187,8 @@ bool PiecewiseLinearTransformation::configure(const yarp::os::Searchable & param
         yCError(BJC) << "Unable to open CSV file:" << csvFileFullName;
         return false;
     }
+
+    yCInfo(BJC) << "Reading CSV file for PiecewiseLinearTransformation:" << csvFileFullName;
 
     std::string line;
 
@@ -158,24 +221,6 @@ bool PiecewiseLinearTransformation::configure(const yarp::os::Searchable & param
     }
 
     csvFile.close();
-
-    for (auto i = 1; i < inData.size(); i++)
-    {
-        if (inData[i] <= inData[i - 1])
-        {
-            yCError(BJC) << "Input data in CSV file is not strictly increasing at line" << (i + 1) << "->" << inData[i] << "<=" << inData[i - 1];
-            return false;
-        }
-    }
-
-    for (auto i = 1; i < outData.size(); i++)
-    {
-        if (outData[i] <= outData[i - 1])
-        {
-            yCError(BJC) << "Output data in CSV file is not strictly increasing at line" << (i + 1) << "->" << outData[i] << "<=" << outData[i - 1];
-            return false;
-        }
-    }
 
     return true;
 }

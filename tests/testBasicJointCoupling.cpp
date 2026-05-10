@@ -202,7 +202,53 @@ TEST_F(BasicJointCouplingTest, LinearTransformation)
 
 TEST_F(BasicJointCouplingTest, PiecewiseLinearTransformation)
 {
-    ;
+    yarp::os::Property options {
+        {"device", yarp::os::Value("BasicJointCoupling")},
+    };
+
+    options.put("actuatedAxes", yarp::os::Value::makeList("motor1"));
+    options.put("physicalJoints", yarp::os::Value::makeList("joint1 joint2"));
+    options.put("mins", yarp::os::Value::makeList("0.0 0.0"));
+    options.put("maxs", yarp::os::Value::makeList("30.0 90.0"));
+
+    options.fromString("(motor1 joint1 joint2)", false);
+
+    auto & joint1 = options.addGroup("joint1") = {{"transformation", yarp::os::Value("piecewiseLinear")}};
+    joint1.put("inData", yarp::os::Value::makeList("0.0 15.0 30.0"));
+    joint1.put("outData", yarp::os::Value::makeList("0.0 7.5 27.5"));
+
+    auto & joint2 = options.addGroup("joint2") = {{"transformation", yarp::os::Value("piecewiseLinear")}};
+    joint2.put("inData", yarp::os::Value::makeList("0.0 15.0 30.0"));
+    joint2.put("outData", yarp::os::Value::makeList("0.0 30.0 65.0"));
+
+    ASSERT_TRUE(device.open(options));
+    ASSERT_TRUE(device.view(coupling));
+    ASSERT_NE(coupling, nullptr);
+
+    actAxesPos = yarp::sig::Vector{10.0};
+    actAxesVel = yarp::sig::Vector{10.0};
+    actAxesAcc = yarp::sig::Vector{10.0};
+    actAxesTrq = yarp::sig::Vector{10.0};
+
+    ASSERT_TRUE(coupling->convertFromActuatedAxesToPhysicalJointsPos(actAxesPos, physJointsPos));
+    ASSERT_EQ(physJointsPos.size(), 2);
+    ASSERT_NEAR(physJointsPos[0], 5.0, EPS);
+    ASSERT_NEAR(physJointsPos[1], 20.0, EPS);
+
+    ASSERT_TRUE(coupling->convertFromActuatedAxesToPhysicalJointsVel(actAxesPos, actAxesVel, physJointsVel));
+    ASSERT_EQ(physJointsVel.size(), 2);
+    // ASSERT_NEAR(physJointsVel[0], 0.5, EPS);
+    // ASSERT_NEAR(physJointsVel[1], 2.0, EPS);
+
+    ASSERT_TRUE(coupling->convertFromActuatedAxesToPhysicalJointsAcc(actAxesPos, actAxesVel, actAxesAcc, physJointsAcc));
+    ASSERT_EQ(physJointsAcc.size(), 2);
+    ASSERT_NEAR(physJointsAcc[0], 0.0, EPS);
+    ASSERT_NEAR(physJointsAcc[1], 0.0, EPS);
+
+    ASSERT_TRUE(coupling->convertFromActuatedAxesToPhysicalJointsTrq(actAxesPos, actAxesTrq, physJointsTrq));
+    ASSERT_EQ(physJointsTrq.size(), 2);
+    ASSERT_NEAR(physJointsTrq[0], actAxesTrq[0], EPS);
+    ASSERT_NEAR(physJointsTrq[1], actAxesTrq[0], EPS);
 }
 
 TEST_F(BasicJointCouplingTest, ActuatedAxesToPhysicalJoints)

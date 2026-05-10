@@ -51,6 +51,7 @@ protected:
     PiecewiseLinearTransformation() = default;
     bool configure(const yarp::os::Searchable & parameters) override;
 private:
+    bool readCsvFile(const yarp::os::Searchable & parameters);
     std::vector<double> inData;
     std::vector<double> outData;
 };
