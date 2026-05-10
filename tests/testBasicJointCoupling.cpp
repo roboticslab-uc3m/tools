@@ -40,6 +40,7 @@ public:
     }
 
 protected:
+    static constexpr const double EPS = 1e-6;
     yarp::dev::PolyDriver device;
     yarp::dev::IJointCoupling * coupling {nullptr};
 };
@@ -102,6 +103,55 @@ TEST_F(BasicJointCouplingTest, Configure)
         ASSERT_EQ(min, 0.0);
         ASSERT_EQ(max, 30.0);
     }
+}
+
+TEST_F(BasicJointCouplingTest, ActuatedAxesToPhysicalJoints)
+{
+    ASSERT_TRUE(device.isValid());
+    ASSERT_NE(coupling, nullptr);
+
+    yarp::sig::Vector physJointsPos, physJointsVel, physJointsAcc, physJointsTrq;
+
+    yarp::sig::Vector actAxesPos {1.5, 3.0, 4.5};
+    yarp::sig::Vector actAxesVel {1.5, 3.0, 4.5};
+    yarp::sig::Vector actAxesAcc {1.5, 3.0, 4.5};
+    yarp::sig::Vector actAxesTrq {1.5, 3.0, 4.5};
+
+    ASSERT_TRUE(coupling->convertFromActuatedAxesToPhysicalJointsPos(actAxesPos, physJointsPos));
+    ASSERT_EQ(physJointsPos.size(), 6);
+    ASSERT_NEAR(physJointsPos[0], actAxesPos[0] * 0.5 + 0.0, EPS);
+    ASSERT_NEAR(physJointsPos[1], actAxesPos[0] * 1.0 + 0.1, EPS);
+    ASSERT_NEAR(physJointsPos[2], actAxesPos[1] * 2.0 + 0.5, EPS);
+    ASSERT_NEAR(physJointsPos[3], actAxesPos[2] * 0.25 + 1.0, EPS);
+    ASSERT_NEAR(physJointsPos[4], actAxesPos[2] * 0.5 + 0.0, EPS);
+    ASSERT_NEAR(physJointsPos[5], actAxesPos[2] * 0.75 - 1.0, EPS);
+
+    ASSERT_TRUE(coupling->convertFromActuatedAxesToPhysicalJointsVel(actAxesPos, actAxesVel, physJointsVel));
+    ASSERT_EQ(physJointsVel.size(), 6);
+    ASSERT_NEAR(physJointsVel[0], 0.5, EPS);
+    ASSERT_NEAR(physJointsVel[1], 1.0, EPS);
+    ASSERT_NEAR(physJointsVel[2], 2.0, EPS);
+    ASSERT_NEAR(physJointsVel[3], 0.25, EPS);
+    ASSERT_NEAR(physJointsVel[4], 0.5, EPS);
+    ASSERT_NEAR(physJointsVel[5], 0.75, EPS);
+
+    ASSERT_TRUE(coupling->convertFromActuatedAxesToPhysicalJointsAcc(actAxesPos, actAxesVel, actAxesAcc, physJointsAcc));
+    ASSERT_EQ(physJointsAcc.size(), 6);
+    ASSERT_NEAR(physJointsAcc[0], 0.0, EPS);
+    ASSERT_NEAR(physJointsAcc[1], 0.0, EPS);
+    ASSERT_NEAR(physJointsAcc[2], 0.0, EPS);
+    ASSERT_NEAR(physJointsAcc[3], 0.0, EPS);
+    ASSERT_NEAR(physJointsAcc[4], 0.0, EPS);
+    ASSERT_NEAR(physJointsAcc[5], 0.0, EPS);
+
+    ASSERT_TRUE(coupling->convertFromActuatedAxesToPhysicalJointsTrq(actAxesPos, actAxesTrq, physJointsTrq));
+    ASSERT_EQ(physJointsTrq.size(), 6);
+    ASSERT_NEAR(physJointsTrq[0], actAxesTrq[0], EPS);
+    ASSERT_NEAR(physJointsTrq[1], actAxesTrq[0], EPS);
+    ASSERT_NEAR(physJointsTrq[2], actAxesTrq[1], EPS);
+    ASSERT_NEAR(physJointsTrq[3], actAxesTrq[2], EPS);
+    ASSERT_NEAR(physJointsTrq[4], actAxesTrq[2], EPS);
+    ASSERT_NEAR(physJointsTrq[5], actAxesTrq[2], EPS);
 }
 
 } // namespace roboticslab::test
