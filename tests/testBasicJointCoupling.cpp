@@ -215,11 +215,11 @@ TEST_F(BasicJointCouplingTest, PiecewiseLinearTransformation)
 
     auto & joint1 = options.addGroup("joint1") = {{"transformation", yarp::os::Value("piecewiseLinear")}};
     joint1.put("inData", yarp::os::Value::makeList("0.0 15.0 30.0"));
-    joint1.put("outData", yarp::os::Value::makeList("0.0 7.5 27.5"));
+    joint1.put("outData", yarp::os::Value::makeList("0.0 7.5 22.5"));
 
     auto & joint2 = options.addGroup("joint2") = {{"transformation", yarp::os::Value("piecewiseLinear")}};
     joint2.put("inData", yarp::os::Value::makeList("0.0 15.0 30.0"));
-    joint2.put("outData", yarp::os::Value::makeList("0.0 30.0 65.0"));
+    joint2.put("outData", yarp::os::Value::makeList("0.0 30.0 75.0"));
 
     ASSERT_TRUE(device.open(options));
     ASSERT_TRUE(device.view(coupling));
@@ -249,6 +249,73 @@ TEST_F(BasicJointCouplingTest, PiecewiseLinearTransformation)
     ASSERT_EQ(physJointsTrq.size(), 2);
     ASSERT_NEAR(physJointsTrq[0], actAxesTrq[0], EPS);
     ASSERT_NEAR(physJointsTrq[1], actAxesTrq[0], EPS);
+
+    physJointsPos = {5.0, 10.0};
+    physJointsVel = {5.0, 10.0};
+    physJointsAcc = {5.0, 10.0};
+    physJointsTrq = {5.0, 10.0};
+
+    ASSERT_TRUE(coupling->convertFromPhysicalJointsToActuatedAxesPos(physJointsPos, actAxesPos));
+    ASSERT_EQ(actAxesPos.size(), 1);
+    ASSERT_NEAR(actAxesPos[0], 5.0, EPS);
+
+    ASSERT_TRUE(coupling->convertFromPhysicalJointsToActuatedAxesVel(physJointsPos, physJointsVel, actAxesVel));
+    ASSERT_EQ(actAxesVel.size(), 1);
+    ASSERT_NEAR(actAxesVel[0], 0.5, EPS);
+
+    ASSERT_TRUE(coupling->convertFromPhysicalJointsToActuatedAxesAcc(physJointsPos, physJointsVel, physJointsAcc, actAxesAcc));
+    ASSERT_EQ(actAxesAcc.size(), 1);
+    ASSERT_NEAR(actAxesAcc[0], 0.0, EPS);
+
+    ASSERT_TRUE(coupling->convertFromPhysicalJointsToActuatedAxesTrq(physJointsPos, physJointsTrq, actAxesTrq));
+    ASSERT_EQ(actAxesTrq.size(), 1);
+    ASSERT_NEAR(actAxesTrq[0], 5.0, EPS);
+
+    actAxesPos = yarp::sig::Vector{20.0};
+    actAxesVel = yarp::sig::Vector{20.0};
+    actAxesAcc = yarp::sig::Vector{20.0};
+    actAxesTrq = yarp::sig::Vector{20.0};
+
+    ASSERT_TRUE(coupling->convertFromActuatedAxesToPhysicalJointsPos(actAxesPos, physJointsPos));
+    ASSERT_EQ(physJointsPos.size(), 2);
+    ASSERT_NEAR(physJointsPos[0], 12.5, EPS);
+    ASSERT_NEAR(physJointsPos[1], 45.0, EPS);
+
+    ASSERT_TRUE(coupling->convertFromActuatedAxesToPhysicalJointsVel(actAxesPos, actAxesVel, physJointsVel));
+    ASSERT_EQ(physJointsVel.size(), 2);
+    ASSERT_NEAR(physJointsVel[0], 1.0, EPS);
+    ASSERT_NEAR(physJointsVel[1], 3.0, EPS);
+
+    ASSERT_TRUE(coupling->convertFromActuatedAxesToPhysicalJointsAcc(actAxesPos, actAxesVel, actAxesAcc, physJointsAcc));
+    ASSERT_EQ(physJointsAcc.size(), 2);
+    ASSERT_NEAR(physJointsAcc[0], 0.0, EPS);
+    ASSERT_NEAR(physJointsAcc[1], 0.0, EPS);
+
+    ASSERT_TRUE(coupling->convertFromActuatedAxesToPhysicalJointsTrq(actAxesPos, actAxesTrq, physJointsTrq));
+    ASSERT_EQ(physJointsTrq.size(), 2);
+    ASSERT_NEAR(physJointsTrq[0], actAxesTrq[0], EPS);
+    ASSERT_NEAR(physJointsTrq[1], actAxesTrq[0], EPS);
+
+    physJointsPos = {12.5, 60.0};
+    physJointsVel = {12.5, 60.0};
+    physJointsAcc = {12.5, 60.0};
+    physJointsTrq = {12.5, 60.0};
+
+    ASSERT_TRUE(coupling->convertFromPhysicalJointsToActuatedAxesPos(physJointsPos, actAxesPos));
+    ASSERT_EQ(actAxesPos.size(), 1);
+    ASSERT_NEAR(actAxesPos[0], 20.0, EPS);
+
+    ASSERT_TRUE(coupling->convertFromPhysicalJointsToActuatedAxesVel(physJointsPos, physJointsVel, actAxesVel));
+    ASSERT_EQ(actAxesVel.size(), 1);
+    ASSERT_NEAR(actAxesVel[0], 0.333333, EPS);
+
+    ASSERT_TRUE(coupling->convertFromPhysicalJointsToActuatedAxesAcc(physJointsPos, physJointsVel, physJointsAcc, actAxesAcc));
+    ASSERT_EQ(actAxesAcc.size(), 1);
+    ASSERT_NEAR(actAxesAcc[0], 0.0, EPS);
+
+    ASSERT_TRUE(coupling->convertFromPhysicalJointsToActuatedAxesTrq(physJointsPos, physJointsTrq, actAxesTrq));
+    ASSERT_EQ(actAxesTrq.size(), 1);
+    ASSERT_NEAR(actAxesTrq[0], 12.5, EPS);
 }
 
 TEST_F(BasicJointCouplingTest, ActuatedAxesToPhysicalJoints)
