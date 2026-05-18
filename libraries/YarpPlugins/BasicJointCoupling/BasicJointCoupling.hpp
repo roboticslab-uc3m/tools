@@ -41,7 +41,7 @@ public:
     bool open(yarp::os::Searchable & config) override;
     bool close() override;
 
-    // -------- IJointCoupling declarations. Implementation in JointCouplingImpl.cpp --------
+    // -------- IJointCoupling declarations. Implementation in IJointCouplingImpl.cpp --------
     bool convertFromPhysicalJointsToActuatedAxesPos(const yarp::sig::Vector & physJointsPos, yarp::sig::Vector & actAxesPos) override;
     bool convertFromPhysicalJointsToActuatedAxesVel(const yarp::sig::Vector & physJointsPos, const yarp::sig::Vector & physJointsVel, yarp::sig::Vector & actAxesVel) override;
     bool convertFromPhysicalJointsToActuatedAxesAcc(const yarp::sig::Vector & physJointsPos, const yarp::sig::Vector & physJointsVel, const yarp::sig::Vector & physJointsAcc, yarp::sig::Vector & actAxesAcc) override;

@@ -2,6 +2,7 @@
 
 #include "BasicJointCoupling.hpp"
 
+#include <algorithm> // std::clamp
 #include <limits>
 
 #include <yarp/os/LogStream.h>
@@ -23,12 +24,15 @@ bool BasicJointCoupling::convertFromPhysicalJointsToActuatedAxesPos(const yarp::
     for (auto actuatedAxisIndex = 0; actuatedAxisIndex < numberOfActuatedAxes; actuatedAxisIndex++)
     {
         auto range = actuatedToPhysical.equal_range(actuatedAxisIndex);
-        double minValue = std::numeric_limits<double>::max();
+        auto minValue = std::numeric_limits<double>::max();
 
         for (auto it = range.first; it != range.second; ++it)
         {
             auto [physicalJointIndex, transformation] = it->second;
-            double value = transformation->position(physJointsPos[physicalJointIndex]);
+            auto position = physJointsPos[physicalJointIndex];
+            auto minLimit = physicalJointLimitsMins[physicalJointIndex];
+            auto maxLimit = physicalJointLimitsMaxs[physicalJointIndex];
+            auto value = transformation->position(std::clamp(position, minLimit, maxLimit));
 
             if (value < minValue)
             {
@@ -63,12 +67,12 @@ bool BasicJointCoupling::convertFromPhysicalJointsToActuatedAxesVel(const yarp::
     for (auto actuatedAxisIndex = 0; actuatedAxisIndex < numberOfActuatedAxes; actuatedAxisIndex++)
     {
         auto range = actuatedToPhysical.equal_range(actuatedAxisIndex);
-        double minValue = std::numeric_limits<double>::max();
+        auto minValue = std::numeric_limits<double>::max();
 
         for (auto it = range.first; it != range.second; ++it)
         {
             auto [physicalJointIndex, transformation] = it->second;
-            double value = transformation->velocity(physJointsPos[physicalJointIndex], physJointsVel[physicalJointIndex]);
+            auto value = transformation->velocity(physJointsPos[physicalJointIndex], physJointsVel[physicalJointIndex]);
 
             if (value < minValue)
             {
@@ -109,12 +113,12 @@ bool BasicJointCoupling::convertFromPhysicalJointsToActuatedAxesAcc(const yarp::
     for (auto actuatedAxisIndex = 0; actuatedAxisIndex < numberOfActuatedAxes; actuatedAxisIndex++)
     {
         auto range = actuatedToPhysical.equal_range(actuatedAxisIndex);
-        double minValue = std::numeric_limits<double>::max();
+        auto minValue = std::numeric_limits<double>::max();
 
         for (auto it = range.first; it != range.second; ++it)
         {
             auto [physicalJointIndex, transformation] = it->second;
-            double value = transformation->acceleration(physJointsPos[physicalJointIndex], physJointsVel[physicalJointIndex], physJointsAcc[physicalJointIndex]);
+            auto value = transformation->acceleration(physJointsPos[physicalJointIndex], physJointsVel[physicalJointIndex], physJointsAcc[physicalJointIndex]);
 
             if (value < minValue)
             {
@@ -149,12 +153,12 @@ bool BasicJointCoupling::convertFromPhysicalJointsToActuatedAxesTrq(const yarp::
     for (auto actuatedAxisIndex = 0; actuatedAxisIndex < numberOfActuatedAxes; actuatedAxisIndex++)
     {
         auto range = actuatedToPhysical.equal_range(actuatedAxisIndex);
-        double minValue = std::numeric_limits<double>::max();
+        auto minValue = std::numeric_limits<double>::max();
 
         for (auto it = range.first; it != range.second; ++it)
         {
             auto [physicalJointIndex, transformation] = it->second;
-            double value = physJointsTrq[physicalJointIndex];
+            auto value = physJointsTrq[physicalJointIndex];
 
             if (value < minValue)
             {
@@ -183,7 +187,10 @@ bool BasicJointCoupling::convertFromActuatedAxesToPhysicalJointsPos(const yarp::
     for (auto physicalJointIndex = 0; physicalJointIndex < numberOfPhysicalJoints; physicalJointIndex++)
     {
         auto [actuatedAxisIndex, transformation] = physicalToActuated[physicalJointIndex];
-        physJointsPos[physicalJointIndex] = transformation->position(actAxesPos[actuatedAxisIndex]);
+        auto position = transformation->position(actAxesPos[actuatedAxisIndex]);
+        auto minValue = physicalJointLimitsMins[physicalJointIndex];
+        auto maxValue = physicalJointLimitsMaxs[physicalJointIndex];
+        physJointsPos[physicalJointIndex] = std::clamp(position, minValue, maxValue);
     }
 
     return true;
