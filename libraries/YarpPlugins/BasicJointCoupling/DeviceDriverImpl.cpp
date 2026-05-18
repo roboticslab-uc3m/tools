@@ -16,22 +16,30 @@ using namespace roboticslab;
 
 bool BasicJointCoupling::open(yarp::os::Searchable & config)
 {
-    if (!parseParams(config))
+    yarp::os::Property fullConfig;
+
+    if (const auto & couplingGroup = config.findGroup("COUPLING"); !couplingGroup.isNull())
+    {
+        fullConfig.fromString(couplingGroup.toString(), false);
+    }
+
+    // allow override of config file parameters with command line parameters
+    fullConfig.fromString(config.toString(), false);
+
+    if (!parseParams(fullConfig))
     {
         yCError(BJC) << "Failed to parse parameters";
         return false;
     }
 
-    yarp::os::Property fullConfig;
-
     if (!m_configFile.empty())
     {
         yarp::os::ResourceFinder rf;
-        rf.setDefaultContext("BasicJointCoupling");
+        rf.setDefaultContext("coupling");
 
         std::string configFileFullPath = rf.findFileByName(m_configFile);
 
-        if (!configFileFullPath.empty() && fullConfig.fromConfigFile(configFileFullPath))
+        if (!configFileFullPath.empty() && fullConfig.fromConfigFile(configFileFullPath, false))
         {
             yCInfo(BJC) << "Using config file:" << configFileFullPath;
         }
@@ -40,11 +48,6 @@ bool BasicJointCoupling::open(yarp::os::Searchable & config)
             yCWarning(BJC) << "Failed to read configuration file:" << m_configFile;
         }
     }
-
-    // allow override of config file parameters with command line parameters
-    fullConfig.fromString(config.toString(), false);
-
-    yCInfo(BJC) << "Full configuration:" << fullConfig.toString();
 
     const auto * actuatedAxes = fullConfig.find("actuatedAxes").asList();
     const auto * physicalJoints = fullConfig.find("physicalJoints").asList();
