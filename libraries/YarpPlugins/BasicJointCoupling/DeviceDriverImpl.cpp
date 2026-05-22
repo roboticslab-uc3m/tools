@@ -83,6 +83,11 @@ bool BasicJointCoupling::open(yarp::os::Searchable & config)
     yCInfo(BJC) << "Physical joint limits mins:" << physicalJointLimitsMins->toString();
     yCInfo(BJC) << "Physical joint limits maxs:" << physicalJointLimitsMaxs->toString();
 
+    if (!m_prefix.empty())
+    {
+        yCInfo(BJC) << "Using joint prefix:" << m_prefix;
+    }
+
     numberOfActuatedAxes = actuatedAxes->size();
     numberOfPhysicalJoints = physicalJoints->size();
 

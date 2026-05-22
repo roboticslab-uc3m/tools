@@ -325,7 +325,7 @@ bool BasicJointCoupling::getActuatedAxisName(std::size_t actuatedAxisIndex, std:
         return false;
     }
 
-    actuatedAxisName = actuatedAxesNames[actuatedAxisIndex];
+    actuatedAxisName = m_prefix + actuatedAxesNames[actuatedAxisIndex];
     return true;
 }
 
@@ -339,7 +339,7 @@ bool BasicJointCoupling::getPhysicalJointName(std::size_t physicalJointIndex, st
         return false;
     }
 
-    physicalJointName = physicalJointsNames[physicalJointIndex];
+    physicalJointName = m_prefix + physicalJointsNames[physicalJointIndex];
     return true;
 }
 

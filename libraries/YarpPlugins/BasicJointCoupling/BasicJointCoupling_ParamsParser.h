@@ -8,7 +8,7 @@
 // This is an automatically generated file. Please do not edit it.
 // It will be re-generated if the cmake flag ALLOW_DEVICE_PARAM_PARSER_GERNERATION is ON.
 
-// Generated on: Sun May 10 18:29:16 2026
+// Generated on: Fri May 22 21:01:32 2026
 
 
 #ifndef BASICJOINTCOUPLING_PARAMSPARSER_H
@@ -23,13 +23,14 @@
 * This class is the parameters parser for class BasicJointCoupling.
 *
 * These are the used parameters:
-* | Group name | Parameter name | Type   | Units | Default Value | Required | Description             | Notes |
-* |:----------:|:--------------:|:------:|:-----:|:-------------:|:--------:|:-----------------------:|:-----:|
-* | -          | configFile     | string | -     | -             | 0        | .ini configuration file | -     |
+* | Group name | Parameter name | Type   | Units | Default Value | Required | Description                | Notes |
+* |:----------:|:--------------:|:------:|:-----:|:-------------:|:--------:|:--------------------------:|:-----:|
+* | -          | configFile     | string | -     | -             | 0        | .ini configuration file    | -     |
+* | -          | prefix         | string | -     | -             | 0        | prefix for all joint names | -     |
 *
 * The device can be launched by yarpdev using one of the following examples (with and without all optional parameters):
 * \code{.unparsed}
-* yarpdev --device BasicJointCoupling --configFile <optional_value>
+* yarpdev --device BasicJointCoupling --configFile <optional_value> --prefix <optional_value>
 * \endcode
 *
 * \code{.unparsed}
@@ -58,8 +59,10 @@ public:
     std::string m_provided_configuration;
 
     const std::string m_configFile_defaultValue = {""};
+    const std::string m_prefix_defaultValue = {""};
 
     std::string m_configFile = {}; //This default value of this string is an empty string. It is highly recommended to provide a suggested value also for optional string parameters.
+    std::string m_prefix = {}; //This default value of this string is an empty string. It is highly recommended to provide a suggested value also for optional string parameters.
 
     bool          parseParams(const yarp::os::Searchable & config) override;
     std::string   getDeviceClassName() const override { return m_device_classname; }

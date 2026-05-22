@@ -8,7 +8,7 @@
 // This is an automatically generated file. Please do not edit it.
 // It will be re-generated if the cmake flag ALLOW_DEVICE_PARAM_PARSER_GERNERATION is ON.
 
-// Generated on: Sun May 10 18:29:16 2026
+// Generated on: Fri May 22 21:01:32 2026
 
 
 #include "BasicJointCoupling_ParamsParser.h"
@@ -29,6 +29,7 @@ std::vector<std::string> BasicJointCoupling_ParamsParser::getListOfParams() cons
 {
     std::vector<std::string> params;
     params.push_back("configFile");
+    params.push_back("prefix");
     return params;
 }
 
@@ -38,6 +39,11 @@ bool BasicJointCoupling_ParamsParser::getParamValue(const std::string& paramName
     if (paramName =="configFile")
     {
         paramValue = m_configFile;
+        return true;
+    }
+    if (paramName =="prefix")
+    {
+        paramValue = m_prefix;
         return true;
     }
 
@@ -81,6 +87,20 @@ bool      BasicJointCoupling_ParamsParser::parseParams(const yarp::os::Searchabl
         prop_check.unput("configFile");
     }
 
+    //Parser of parameter prefix
+    {
+        if (config.check("prefix"))
+        {
+            m_prefix = config.find("prefix").asString();
+            yCInfo(BasicJointCouplingParamsCOMPONENT) << "Parameter 'prefix' using value:" << m_prefix;
+        }
+        else
+        {
+            yCInfo(BasicJointCouplingParamsCOMPONENT) << "Parameter 'prefix' using DEFAULT value:" << m_prefix;
+        }
+        prop_check.unput("prefix");
+    }
+
     /*
     //This code check if the user set some parameter which are not check by the parser
     //If the parser is set in strict mode, this will generate an error
@@ -118,9 +138,10 @@ std::string      BasicJointCoupling_ParamsParser::getDocumentationOfDeviceParams
     doc = doc + std::string("\n");
     doc = doc + std::string("This is the list of the parameters accepted by the device:\n");
     doc = doc + std::string("'configFile': .ini configuration file\n");
+    doc = doc + std::string("'prefix': prefix for all joint names\n");
     doc = doc + std::string("\n");
     doc = doc + std::string("Here are some examples of invocation command with yarpdev, with all params:\n");
-    doc = doc + " yarpdev --device BasicJointCoupling --configFile <optional_value>\n";
+    doc = doc + " yarpdev --device BasicJointCoupling --configFile <optional_value> --prefix <optional_value>\n";
     doc = doc + std::string("Using only mandatory params:\n");
     doc = doc + " yarpdev --device BasicJointCoupling\n";
     doc = doc + std::string("=============================================\n\n");    return doc;
