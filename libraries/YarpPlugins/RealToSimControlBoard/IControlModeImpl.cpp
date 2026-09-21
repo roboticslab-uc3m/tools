@@ -10,104 +10,145 @@ using namespace roboticslab;
 
 // ------------------ IControlMode Related ----------------------------------------
 
-bool RealToSimControlBoard::getControlMode(int j, int * mode)
+#if YARP_VERSION_COMPARE(>=, 4, 0, 0)
+yarp::dev::ReturnValue RealToSimControlBoard::getAvailableControlModes(int j, std::vector<yarp::dev::SelectableControlModeEnum> & avail)
 {
     if (j < 0 || static_cast<unsigned int>(j) > axes)
     {
         yCError(R2SCB) << "Illegal axis index:" << j;
-        return false;
+        return yarp::dev::ReturnValue::return_code::return_value_error_input_out_of_bounds;
     }
 
-    switch (controlMode)
+    avail = {
+        yarp::dev::SelectableControlModeEnum::VOCAB_CM_POSITION,
+        yarp::dev::SelectableControlModeEnum::VOCAB_CM_POSITION_DIRECT,
+        yarp::dev::SelectableControlModeEnum::VOCAB_CM_VELOCITY
+    };
+
+    return yarp::dev::ReturnValue::return_code::return_value_ok;
+}
+#endif
+
+// -----------------------------------------------------------------------------
+
+#if YARP_VERSION_COMPARE(>=, 4, 0, 0)
+yarp::dev::ReturnValue RealToSimControlBoard::getControlMode(int j, yarp::dev::ControlModeEnum & mode)
+#else
+bool RealToSimControlBoard::getControlMode(int j, int * mode)
+#endif
+{
+    if (j < 0 || static_cast<unsigned int>(j) > axes)
     {
-    case POSITION_MODE:
-        *mode = VOCAB_CM_POSITION;
-        break;
-    case VELOCITY_MODE:
-        *mode = VOCAB_CM_VELOCITY;
-        break;
-    case POSITION_DIRECT_MODE:
-        *mode = VOCAB_CM_POSITION_DIRECT;
-        break;
-    default:
-        yCError(R2SCB) << "Currently unsupported mode";
+        yCError(R2SCB) << "Illegal axis index:" << j;
+#if YARP_VERSION_COMPARE(>=, 4, 0, 0)
+        return yarp::dev::ReturnValue::return_code::return_value_error_input_out_of_bounds;
+#else
         return false;
+#endif
     }
 
+#if YARP_VERSION_COMPARE(>=, 4, 0, 0)
+    mode = static_cast<yarp::dev::ControlModeEnum>(controlMode);
+    return yarp::dev::ReturnValue::return_code::return_value_ok;
+#else
+    *mode = controlMode;
     return true;
+#endif
 }
 
 // -----------------------------------------------------------------------------
 
+#if YARP_VERSION_COMPARE(>=, 4, 0, 0)
+yarp::dev::ReturnValue RealToSimControlBoard::getControlModes(std::vector<yarp::dev::ControlModeEnum> & modes)
+#else
 bool RealToSimControlBoard::getControlModes(int * modes)
+#endif
 {
     bool ok = true;
 
     for (auto i = 0; i < axes; i++)
     {
+#if YARP_VERSION_COMPARE(>=, 4, 0, 0)
+        ok &= getControlMode(i, modes[i]);
+#else
         ok &= getControlMode(i, &modes[i]);
+#endif
     }
 
+#if YARP_VERSION_COMPARE(>=, 4, 0, 0)
+    return ok
+        ? yarp::dev::ReturnValue::return_code::return_value_ok
+        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+#else
     return ok;
+#endif
 }
 
 // -----------------------------------------------------------------------------
 
+#if YARP_VERSION_COMPARE(>=, 4, 0, 0)
+yarp::dev::ReturnValue RealToSimControlBoard::getControlModes(const std::vector<int> & joints, std::vector<yarp::dev::ControlModeEnum> & modes)
+#else
 bool RealToSimControlBoard::getControlModes(int n_joint, const int * joints, int * modes)
+#endif
 {
     bool ok = true;
 
+#if YARP_VERSION_COMPARE(>=, 4, 0, 0)
+    for (auto i = 0; i < joints.size(); i++)
+    {
+        ok &= getControlMode(joints[i], modes[i]);
+    }
+#else
     for (auto i = 0; i < n_joint; i++)
     {
         ok &= getControlMode(joints[i], &modes[i]);
     }
+#endif
 
+#if YARP_VERSION_COMPARE(>=, 4, 0, 0)
+    return ok
+        ? yarp::dev::ReturnValue::return_code::return_value_ok
+        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+#else
     return ok;
+#endif
 }
 
 // -----------------------------------------------------------------------------
 
+#if YARP_VERSION_COMPARE(>=, 4, 0, 0)
+yarp::dev::ReturnValue RealToSimControlBoard::setControlMode(int j, yarp::dev::SelectableControlModeEnum mode)
+#else
 bool RealToSimControlBoard::setControlMode(int j, const int mode)
+#endif
 {
     if (j < 0 || static_cast<unsigned int>(j) > axes)
     {
         yCError(R2SCB) << "Illegal axis index:" << j;
+#if YARP_VERSION_COMPARE(>=, 4, 0, 0)
+        return yarp::dev::ReturnValue::return_code::return_value_error_input_out_of_bounds;
+#else
         return false;
+#endif
     }
 
-    switch (mode)
-    {
-    case VOCAB_CM_POSITION:
-        controlMode = POSITION_MODE;
-        return true;
-    case VOCAB_CM_VELOCITY:
-        controlMode = VELOCITY_MODE;
-        return true;
-    case VOCAB_CM_POSITION_DIRECT:
-        controlMode = POSITION_DIRECT_MODE;
-        return true;
-    default:
-        return false;
-    }
+#if YARP_VERSION_COMPARE(>=, 4, 0, 0)
+    controlMode = static_cast<yarp::conf::vocab32_t>(mode);
+    return yarp::dev::ReturnValue::return_code::return_value_ok;
+#else
+    controlMode = mode;
+    return true;
+#endif
 }
 
 // -----------------------------------------------------------------------------
 
-bool RealToSimControlBoard::setControlModes(int n_joint, const int * joints, int * modes)
-{
-    bool ok = true;
-
-    for (auto i = 0; i < n_joint; i++)
-    {
-        ok &= setControlMode(joints[i], modes[i]);
-    }
-
-    return ok;
-}
-
-// -----------------------------------------------------------------------------
-
+#if YARP_VERSION_COMPARE(>=, 4, 0, 0)
+yarp::dev::ReturnValue RealToSimControlBoard::setControlModes(const std::vector<yarp::dev::SelectableControlModeEnum> & modes)
+#else
 bool RealToSimControlBoard::setControlModes(int * modes)
+#endif
 {
     bool ok = true;
 
@@ -116,7 +157,41 @@ bool RealToSimControlBoard::setControlModes(int * modes)
         ok &= setControlMode(i, modes[i]);
     }
 
+#if YARP_VERSION_COMPARE(>=, 4, 0, 0)
+    return ok
+        ? yarp::dev::ReturnValue::return_code::return_value_ok
+        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+#else
     return ok;
+#endif
+}
+
+// -----------------------------------------------------------------------------
+
+#if YARP_VERSION_COMPARE(>=, 4, 0, 0)
+yarp::dev::ReturnValue RealToSimControlBoard::setControlModes(const std::vector<int> & joints, const std::vector<yarp::dev::SelectableControlModeEnum> & modes)
+#else
+bool RealToSimControlBoard::setControlModes(int n_joint, const int * joints, int * modes)
+#endif
+{
+    bool ok = true;
+
+#if YARP_VERSION_COMPARE(>=, 4, 0, 0)
+    for (auto i = 0; i < joints.size(); i++)
+#else
+    for (auto i = 0; i < n_joint; i++)
+#endif
+    {
+        ok &= setControlMode(joints[i], modes[i]);
+    }
+
+#if YARP_VERSION_COMPARE(>=, 4, 0, 0)
+    return ok
+        ? yarp::dev::ReturnValue::return_code::return_value_ok
+        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+#else
+    return ok;
+#endif
 }
 
 // -----------------------------------------------------------------------------

@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+#include <yarp/conf/version.h>
+
 #include <yarp/os/LogComponent.h>
 #include <yarp/os/LogStream.h>
 #include <yarp/os/Property.h>
@@ -78,9 +80,13 @@ bool ControlBoardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
     }
 
     //-- Resize encPoss
-    int axes;
+    std::size_t axes;
 
-    if (!iEncodersIn->getAxes(&axes))
+#if YARP_VERSION_COMPARE(>=, 4, 0, 0)
+    if (!iEncodersIn->getAxes(axes))
+#else
+    if (!iEncodersIn->getAxes(reinterpret_cast<int *>(&axes)))
+#endif
     {
         yCError(CBS2P) << "Failed to iEncodersIn->getAxes()";
     }
@@ -90,9 +96,11 @@ bool ControlBoardStateToIPosition::configure(yarp::os::ResourceFinder &rf)
     encPoss.resize(axes);
 
     //-- Set PositionDirect
-    std::vector<int> modes(axes, VOCAB_CM_POSITION_DIRECT);
-
-    if (!iControlModeOut->setControlModes(modes.data()))
+#if YARP_VERSION_COMPARE(>=, 4, 0, 0)
+    if (!iControlModeOut->setControlModes(std::vector(axes, yarp::dev::SelectableControlModeEnum::VOCAB_CM_POSITION)))
+#else
+    if (std::vector<int> modes(axes, VOCAB_CM_POSITION_DIRECT); !iControlModeOut->setControlModes(modes.data()))
+#endif
     {
         yCError(CBS2P) << "Failed to iControlModeOut->setControlModes()";
     }

@@ -5,7 +5,12 @@ project(examplePlaybackThread LANGUAGES CXX)
 
 # Find YARP. Point the YARP_DIR environment variable at your build.
 if(NOT YARP_FOUND)
-    find_package(YARP 3.11 REQUIRED COMPONENTS os dev)
+    set(_yarp_components os dev)
+    find_package(YARP 3.12 QUIET COMPONENTS ${_yarp_components})
+
+    if(NOT YARP_FOUND)
+        find_package(YARP 4.0 REQUIRED COMPONENTS ${_yarp_components})
+    endif()
 endif()
 
 # Find ROBOTICSLAB_TOOLS.

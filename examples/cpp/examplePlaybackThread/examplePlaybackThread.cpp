@@ -3,6 +3,7 @@
 #include <string>
 
 #include <yarp/conf/filesystem.h>
+#include <yarp/conf/version.h>
 
 #include <yarp/os/LogStream.h>
 #include <yarp/os/Network.h>
@@ -88,10 +89,18 @@ int main(int argc, char * argv[])
         return 1;
     }
 
-    int axes;
-    runnable.iPositionDirect->getAxes(&axes);
+    std::size_t axes;
+#if YARP_VERSION_COMPARE(>=, 4, 0, 0)
+    runnable.iPositionDirect->getAxes(axes);
+#else
+    runnable.iPositionDirect->getAxes(reinterpret_cast<int *>(&axes));
+#endif
 
+#if YARP_VERSION_COMPARE(>=, 4, 0, 0)
+    if (!mode->setControlModes(std::vector(axes, yarp::dev::SelectableControlModeEnum::VOCAB_CM_POSITION_DIRECT)))
+#else
     if (!mode->setControlModes(std::vector<int>(axes, VOCAB_CM_POSITION_DIRECT).data()))
+#endif
     {
         yError() << "Unable to switch to position direct mode";
         return 1;

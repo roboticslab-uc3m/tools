@@ -26,10 +26,18 @@ bool RealToSimControlBoard::open(yarp::os::Searchable & config)
     switch (m_modePosVel)
     {
     case 0:
-        controlMode = POSITION_MODE;
+#if YARP_VERSION_COMPARE(>=, 4, 0, 0)
+        controlMode = static_cast<yarp::conf::vocab32_t>(yarp::dev::ControlModeEnum::VOCAB_CM_POSITION);
+#else
+        controlMode = VOCAB_CM_POSITION;
+#endif
         break;
     case 1:
-        controlMode = VELOCITY_MODE;
+#if YARP_VERSION_COMPARE(>=, 4, 0, 0)
+        controlMode = static_cast<yarp::conf::vocab32_t>(yarp::dev::ControlModeEnum::VOCAB_CM_VELOCITY);
+#else
+        controlMode = VOCAB_CM_VELOCITY;
+#endif
         break;
     default:
         yCError(R2SCB) << "Unrecognized mode identifier:" << m_modePosVel;

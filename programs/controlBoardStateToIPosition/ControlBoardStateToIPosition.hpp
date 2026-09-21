@@ -26,51 +26,9 @@ public:
         : yarp::os::PeriodicThread(1.0, yarp::os::PeriodicThreadClock::Absolute)
     {}
 
-    /**
-     * Configure the module, pass a ResourceFinder object to the module.
-     *
-     * @param rf a previously initialized ResourceFinder
-     * @return true/false upon success/failure
-     *
-     * \note attachTerminal() is no longer called automatically. You
-     * can call it in the configure function.
-     */
     bool configure(yarp::os::ResourceFinder &rf) override;
-
-    /**
-     * Close function.
-     *
-     * This is called automatically when the module closes, after the last call
-     * to updateModule. Override this to cleanup memory allocated in the
-     * configure() function or perform other activities that ensure graceful
-     * shutdown.
-     *
-     * @return true/false on success failure.
-     */
     bool close() override;
-
-    /**
-     * Override this to do whatever your module needs to do.
-     *
-     * When your module wants to stop, return false.  The module's actual
-     * work could be done during this call, or it could just check the
-     * state of a thread running in the background.
-     *
-     * @return true iff module should continue
-    */
     bool updateModule() override;
-
-    /**
-     * Loop function. This is the thread itself.
-     * The thread calls the run() function every <period> ms.
-     * At the end of each run, the thread will sleep the amounth of time
-     * required, taking into account the time spent inside the loop function.
-     * Example:  requested period is 10ms, the run() function take 3ms to
-     * be executed, the thread will sleep for 7ms.
-     *
-     * Note: after each run is completed, the thread will call a yield()
-     * in order to facilitate other threads to run.
-     */
     void run() override;
 
 private:
