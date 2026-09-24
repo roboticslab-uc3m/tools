@@ -14,7 +14,7 @@ using namespace roboticslab;
 yarp::dev::ReturnValue RealToSimControlBoard::getAxes(std::size_t & ax)
 {
     ax = axes;
-    return yarp::dev::ReturnValue::return_code::return_value_ok;
+    return yarp::dev::ReturnValue_ok;
 }
 #else
 bool RealToSimControlBoard::getAxes(int * ax)
@@ -36,7 +36,7 @@ bool RealToSimControlBoard::positionMove(int j, double ref)
     {
         yCError(R2SCB) << "Illegal axis index:" << j;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_input_out_of_bounds;
+        return yarp::dev::ReturnValue_error_input_out_of_bounds;
 #else
         return false;
 #endif
@@ -45,9 +45,7 @@ bool RealToSimControlBoard::positionMove(int j, double ref)
     storedPositions[j] = ref;
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return exposedJoints[j]->positionMove(ref)
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return exposedJoints[j]->positionMove(ref) ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return exposedJoints[j]->positionMove(ref);
 #endif
@@ -69,9 +67,7 @@ bool RealToSimControlBoard::positionMove(const double * refs)
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif
@@ -93,9 +89,7 @@ bool RealToSimControlBoard::positionMove(int n_joint, const int * joints, const 
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif
@@ -113,7 +107,7 @@ bool RealToSimControlBoard::relativeMove(int j, double delta)
     {
         yCError(R2SCB) << "Illegal axis index:" << j;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_input_out_of_bounds;
+        return yarp::dev::ReturnValue_error_input_out_of_bounds;
 #else
         return false;
 #endif
@@ -121,7 +115,7 @@ bool RealToSimControlBoard::relativeMove(int j, double delta)
 
     yCError(R2SCB) << "relativeMove() not implemented yet";
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return yarp::dev::ReturnValue::return_code::return_value_error_not_implemented_by_device;
+    return yarp::dev::ReturnValue_error_not_implemented_by_device;
 #else
     return false;
 #endif
@@ -143,9 +137,7 @@ bool RealToSimControlBoard::relativeMove(const double * deltas)
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif
@@ -167,9 +159,7 @@ bool RealToSimControlBoard::relativeMove(int n_joint, const int * joints, const 
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif
@@ -187,7 +177,7 @@ bool RealToSimControlBoard::checkMotionDone(int j, bool * flag)
     {
         yCError(R2SCB) << "Illegal axis index:" << j;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_input_out_of_bounds;
+        return yarp::dev::ReturnValue_error_input_out_of_bounds;
 #else
         return false;
 #endif
@@ -195,7 +185,7 @@ bool RealToSimControlBoard::checkMotionDone(int j, bool * flag)
 
     yCError(R2SCB) << "checkMotionDone() not implemented yet";
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return yarp::dev::ReturnValue::return_code::return_value_error_not_implemented_by_device;
+    return yarp::dev::ReturnValue_error_not_implemented_by_device;
 #else
     return false;
 #endif
@@ -230,9 +220,7 @@ bool RealToSimControlBoard::checkMotionDone(bool * flag)
 #endif
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif
@@ -270,9 +258,7 @@ bool RealToSimControlBoard::checkMotionDone(int n_joint, const int * joints, boo
 #endif
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif
@@ -290,7 +276,7 @@ bool RealToSimControlBoard::setRefSpeed(int j, double sp)
     {
         yCError(R2SCB) << "Illegal axis index:" << j;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_input_out_of_bounds;
+        return yarp::dev::ReturnValue_error_input_out_of_bounds;
 #else
         return false;
 #endif
@@ -298,7 +284,7 @@ bool RealToSimControlBoard::setRefSpeed(int j, double sp)
 
     yCError(R2SCB) << "setRefSpeed() not implemented yet";
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return yarp::dev::ReturnValue::return_code::return_value_error_not_implemented_by_device;
+    return yarp::dev::ReturnValue_error_not_implemented_by_device;
 #else
     return false;
 #endif
@@ -324,9 +310,7 @@ bool RealToSimControlBoard::setRefSpeeds(const double * spds)
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif
@@ -352,9 +336,7 @@ bool RealToSimControlBoard::setRefSpeeds(int n_joint, const int * joints, const 
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif
@@ -372,7 +354,7 @@ bool RealToSimControlBoard::setRefAcceleration(int j, double acc)
     {
         yCError(R2SCB) << "Illegal axis index:" << j;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_input_out_of_bounds;
+        return yarp::dev::ReturnValue_error_input_out_of_bounds;
 #else
         return false;
 #endif
@@ -380,7 +362,7 @@ bool RealToSimControlBoard::setRefAcceleration(int j, double acc)
 
     yCError(R2SCB) << "setRefAcceleration() not implemented yet";
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return yarp::dev::ReturnValue::return_code::return_value_error_not_implemented_by_device;
+    return yarp::dev::ReturnValue_error_not_implemented_by_device;
 #else
     return false;
 #endif
@@ -406,9 +388,7 @@ bool RealToSimControlBoard::setRefAccelerations(const double * accs)
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif
@@ -434,9 +414,7 @@ bool RealToSimControlBoard::setRefAccelerations(int n_joint, const int * joints,
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif
@@ -454,7 +432,7 @@ bool RealToSimControlBoard::getRefSpeed(int j, double * ref)
     {
         yCError(R2SCB) << "Illegal axis index:" << j;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_input_out_of_bounds;
+        return yarp::dev::ReturnValue_error_input_out_of_bounds;
 #else
         return false;
 #endif
@@ -462,7 +440,7 @@ bool RealToSimControlBoard::getRefSpeed(int j, double * ref)
 
     yCError(R2SCB) << "getRefSpeed() not implemented yet";
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return yarp::dev::ReturnValue::return_code::return_value_error_not_implemented_by_device;
+    return yarp::dev::ReturnValue_error_not_implemented_by_device;
 #else
     return false;
 #endif
@@ -488,9 +466,7 @@ bool RealToSimControlBoard::getRefSpeeds(double * spds)
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif
@@ -516,9 +492,7 @@ bool RealToSimControlBoard::getRefSpeeds(int n_joint, const int * joints, double
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif
@@ -536,7 +510,7 @@ bool RealToSimControlBoard::getRefAcceleration(int j, double * acc)
     {
         yCError(R2SCB) << "Illegal axis index:" << j;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_input_out_of_bounds;
+        return yarp::dev::ReturnValue_error_input_out_of_bounds;
 #else
         return false;
 #endif
@@ -544,7 +518,7 @@ bool RealToSimControlBoard::getRefAcceleration(int j, double * acc)
 
     yCError(R2SCB) << "getRefAcceleration() not implemented yet";
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return yarp::dev::ReturnValue::return_code::return_value_error_not_implemented_by_device;
+    return yarp::dev::ReturnValue_error_not_implemented_by_device;
 #else
     return false;
 #endif
@@ -570,9 +544,7 @@ bool RealToSimControlBoard::getRefAccelerations(double * accs)
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif
@@ -598,9 +570,7 @@ bool RealToSimControlBoard::getRefAccelerations(int n_joint, const int * joints,
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif
@@ -618,7 +588,7 @@ bool RealToSimControlBoard::stop(int j)
     {
         yCError(R2SCB) << "Illegal axis index:" << j;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_input_out_of_bounds;
+        return yarp::dev::ReturnValue_error_input_out_of_bounds;
 #else
         return false;
 #endif
@@ -626,7 +596,7 @@ bool RealToSimControlBoard::stop(int j)
 
     yCError(R2SCB) << "stop() not implemented yet";
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return yarp::dev::ReturnValue::return_code::return_value_error_not_implemented_by_device;
+    return yarp::dev::ReturnValue_error_not_implemented_by_device;
 #else
     return false;
 #endif
@@ -648,9 +618,7 @@ bool RealToSimControlBoard::stop()
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif
@@ -672,9 +640,7 @@ bool RealToSimControlBoard::stop(int n_joint, const int * joints)
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif
@@ -692,7 +658,7 @@ bool RealToSimControlBoard::getTargetPosition(int j, double * ref)
     {
         yCError(R2SCB) << "Illegal axis index:" << j;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_input_out_of_bounds;
+        return yarp::dev::ReturnValue_error_input_out_of_bounds;
 #else
         return false;
 #endif
@@ -700,7 +666,7 @@ bool RealToSimControlBoard::getTargetPosition(int j, double * ref)
 
     yCError(R2SCB) << "getTargetPosition() not implemented yet";
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return yarp::dev::ReturnValue::return_code::return_value_error_not_implemented_by_device;
+    return yarp::dev::ReturnValue_error_not_implemented_by_device;
 #else
     return false;
 #endif
@@ -722,9 +688,7 @@ bool RealToSimControlBoard::getTargetPositions(double * refs)
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif
@@ -746,9 +710,7 @@ bool RealToSimControlBoard::getTargetPositions(int n_joint, const int * joints, 
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif

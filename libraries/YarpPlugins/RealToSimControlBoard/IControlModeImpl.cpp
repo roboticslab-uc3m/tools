@@ -16,7 +16,7 @@ yarp::dev::ReturnValue RealToSimControlBoard::getAvailableControlModes(int j, st
     if (j < 0 || static_cast<unsigned int>(j) > axes)
     {
         yCError(R2SCB) << "Illegal axis index:" << j;
-        return yarp::dev::ReturnValue::return_code::return_value_error_input_out_of_bounds;
+        return yarp::dev::ReturnValue_error_input_out_of_bounds;
     }
 
     avail = {
@@ -25,7 +25,7 @@ yarp::dev::ReturnValue RealToSimControlBoard::getAvailableControlModes(int j, st
         yarp::dev::SelectableControlModeEnum::VOCAB_CM_VELOCITY
     };
 
-    return yarp::dev::ReturnValue::return_code::return_value_ok;
+    return yarp::dev::ReturnValue_ok;
 }
 #endif
 
@@ -41,7 +41,7 @@ bool RealToSimControlBoard::getControlMode(int j, int * mode)
     {
         yCError(R2SCB) << "Illegal axis index:" << j;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_input_out_of_bounds;
+        return yarp::dev::ReturnValue_error_input_out_of_bounds;
 #else
         return false;
 #endif
@@ -49,7 +49,7 @@ bool RealToSimControlBoard::getControlMode(int j, int * mode)
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
     mode = static_cast<yarp::dev::ControlModeEnum>(controlMode);
-    return yarp::dev::ReturnValue::return_code::return_value_ok;
+    return yarp::dev::ReturnValue_ok;
 #else
     *mode = controlMode;
     return true;
@@ -76,9 +76,7 @@ bool RealToSimControlBoard::getControlModes(int * modes)
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif
@@ -107,9 +105,7 @@ bool RealToSimControlBoard::getControlModes(int n_joint, const int * joints, int
 #endif
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif
@@ -127,7 +123,7 @@ bool RealToSimControlBoard::setControlMode(int j, const int mode)
     {
         yCError(R2SCB) << "Illegal axis index:" << j;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_input_out_of_bounds;
+        return yarp::dev::ReturnValue_error_input_out_of_bounds;
 #else
         return false;
 #endif
@@ -135,7 +131,7 @@ bool RealToSimControlBoard::setControlMode(int j, const int mode)
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
     controlMode = static_cast<yarp::conf::vocab32_t>(mode);
-    return yarp::dev::ReturnValue::return_code::return_value_ok;
+    return yarp::dev::ReturnValue_ok;
 #else
     controlMode = mode;
     return true;
@@ -158,9 +154,7 @@ bool RealToSimControlBoard::setControlModes(int * modes)
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif
@@ -186,9 +180,7 @@ bool RealToSimControlBoard::setControlModes(int n_joint, const int * joints, int
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif

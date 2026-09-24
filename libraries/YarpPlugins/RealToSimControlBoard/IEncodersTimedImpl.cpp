@@ -24,9 +24,7 @@ bool RealToSimControlBoard::getEncodersTimed(double * encs, double * time)
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif
@@ -44,9 +42,7 @@ bool RealToSimControlBoard::getEncoderTimed(int j, double * encs, double * time)
     *time = yarp::os::Time::now();
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif
@@ -64,7 +60,7 @@ bool RealToSimControlBoard::resetEncoder(int j)
     {
         yCError(R2SCB) << "Illegal axis index:" << j;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_input_out_of_bounds;
+        return yarp::dev::ReturnValue_error_input_out_of_bounds;
 #else
         return false;
 #endif
@@ -89,9 +85,7 @@ bool RealToSimControlBoard::resetEncoders()
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif
@@ -109,7 +103,7 @@ bool RealToSimControlBoard::setEncoder(int j, double val)
     {
         yCError(R2SCB) << "Illegal axis index:" << j;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_input_out_of_bounds;
+        return yarp::dev::ReturnValue_error_input_out_of_bounds;
 #else
         return false;
 #endif
@@ -117,7 +111,7 @@ bool RealToSimControlBoard::setEncoder(int j, double val)
 
     yCError(R2SCB) << "setEncoder() not implemented yet";
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return yarp::dev::ReturnValue::return_code::return_value_error_not_implemented_by_device;
+    return yarp::dev::ReturnValue_error_not_implemented_by_device;
 #else
     return false;
 #endif
@@ -139,9 +133,7 @@ bool RealToSimControlBoard::setEncoders(const double * vals)
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif
@@ -159,7 +151,7 @@ bool RealToSimControlBoard::getEncoder(int j, double * v)
     {
         yCError(R2SCB) << "Illegal axis index:" << j;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_input_out_of_bounds;
+        return yarp::dev::ReturnValue_error_input_out_of_bounds;
 #else
         return false;
 #endif
@@ -167,7 +159,7 @@ bool RealToSimControlBoard::getEncoder(int j, double * v)
 
     *v = storedPositions[j];
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return yarp::dev::ReturnValue::return_code::return_value_ok;
+    return yarp::dev::ReturnValue_ok;
 #else
     return true;
 #endif
@@ -189,9 +181,7 @@ bool RealToSimControlBoard::getEncoders(double * encs)
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif
@@ -209,7 +199,7 @@ bool RealToSimControlBoard::getEncoderSpeed(int j, double * sp)
     {
         yCError(R2SCB) << "Illegal axis index:" << j;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_input_out_of_bounds;
+        return yarp::dev::ReturnValue_error_input_out_of_bounds;
 #else
         return false;
 #endif
@@ -218,7 +208,7 @@ bool RealToSimControlBoard::getEncoderSpeed(int j, double * sp)
     // Make it easy, give the current reference speed.
     *sp = 0; // begins to look like we should use semaphores.
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return yarp::dev::ReturnValue::return_code::return_value_ok;
+    return yarp::dev::ReturnValue_ok;
 #else
     return true;
 #endif
@@ -240,9 +230,7 @@ bool RealToSimControlBoard::getEncoderSpeeds(double * spds)
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif
@@ -260,7 +248,7 @@ bool RealToSimControlBoard::getEncoderAcceleration(int j, double * acc)
     {
         yCError(R2SCB) << "Illegal axis index:" << j;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_input_out_of_bounds;
+        return yarp::dev::ReturnValue_error_input_out_of_bounds;
 #else
         return false;
 #endif
@@ -268,7 +256,7 @@ bool RealToSimControlBoard::getEncoderAcceleration(int j, double * acc)
 
     yCError(R2SCB) << "getEncoderAcceleration not implemented";
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return yarp::dev::ReturnValue::return_code::return_value_error_not_implemented_by_device;
+    return yarp::dev::ReturnValue_error_not_implemented_by_device;
 #else
     return false;
 #endif
@@ -290,9 +278,7 @@ bool RealToSimControlBoard::getEncoderAccelerations(double * accs)
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return ok
-        ? yarp::dev::ReturnValue::return_code::return_value_ok
-        : yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+    return ok ? yarp::dev::ReturnValue_ok : yarp::dev::ReturnValue_error_method_failed;
 #else
     return ok;
 #endif

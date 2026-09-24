@@ -21,7 +21,7 @@ bool BasicJointCoupling::convertFromPhysicalJointsToActuatedAxesPos(const yarp::
     {
         yCError(BJC) << "Size of position vector does not match number of physical joints:" << physJointsPos.size() << "!=" << numberOfPhysicalJoints;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+        return yarp::dev::ReturnValue_error_method_failed;
 #else
         return false;
 #endif
@@ -52,7 +52,7 @@ bool BasicJointCoupling::convertFromPhysicalJointsToActuatedAxesPos(const yarp::
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return yarp::dev::ReturnValue::return_code::return_value_ok;
+    return yarp::dev::ReturnValue_ok;
 #else
     return true;
 #endif
@@ -70,7 +70,7 @@ bool BasicJointCoupling::convertFromPhysicalJointsToActuatedAxesVel(const yarp::
     {
         yCError(BJC) << "Size of position vector does not match number of physical joints:" << physJointsPos.size() << "!=" << numberOfPhysicalJoints;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+        return yarp::dev::ReturnValue_error_method_failed;
 #else
         return false;
 #endif
@@ -80,7 +80,7 @@ bool BasicJointCoupling::convertFromPhysicalJointsToActuatedAxesVel(const yarp::
     {
         yCError(BJC) << "Size of velocity vector does not match number of physical joints:" << physJointsVel.size() << "!=" << numberOfPhysicalJoints;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+        return yarp::dev::ReturnValue_error_method_failed;
 #else
         return false;
 #endif
@@ -108,7 +108,7 @@ bool BasicJointCoupling::convertFromPhysicalJointsToActuatedAxesVel(const yarp::
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return yarp::dev::ReturnValue::return_code::return_value_ok;
+    return yarp::dev::ReturnValue_ok;
 #else
     return true;
 #endif
@@ -126,7 +126,7 @@ bool BasicJointCoupling::convertFromPhysicalJointsToActuatedAxesAcc(const yarp::
     {
         yCError(BJC) << "Size of position vector does not match number of physical joints:" << physJointsPos.size() << "!=" << numberOfPhysicalJoints;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+        return yarp::dev::ReturnValue_error_method_failed;
 #else
         return false;
 #endif
@@ -136,7 +136,7 @@ bool BasicJointCoupling::convertFromPhysicalJointsToActuatedAxesAcc(const yarp::
     {
         yCError(BJC) << "Size of velocity vector does not match number of physical joints:" << physJointsVel.size() << "!=" << numberOfPhysicalJoints;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+        return yarp::dev::ReturnValue_error_method_failed;
 #else
         return false;
 #endif
@@ -146,7 +146,7 @@ bool BasicJointCoupling::convertFromPhysicalJointsToActuatedAxesAcc(const yarp::
     {
         yCError(BJC) << "Size of acceleration vector does not match number of physical joints:" << physJointsAcc.size() << "!=" << numberOfPhysicalJoints;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+        return yarp::dev::ReturnValue_error_method_failed;
 #else
         return false;
 #endif
@@ -174,7 +174,7 @@ bool BasicJointCoupling::convertFromPhysicalJointsToActuatedAxesAcc(const yarp::
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return yarp::dev::ReturnValue::return_code::return_value_ok;
+    return yarp::dev::ReturnValue_ok;
 #else
     return true;
 #endif
@@ -192,7 +192,7 @@ bool BasicJointCoupling::convertFromPhysicalJointsToActuatedAxesTrq(const yarp::
     {
         yCError(BJC) << "Size of position vector does not match number of physical joints:" << physJointsPos.size() << "!=" << numberOfPhysicalJoints;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+        return yarp::dev::ReturnValue_error_method_failed;
 #else
         return false;
 #endif
@@ -202,7 +202,7 @@ bool BasicJointCoupling::convertFromPhysicalJointsToActuatedAxesTrq(const yarp::
     {
         yCError(BJC) << "Size of torque vector does not match number of physical joints:" << physJointsTrq.size() << "!=" << numberOfPhysicalJoints;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+        return yarp::dev::ReturnValue_error_method_failed;
 #else
         return false;
 #endif
@@ -230,7 +230,7 @@ bool BasicJointCoupling::convertFromPhysicalJointsToActuatedAxesTrq(const yarp::
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return yarp::dev::ReturnValue::return_code::return_value_ok;
+    return yarp::dev::ReturnValue_ok;
 #else
     return true;
 #endif
@@ -248,7 +248,7 @@ bool BasicJointCoupling::convertFromActuatedAxesToPhysicalJointsPos(const yarp::
     {
         yCError(BJC) << "Size of position vector does not match number of actuated axes:" << actAxesPos.size() << "!=" << numberOfActuatedAxes;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+        return yarp::dev::ReturnValue_error_method_failed;
 #else
         return false;
 #endif
@@ -266,7 +266,7 @@ bool BasicJointCoupling::convertFromActuatedAxesToPhysicalJointsPos(const yarp::
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return yarp::dev::ReturnValue::return_code::return_value_ok;
+    return yarp::dev::ReturnValue_ok;
 #else
     return true;
 #endif
@@ -284,7 +284,7 @@ bool BasicJointCoupling::convertFromActuatedAxesToPhysicalJointsVel(const yarp::
     {
         yCError(BJC) << "Size of position vector does not match number of actuated axes:" << actAxesPos.size() << "!=" << numberOfActuatedAxes;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+        return yarp::dev::ReturnValue_error_method_failed;
 #else
         return false;
 #endif
@@ -294,7 +294,7 @@ bool BasicJointCoupling::convertFromActuatedAxesToPhysicalJointsVel(const yarp::
     {
         yCError(BJC) << "Size of velocity vector does not match number of actuated axes:" << actAxesVel.size() << "!=" << numberOfActuatedAxes;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+        return yarp::dev::ReturnValue_error_method_failed;
 #else
         return false;
 #endif
@@ -309,7 +309,7 @@ bool BasicJointCoupling::convertFromActuatedAxesToPhysicalJointsVel(const yarp::
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return yarp::dev::ReturnValue::return_code::return_value_ok;
+    return yarp::dev::ReturnValue_ok;
 #else
     return true;
 #endif
@@ -327,7 +327,7 @@ bool BasicJointCoupling::convertFromActuatedAxesToPhysicalJointsAcc(const yarp::
     {
         yCError(BJC) << "Size of position vector does not match number of actuated axes:" << actAxesPos.size() << "!=" << numberOfActuatedAxes;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+        return yarp::dev::ReturnValue_error_method_failed;
 #else
         return false;
 #endif
@@ -337,7 +337,7 @@ bool BasicJointCoupling::convertFromActuatedAxesToPhysicalJointsAcc(const yarp::
     {
         yCError(BJC) << "Size of velocity vector does not match number of actuated axes:" << actAxesVel.size() << "!=" << numberOfActuatedAxes;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+        return yarp::dev::ReturnValue_error_method_failed;
 #else
         return false;
 #endif
@@ -347,7 +347,7 @@ bool BasicJointCoupling::convertFromActuatedAxesToPhysicalJointsAcc(const yarp::
     {
         yCError(BJC) << "Size of acceleration vector does not match number of actuated axes:" << actAxesAcc.size() << "!=" << numberOfActuatedAxes;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+        return yarp::dev::ReturnValue_error_method_failed;
 #else
         return false;
 #endif
@@ -362,7 +362,7 @@ bool BasicJointCoupling::convertFromActuatedAxesToPhysicalJointsAcc(const yarp::
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return yarp::dev::ReturnValue::return_code::return_value_ok;
+    return yarp::dev::ReturnValue_ok;
 #else
     return true;
 #endif
@@ -380,7 +380,7 @@ bool BasicJointCoupling::convertFromActuatedAxesToPhysicalJointsTrq(const yarp::
     {
         yCError(BJC) << "Size of position vector does not match number of actuated axes:" << actAxesPos.size() << "!=" << numberOfActuatedAxes;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+        return yarp::dev::ReturnValue_error_method_failed;
 #else
         return false;
 #endif
@@ -390,7 +390,7 @@ bool BasicJointCoupling::convertFromActuatedAxesToPhysicalJointsTrq(const yarp::
     {
         yCError(BJC) << "Size of torque vector does not match number of actuated axes:" << actAxesTrq.size() << "!=" << numberOfActuatedAxes;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+        return yarp::dev::ReturnValue_error_method_failed;
 #else
         return false;
 #endif
@@ -405,7 +405,7 @@ bool BasicJointCoupling::convertFromActuatedAxesToPhysicalJointsTrq(const yarp::
     }
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return yarp::dev::ReturnValue::return_code::return_value_ok;
+    return yarp::dev::ReturnValue_ok;
 #else
     return true;
 #endif
@@ -421,7 +421,7 @@ bool BasicJointCoupling::getNrOfPhysicalJoints(std::size_t & nrOfPhysicalJoints)
 {
     nrOfPhysicalJoints = numberOfPhysicalJoints;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return yarp::dev::ReturnValue::return_code::return_value_ok;
+    return yarp::dev::ReturnValue_ok;
 #else
     return true;
 #endif
@@ -437,7 +437,7 @@ bool BasicJointCoupling::getNrOfActuatedAxes(std::size_t & nrOfActuatedAxes)
 {
     nrOfActuatedAxes = numberOfActuatedAxes;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return yarp::dev::ReturnValue::return_code::return_value_ok;
+    return yarp::dev::ReturnValue_ok;
 #else
     return true;
 #endif
@@ -453,7 +453,7 @@ bool BasicJointCoupling::getCoupledPhysicalJoints(yarp::sig::VectorOf<std::size_
 {
     coupPhysJointsIndexes = yarp::sig::VectorOf<std::size_t>(coupledPhysicalJointsIndexes.size(), coupledPhysicalJointsIndexes.data());
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return yarp::dev::ReturnValue::return_code::return_value_ok;
+    return yarp::dev::ReturnValue_ok;
 #else
     return true;
 #endif
@@ -469,7 +469,7 @@ bool BasicJointCoupling::getCoupledActuatedAxes(yarp::sig::VectorOf<std::size_t>
 {
     coupActAxesIndexes = yarp::sig::VectorOf<std::size_t>(coupledActuatedAxesIndexes.size(), coupledActuatedAxesIndexes.data());
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return yarp::dev::ReturnValue::return_code::return_value_ok;
+    return yarp::dev::ReturnValue_ok;
 #else
     return true;
 #endif
@@ -487,7 +487,7 @@ bool BasicJointCoupling::getActuatedAxisName(std::size_t actuatedAxisIndex, std:
     {
         yCError(BJC) << "Invalid actuated axis index:" << actuatedAxisIndex;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+        return yarp::dev::ReturnValue_error_method_failed;
 #else
         return false;
 #endif
@@ -495,7 +495,7 @@ bool BasicJointCoupling::getActuatedAxisName(std::size_t actuatedAxisIndex, std:
 
     actuatedAxisName = m_prefix + actuatedAxesNames[actuatedAxisIndex];
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return yarp::dev::ReturnValue::return_code::return_value_ok;
+    return yarp::dev::ReturnValue_ok;
 #else
     return true;
 #endif
@@ -513,7 +513,7 @@ bool BasicJointCoupling::getPhysicalJointName(std::size_t physicalJointIndex, st
     {
         yCError(BJC) << "Invalid physical joint index:" << physicalJointIndex;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+        return yarp::dev::ReturnValue_error_method_failed;
 #else
         return false;
 #endif
@@ -521,7 +521,7 @@ bool BasicJointCoupling::getPhysicalJointName(std::size_t physicalJointIndex, st
 
     physicalJointName = m_prefix + physicalJointsNames[physicalJointIndex];
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return yarp::dev::ReturnValue::return_code::return_value_ok;
+    return yarp::dev::ReturnValue_ok;
 #else
     return true;
 #endif
@@ -539,7 +539,7 @@ bool BasicJointCoupling::getPhysicalJointLimits(std::size_t physicalJointIndex, 
     {
         yCError(BJC) << "Invalid physical joint index:" << physicalJointIndex;
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-        return yarp::dev::ReturnValue::return_code::return_value_error_method_failed;
+        return yarp::dev::ReturnValue_error_method_failed;
 #else
         return false;
 #endif
@@ -549,7 +549,7 @@ bool BasicJointCoupling::getPhysicalJointLimits(std::size_t physicalJointIndex, 
     max = physicalJointLimitsMaxs[physicalJointIndex];
 
 #if YARP_VERSION_COMPARE(>=, 4, 0, 0)
-    return yarp::dev::ReturnValue::return_code::return_value_ok;
+    return yarp::dev::ReturnValue_ok;
 #else
     return true;
 #endif
